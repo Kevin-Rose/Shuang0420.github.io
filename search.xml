@@ -7624,85 +7624,6 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
     </entry>
     
     <entry>
-      <title><![CDATA[EM算法]]></title>
-      <url>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</url>
-      <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
-<h1 id="Mixtures-of-Gaussians"><a href="#Mixtures-of-Gaussians" class="headerlink" title="Mixtures of Gaussians"></a>Mixtures of Gaussians</h1><p>MLE 的通用步骤：<br>Steps:</p>
-<ol>
-<li>写出似然函数；</li>
-<li>对似然函数取对数，并整理；</li>
-<li>求导数，令导数为0，得到似然方程；</li>
-<li>解似然方程，得到的参数即为所求；</li>
-</ol>
-<p>然而有的时候我们会陷入困境，因为似然方程没法求解，比如 Mixtures of Gaussians。</p>
-<h2 id="One-Gaussian"><a href="#One-Gaussian" class="headerlink" title="One Gaussian"></a>One Gaussian</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Gaussian, $\sigma^2$=1/2<br><strong>LE</strong><br>$$P(x_1,..,x_n|\mu)={1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu)^2 \over 2 \sigma^2} $$</p>
-<p><strong>MLE:</strong> $\hat \mu_{ML}= argmax \ L(x_1,..,x_n|\mu)$<br>$\mu_{ML} = {\sum_{i=1}^n \ x_i \over n} = \overline x_i$</p>
-<h2 id="K-Gaussians"><a href="#K-Gaussians" class="headerlink" title="K Gaussians"></a>K Gaussians</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Mixture of K Gaussians    $\sigma^2$=1/2, $\mu_1,…\mu_k$<br><strong>Prior probability over Gaussians:</strong> $\lambda_1,…,\lambda_k \ 0 \le \lambda_j \le 1 \ \sum \lambda_j=1$, distribution of j is unknown, $\lambda_j, \mu_j$ is unknown<br><strong>LE</strong><br>$$<br>\begin{aligned}<br>P(x_1,..,x_n|\hat \lambda,\hat \mu,\sigma^2=0.5) &amp; = \prod_i^n[\sum_j^k P(Gaussian \ j \ was \ chosen)P(xi|Gaussian \ j \ was \ chosen)] \\<br> &amp; = \prod_i^n[\sum_j^k \lambda_j{1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu_j)^2 \over 2 \sigma_j^2}]<br>\end{aligned}<br>$$</p>
-<p><strong>MLE:</strong> $(\hat \mu, \hat \lambda)_{ML}= argmax \ L(x1,..,xn|\hat \lambda,\hat \mu,\sigma^2=0.5)$</p>
-<p><strong>How to find MLE?</strong></p>
-<h2 id="“SOFT”-K-MEANS"><a href="#“SOFT”-K-MEANS" class="headerlink" title="“SOFT” K-MEANS"></a>“SOFT” K-MEANS</h2><p><strong>soft:</strong> our guesses are probabilities and taking values in [0,1]<br><strong>hard:</strong> represents a single best guess (taking values in {0,1} or {1,…k})</p>
-<p>Special case of the EM Algorithm<br>$\sigma^2$=1/2</p>
-<p><strong>初始化</strong><br>初始化分布参数θ, $\mu^{(0)}$,$\lambda^{(0)}$</p>
-<p><strong>重复 EM 步骤直到收敛</strong><br><strong>1.E-step</strong><br>Fill in    the    missing    variables    with the expected values<br>根据参数初始值或上一次迭代的模型参数来计算出隐性变量的后验概率，其实就是隐性变量的期望。作为隐藏变量的现估计值：<br>$$w_j^{(i)}=P(z^{(i)}=j|x^{(i)};\mu,\lambda,\sigma^2=0.5) $$</p>
-<p><strong>2.M-Step</strong><br>Regular    maximum    likelihood estimation    (MLE)    using    the    values computed    in the E step    and    the    values of    the    other    variables<br>将似然函数最大化以获得新的参数值 $\mu^{(l+1)}$,$\lambda^{(l+1)}$</p>
-<ul>
-<li>l: index over EM iterations</li>
-<li>j: index of Gaussians</li>
-<li>i: index of datapoints<br>$$\hat \lambda_j={\# j \ was \ chosen \over n}={\sum_{i=1}^n w_j^{(i)} \over n}$$<br>$$\hat \mu_j={\sum_{i=1}^n w_j^{(i)} x^{(i)} \over \sum_{i=1}^n w_j^{(i)}}$$</li>
-</ul>
-<p><strong>EM Algorithm guarantees:</strong><br>$$L(D|\theta^{[0]}) \le L(D|\theta^{[1]}) \le L(D|\theta^{[2]})…$$<br>This is a Non-decreasing function. And if the likelihood function is bounded, the sequence will converge. Here the example is bounded, because $\sigma$ is fixed.<br>It might end up with local optimal.</p>
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/draft.jpg" class="ful-image" alt="draft.jpg">
-<p>第一次 iteration 的表格表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/table.jpg" class="ful-image" alt="table.jpg"></p>
-<h1 id="General-EM-algorithm"><a href="#General-EM-algorithm" class="headerlink" title="General EM algorithm"></a>General EM algorithm</h1><p><strong>X</strong> observed data<br><strong>Z</strong> unobserved ‘data’<br><strong>Complete data</strong> Y=(X,Z)<br><strong>Likelihood function</strong> $L(X,Z|\theta)$ known</p>
-<p><strong>Problem:</strong> find MLE<br>$$<br>  \begin{aligned}<br>  \hat \theta_{ML} &amp; = argmax \ L(X|\theta)= argmax \sum_Z P(X,Z|\theta) \\<br>   &amp; = argmax \sum_Z P(Z|\theta)P(X|Z,\theta) \\<br>   &amp; = argmax \sum_Z P(X|\theta)P(Z|X,\theta)P(X|Z,\theta)<br>  \end{aligned}<br>$$</p>
-<p><strong>Chicken-egg Problem</strong> with regard to P(Z),$\theta$<br>先有鸡还是先有蛋的问题。当我们知道了哪些 datapoints 属于同一个高斯分布的时候，我们才能够对这个分布的参数作出靠谱的预测，然而现在 datapoints 混在了一起，我们不知道哪个属于哪个，也就没办法估计参数。反过来，只有当我们对 K 个分布的参数作了准确的估计的时候，才知道哪些 datapoints 属于同一个高斯分布。<br>所以陷入了僵局，怎么办？不如就先随便整一个值出来，看你怎么变，然后我再根据你的变化调整我的变化，然后如此迭代着不断互相推导，最终就会收敛到一个解。这就是EM算法的基本思想。 -&gt; chicken stay, egg change</p>
-<p><strong>EM solution</strong></p>
-<ol>
-<li>Initialize $\theta$ to some value</li>
-<li>EM 方程<br>$$\theta^{[l+1]}=argmax \ E_{Z|\theta^l}[logP(Z,X|\theta)]$$<br>E 就是 expectation 的 E, write expression for E as function of $\theta$, expression: auxiliary function $Q(\theta^{[l]}|\theta)$<br>M 就是 argmax 的 M, find the MAX over $\theta$<br>=&gt;<br><strong>Simple EM solution:</strong><ul>
-<li><strong>E-step:</strong> express MLE as function of X’s and Z’s<br>know the value of Z, what would the ML solution</li>
-<li><strong>M-step:</strong> replace each Z with $E[Z|\theta]$</li>
-</ul>
-</li>
-</ol>
-<p><strong>EM guarantees</strong><br>$$L(X|\theta^{[l]}) \le L(X|\theta^{l+1})$$</p>
-<p>If likelihood is bounded, the sequence will converge.</p>
-<p><strong>Special but most commonly use:</strong><br>$L(X,Z|\theta)$ is a member of the exponential family</p>
-<h1 id="适用情景"><a href="#适用情景" class="headerlink" title="适用情景"></a>适用情景</h1><p>When to use:</p>
-<ul>
-<li>Data is only partially observable</li>
-<li>Unsupervised clustering(target value unobservable)</li>
-<li>Supervised learning(some instance attributes unobservable)</li>
-</ul>
-<p>Some uses:</p>
-<ul>
-<li>Train Bayesian Belief Networks</li>
-<li>Unsupervised clustering(AUTOCLASS)</li>
-<li>Learning Hidden Markov Models</li>
-</ul>
-<blockquote>
-<p>参考链接：<br><a href="http://blog.csdn.net/zouxy09/article/details/8537620" target="_blank" rel="external">从最大似然到EM算法浅解</a><br><a href="http://www.cnblogs.com/jerrylead/archive/2011/04/06/2006936.html" target="_blank" rel="external">（EM算法）The EM Algorithm</a><br><a href="http://blog.csdn.net/livecoldsun/article/details/40833829" target="_blank" rel="external"> EM（Expectation-Maximization）算法 </a></p>
-</blockquote>
-]]></content>
-      
-        <categories>
-            
-            <category> Machine Learning </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> NLP </tag>
-            
-            <tag> machine learning </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Graphical Models]]></title>
       <url>http://www.shuang0420.com/2016/12/04/Graphical%20Models/</url>
       <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
@@ -7773,6 +7694,85 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
 <h1 id="Conditional-Random-Fields"><a href="#Conditional-Random-Fields" class="headerlink" title="Conditional Random Fields"></a>Conditional Random Fields</h1><p>CRF = UGM Trained Discriminatively<br>$argmax \ L(labels|inputs,\theta)$</p>
 <p><strong>generative modeling</strong><br>$\theta=argmax \ L(D|\theta)$<br>MAP=argmax P(|x)</p>
 <p><strong>discriminative method</strong><br>$argmin \ ERR(classifier|D,\theta)$<br>better when training data is small</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Machine Learning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> machine learning </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[EM算法]]></title>
+      <url>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
+<h1 id="Mixtures-of-Gaussians"><a href="#Mixtures-of-Gaussians" class="headerlink" title="Mixtures of Gaussians"></a>Mixtures of Gaussians</h1><p>MLE 的通用步骤：<br>Steps:</p>
+<ol>
+<li>写出似然函数；</li>
+<li>对似然函数取对数，并整理；</li>
+<li>求导数，令导数为0，得到似然方程；</li>
+<li>解似然方程，得到的参数即为所求；</li>
+</ol>
+<p>然而有的时候我们会陷入困境，因为似然方程没法求解，比如 Mixtures of Gaussians。</p>
+<h2 id="One-Gaussian"><a href="#One-Gaussian" class="headerlink" title="One Gaussian"></a>One Gaussian</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Gaussian, $\sigma^2$=1/2<br><strong>LE</strong><br>$$P(x_1,..,x_n|\mu)={1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu)^2 \over 2 \sigma^2} $$</p>
+<p><strong>MLE:</strong> $\hat \mu_{ML}= argmax \ L(x_1,..,x_n|\mu)$<br>$\mu_{ML} = {\sum_{i=1}^n \ x_i \over n} = \overline x_i$</p>
+<h2 id="K-Gaussians"><a href="#K-Gaussians" class="headerlink" title="K Gaussians"></a>K Gaussians</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Mixture of K Gaussians    $\sigma^2$=1/2, $\mu_1,…\mu_k$<br><strong>Prior probability over Gaussians:</strong> $\lambda_1,…,\lambda_k \ 0 \le \lambda_j \le 1 \ \sum \lambda_j=1$, distribution of j is unknown, $\lambda_j, \mu_j$ is unknown<br><strong>LE</strong><br>$$<br>\begin{aligned}<br>P(x_1,..,x_n|\hat \lambda,\hat \mu,\sigma^2=0.5) &amp; = \prod_i^n[\sum_j^k P(Gaussian \ j \ was \ chosen)P(xi|Gaussian \ j \ was \ chosen)] \\<br> &amp; = \prod_i^n[\sum_j^k \lambda_j{1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu_j)^2 \over 2 \sigma_j^2}]<br>\end{aligned}<br>$$</p>
+<p><strong>MLE:</strong> $(\hat \mu, \hat \lambda)_{ML}= argmax \ L(x1,..,xn|\hat \lambda,\hat \mu,\sigma^2=0.5)$</p>
+<p><strong>How to find MLE?</strong></p>
+<h2 id="“SOFT”-K-MEANS"><a href="#“SOFT”-K-MEANS" class="headerlink" title="“SOFT” K-MEANS"></a>“SOFT” K-MEANS</h2><p><strong>soft:</strong> our guesses are probabilities and taking values in [0,1]<br><strong>hard:</strong> represents a single best guess (taking values in {0,1} or {1,…k})</p>
+<p>Special case of the EM Algorithm<br>$\sigma^2$=1/2</p>
+<p><strong>初始化</strong><br>初始化分布参数θ, $\mu^{(0)}$,$\lambda^{(0)}$</p>
+<p><strong>重复 EM 步骤直到收敛</strong><br><strong>1.E-step</strong><br>Fill in    the    missing    variables    with the expected values<br>根据参数初始值或上一次迭代的模型参数来计算出隐性变量的后验概率，其实就是隐性变量的期望。作为隐藏变量的现估计值：<br>$$w_j^{(i)}=P(z^{(i)}=j|x^{(i)};\mu,\lambda,\sigma^2=0.5) $$</p>
+<p><strong>2.M-Step</strong><br>Regular    maximum    likelihood estimation    (MLE)    using    the    values computed    in the E step    and    the    values of    the    other    variables<br>将似然函数最大化以获得新的参数值 $\mu^{(l+1)}$,$\lambda^{(l+1)}$</p>
+<ul>
+<li>l: index over EM iterations</li>
+<li>j: index of Gaussians</li>
+<li>i: index of datapoints<br>$$\hat \lambda_j={\# j \ was \ chosen \over n}={\sum_{i=1}^n w_j^{(i)} \over n}$$<br>$$\hat \mu_j={\sum_{i=1}^n w_j^{(i)} x^{(i)} \over \sum_{i=1}^n w_j^{(i)}}$$</li>
+</ul>
+<p><strong>EM Algorithm guarantees:</strong><br>$$L(D|\theta^{[0]}) \le L(D|\theta^{[1]}) \le L(D|\theta^{[2]})…$$<br>This is a Non-decreasing function. And if the likelihood function is bounded, the sequence will converge. Here the example is bounded, because $\sigma$ is fixed.<br>It might end up with local optimal.</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/draft.jpg" class="ful-image" alt="draft.jpg">
+<p>第一次 iteration 的表格表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/table.jpg" class="ful-image" alt="table.jpg"></p>
+<h1 id="General-EM-algorithm"><a href="#General-EM-algorithm" class="headerlink" title="General EM algorithm"></a>General EM algorithm</h1><p><strong>X</strong> observed data<br><strong>Z</strong> unobserved ‘data’<br><strong>Complete data</strong> Y=(X,Z)<br><strong>Likelihood function</strong> $L(X,Z|\theta)$ known</p>
+<p><strong>Problem:</strong> find MLE<br>$$<br>  \begin{aligned}<br>  \hat \theta_{ML} &amp; = argmax \ L(X|\theta)= argmax \sum_Z P(X,Z|\theta) \\<br>   &amp; = argmax \sum_Z P(Z|\theta)P(X|Z,\theta) \\<br>   &amp; = argmax \sum_Z P(X|\theta)P(Z|X,\theta)P(X|Z,\theta)<br>  \end{aligned}<br>$$</p>
+<p><strong>Chicken-egg Problem</strong> with regard to P(Z),$\theta$<br>先有鸡还是先有蛋的问题。当我们知道了哪些 datapoints 属于同一个高斯分布的时候，我们才能够对这个分布的参数作出靠谱的预测，然而现在 datapoints 混在了一起，我们不知道哪个属于哪个，也就没办法估计参数。反过来，只有当我们对 K 个分布的参数作了准确的估计的时候，才知道哪些 datapoints 属于同一个高斯分布。<br>所以陷入了僵局，怎么办？不如就先随便整一个值出来，看你怎么变，然后我再根据你的变化调整我的变化，然后如此迭代着不断互相推导，最终就会收敛到一个解。这就是EM算法的基本思想。 -&gt; chicken stay, egg change</p>
+<p><strong>EM solution</strong></p>
+<ol>
+<li>Initialize $\theta$ to some value</li>
+<li>EM 方程<br>$$\theta^{[l+1]}=argmax \ E_{Z|\theta^l}[logP(Z,X|\theta)]$$<br>E 就是 expectation 的 E, write expression for E as function of $\theta$, expression: auxiliary function $Q(\theta^{[l]}|\theta)$<br>M 就是 argmax 的 M, find the MAX over $\theta$<br>=&gt;<br><strong>Simple EM solution:</strong><ul>
+<li><strong>E-step:</strong> express MLE as function of X’s and Z’s<br>know the value of Z, what would the ML solution</li>
+<li><strong>M-step:</strong> replace each Z with $E[Z|\theta]$</li>
+</ul>
+</li>
+</ol>
+<p><strong>EM guarantees</strong><br>$$L(X|\theta^{[l]}) \le L(X|\theta^{l+1})$$</p>
+<p>If likelihood is bounded, the sequence will converge.</p>
+<p><strong>Special but most commonly use:</strong><br>$L(X,Z|\theta)$ is a member of the exponential family</p>
+<h1 id="适用情景"><a href="#适用情景" class="headerlink" title="适用情景"></a>适用情景</h1><p>When to use:</p>
+<ul>
+<li>Data is only partially observable</li>
+<li>Unsupervised clustering(target value unobservable)</li>
+<li>Supervised learning(some instance attributes unobservable)</li>
+</ul>
+<p>Some uses:</p>
+<ul>
+<li>Train Bayesian Belief Networks</li>
+<li>Unsupervised clustering(AUTOCLASS)</li>
+<li>Learning Hidden Markov Models</li>
+</ul>
+<blockquote>
+<p>参考链接：<br><a href="http://blog.csdn.net/zouxy09/article/details/8537620" target="_blank" rel="external">从最大似然到EM算法浅解</a><br><a href="http://www.cnblogs.com/jerrylead/archive/2011/04/06/2006936.html" target="_blank" rel="external">（EM算法）The EM Algorithm</a><br><a href="http://blog.csdn.net/livecoldsun/article/details/40833829" target="_blank" rel="external"> EM（Expectation-Maximization）算法 </a></p>
+</blockquote>
 ]]></content>
       
         <categories>
@@ -8745,74 +8745,6 @@ python nb.py split.train split.test</pre>
     </entry>
     
     <entry>
-      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
-      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
-      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
-<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
-<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
-<li>双方共享一把密钥。</li>
-<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
-<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
-</ol>
-<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
-<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
-<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
-<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
-<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
-<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
-<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
-<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
-<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
-<li>A、B 可以用 session key 来交流了。</li>
-</ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
-<p>可以防止 replay，但 <strong>问题是:</strong></p>
-<ul>
-<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
-<li>S 是唯一可能导致失败的因素。</li>
-</ul>
-<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
-<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
-<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
-<ol>
-<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
-<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
-<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
-</ol>
-<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
-<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
-<li>A 和 B 想要建立一个共享的密钥</li>
-<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
-<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
-<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
-<li>B 有很多公钥所以 A 发送公钥的名字。</li>
-<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
-<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
-</ol>
-<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
-<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
-<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
-<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
-<p>用于数字签名，双方都算了一遍 MAC</p>
-<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Distributed Systems </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Web Service </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Distributed Systems笔记－middlewares]]></title>
       <url>http://www.shuang0420.com/2016/11/02/Web-service-middlewares/</url>
       <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍分布式系统中解决 interoperability concern 的几种方案 Cobra’s CDR, Java serialization 和 XML/JSON。这章整理的比较简单。<br><a id="more"></a></p>
@@ -8868,6 +8800,74 @@ python nb.py split.train split.test</pre>
 </ul>
 <h3 id="Handle-duplicates"><a href="#Handle-duplicates" class="headerlink" title="Handle duplicates"></a>Handle duplicates</h3><p>根据 client 的 acknowledgement 来清空历史。</p>
 <h2 id="Request-Reply-Message-Structure"><a href="#Request-Reply-Message-Structure" class="headerlink" title="Request-Reply Message Structure"></a>Request-Reply Message Structure</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">messageType: int (0=Request, 1=Reply)</div><div class="line">requestId: int</div><div class="line">objectReference: RemoteObjectRef</div><div class="line">methodId: int or Method</div><div class="line">argument: array of bytes</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Distributed Systems </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Web Service </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
+      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
+      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
+<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
+<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
+<li>双方共享一把密钥。</li>
+<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
+<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
+</ol>
+<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
+<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
+<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
+<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
+<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
+<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
+<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
+<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
+<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
+<li>A、B 可以用 session key 来交流了。</li>
+</ol>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
+<p>可以防止 replay，但 <strong>问题是:</strong></p>
+<ul>
+<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
+<li>S 是唯一可能导致失败的因素。</li>
+</ul>
+<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
+<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
+<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
+<ol>
+<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
+<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
+<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
+</ol>
+<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
+<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
+<li>A 和 B 想要建立一个共享的密钥</li>
+<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
+<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
+<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
+<li>B 有很多公钥所以 A 发送公钥的名字。</li>
+<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
+<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
+</ol>
+<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
+<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
+<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
+<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
+<p>用于数字签名，双方都算了一遍 MAC</p>
+<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
 ]]></content>
       
         <categories>
