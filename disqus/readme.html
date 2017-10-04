@@ -1,0 +1,922 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="徐阿衡" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.3" />
+
+
+
+
+
+
+<meta name="description" content="Disqus PHP API利用 PHP cURL 转发 Disqus API 请求
+
+Disqus 被墙，故做几个简单的接口，用于墙内环境访问 Disqus。
+
+实现功能
+评论列表
+评论发表
+图片上传
+Gravatar 头像
+Emoji 表情
+邮件通知
+……
+
+Disqus 设置
+使用 API 实现匿名评论功能，需在 Disqus 后台网站设置，开启访客评论功能（Guest Commenting">
+<meta property="og:type" content="website">
+<meta property="og:title" content="徐阿衡">
+<meta property="og:url" content="http://www.shuang0420.com/disqus/readme.html">
+<meta property="og:site_name" content="徐阿衡">
+<meta property="og:description" content="Disqus PHP API利用 PHP cURL 转发 Disqus API 请求
+
+Disqus 被墙，故做几个简单的接口，用于墙内环境访问 Disqus。
+
+实现功能
+评论列表
+评论发表
+图片上传
+Gravatar 头像
+Emoji 表情
+邮件通知
+……
+
+Disqus 设置
+使用 API 实现匿名评论功能，需在 Disqus 后台网站设置，开启访客评论功能（Guest Commenting">
+<meta property="og:updated_time" content="2017-10-02T01:15:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="徐阿衡">
+<meta name="twitter:description" content="Disqus PHP API利用 PHP cURL 转发 Disqus API 请求
+
+Disqus 被墙，故做几个简单的接口，用于墙内环境访问 Disqus。
+
+实现功能
+评论列表
+评论发表
+图片上传
+Gravatar 头像
+Emoji 表情
+邮件通知
+……
+
+Disqus 设置
+使用 API 实现匿名评论功能，需在 Disqus 后台网站设置，开启访客评论功能（Guest Commenting">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6294135991397516000',
+      author: '阿衡'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.shuang0420.com/disqus/readme.html"/>
+
+
+  <title>
+  
+
+  
+     | 徐阿衡
+  
+</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left  ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">徐阿衡</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Shuang</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-works">
+          <a href="/works" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            Works
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input" placeholder="search my blog...">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+         
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+      <h1 id="Disqus-PHP-API"><a href="#Disqus-PHP-API" class="headerlink" title="Disqus PHP API"></a>Disqus PHP API</h1><p>利用 PHP cURL 转发 Disqus API 请求</p>
+<blockquote>
+<p>Disqus 被墙，故做几个简单的接口，用于墙内环境访问 Disqus。</p>
+</blockquote>
+<h2 id="实现功能"><a href="#实现功能" class="headerlink" title="实现功能"></a>实现功能</h2><ul>
+<li>评论列表</li>
+<li>评论发表</li>
+<li>图片上传</li>
+<li>Gravatar 头像</li>
+<li>Emoji 表情</li>
+<li>邮件通知</li>
+<li>……</li>
+</ul>
+<h2 id="Disqus-设置"><a href="#Disqus-设置" class="headerlink" title="Disqus 设置"></a>Disqus 设置</h2><ul>
+<li>使用 API 实现匿名评论功能，需在 Disqus 后台<a href="https://disqus.com/admin/settings/community/" target="_blank" rel="external">网站设置</a>，开启访客评论功能（Guest Commenting 项中勾选 Allow guests to comment）。</li>
+</ul>
+<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><ul>
+<li>依赖于 PHP，采用 PHP cURL 请求 Disqus API，以获取评论数据，发送访客评论等操作。</li>
+<li>配置文件为 <code>config.php</code>，有简单说明。 </li>
+</ul>
+<h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><p>DEMO: <a href="http://blog.fooleap.org/disqus-php-api.html" target="_blank" rel="external">http://blog.fooleap.org/disqus-php-api.html</a></p>
+<p>项目将 Disqus 原生评论框打包在内，若使用本评论框，需将网页上所有与 Disqus 相关的元素清除，例如 id 为 <code>disqus_thread</code> 的容器、<code>disqus_config</code> 函数等。</p>
+<p>Disqus 评论框的相关配置<code>disqus_config</code>：</p>
+<ul>
+<li><code>this.page.identifier</code>: <a href="#user-content-identifier">identifier</a>，若无设置则为 <a href="#user-content-url">url</a></li>
+<li><code>this.page.title</code>: <a href="#user-content-title">title</a></li>
+<li><code>this.page.url</code>: <a href="#user-content-site">site</a> + <a href="#user-content-url">url</a></li>
+</ul>
+<p>关于 Disqus 原生评论框配置的说明，可以看此页面：<a href="https://help.disqus.com/customer/portal/articles/472098-javascript-configuration-variables" target="_blank" rel="external">https://help.disqus.com/customer/portal/articles/472098-javascript-configuration-variables</a></p>
+<h3 id="引入-CSS"><a href="#引入-CSS" class="headerlink" title="引入 CSS"></a>引入 CSS</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"path/to/iDisqus.min.css"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="创建容器"><a href="#创建容器" class="headerlink" title="创建容器"></a>创建容器</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"comment"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="引入-JS"><a href="#引入-JS" class="headerlink" title="引入 JS"></a>引入 JS</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"path/to/iDisqus.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="创建实例"><a href="#创建实例" class="headerlink" title="创建实例"></a>创建实例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> disq = <span class="keyword">new</span> iDisqus(<span class="string">'comment'</span>, &#123;</div><div class="line">    <span class="attr">forum</span>: <span class="string">'fooleap'</span>,</div><div class="line">    <span class="attr">api</span>: <span class="string">'http://api.fooleap.org/disqus'</span>,</div><div class="line">    <span class="attr">site</span>: <span class="string">'http://blog.fooleap.org'</span>,</div><div class="line">    <span class="attr">mode</span>: <span class="number">1</span>,</div><div class="line">    <span class="attr">timeout</span>: <span class="number">3000</span>,</div><div class="line">    <span class="attr">init</span>: <span class="literal">true</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h3><h4 id="ID"><a href="#ID" class="headerlink" title="ID"></a>ID</h4><ul>
+<li>new iDisqus(<code>ID</code>, OPTIONS);</li>
+<li>DOM 节点的 id 属性</li>
+<li>{String}</li>
+<li>默认：<code>&quot;comment&quot;</code></li>
+</ul>
+<h4 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h4><ul>
+<li>new iDisqus(ID, <code>OPTIONS</code>);</li>
+<li>{Object}</li>
+</ul>
+<h5 id="api"><a href="#api" class="headerlink" title="api"></a>api</h5><ul>
+<li>API 地址，PHP 代码部署的网址如：<code>http://api.fooleap.org/disqus</code></li>
+<li>{String}</li>
+<li><strong>必填</strong>，无默认值</li>
+</ul>
+<h5 id="forum"><a href="#forum" class="headerlink" title="forum"></a>forum</h5><ul>
+<li>Disqus forum 的 shortname</li>
+<li>{String}</li>
+<li><strong>必填</strong>，无默认值</li>
+</ul>
+<h5 id="site"><a href="#site" class="headerlink" title="site"></a>site</h5><ul>
+<li>网站域名，建议填写，如：<code>http://blog.fooleap.org</code></li>
+<li>{String}</li>
+<li>默认：<code>location.origin</code></li>
+</ul>
+<h5 id="url"><a href="#url" class="headerlink" title="url"></a>url</h5><ul>
+<li>页面链接，一般不需要填写</li>
+<li>{String}</li>
+<li>默认：<code>location.pathname + location.search</code></li>
+</ul>
+<h5 id="identifier"><a href="#identifier" class="headerlink" title="identifier"></a>identifier</h5><ul>
+<li>页面标识，按需填写</li>
+<li>{String}</li>
+<li>默认：<a href="#user-content-url">url</a></li>
+</ul>
+<h5 id="title"><a href="#title" class="headerlink" title="title"></a>title</h5><ul>
+<li>页面标题</li>
+<li>{String}</li>
+<li>默认：<code>document.title</code></li>
+</ul>
+<h5 id="mode"><a href="#mode" class="headerlink" title="mode"></a>mode</h5><ul>
+<li><code>1</code> 检测能否访问 Disqus，若能则加载 Disqus 原生评论框，超时则加载简易评论框</li>
+<li><code>2</code> 仅加载简易评论框</li>
+<li><code>3</code> 同时加载两种评论框，先显示简易评论框，Disqus 加载完成则切换至 Disqus 评论框</li>
+<li>{Number}</li>
+<li>默认：<code>1</code></li>
+</ul>
+<h5 id="timeout"><a href="#timeout" class="headerlink" title="timeout"></a>timeout</h5><ul>
+<li>当 mode 为 1 时的超时时间</li>
+<li>{Number}</li>
+<li>默认：<code>3000</code></li>
+</ul>
+<h5 id="toggle"><a href="#toggle" class="headerlink" title="toggle"></a>toggle</h5><ul>
+<li>当 mode 为 3 时可用，作用是切换评论框</li>
+<li>具体用法是在网页中放置一个 Checkbox，如 <code>&lt;input type=&quot;checkbox&quot; id=&quot;comment-toggle&quot; disabled /&gt;</code>，此项则设置为 <code>&quot;comment-toggle&quot;</code>，当 Disqus 加载完时，选择框可用。</li>
+<li>{String}</li>
+<li>无默认值</li>
+</ul>
+<h5 id="init"><a href="#init" class="headerlink" title="init"></a>init</h5><ul>
+<li>是否自动初始化</li>
+<li>{Boolean}</li>
+<li>默认：<code>false</code></li>
+</ul>
+<h5 id="auto"><a href="#auto" class="headerlink" title="auto"></a>auto</h5><ul>
+<li>是否自动创建 Thread，为了不创建垃圾 Thread，并不推荐设置为 <code>true</code></li>
+<li>{Boolean}</li>
+<li>默认：<code>false</code></li>
+</ul>
+<h5 id="badge"><a href="#badge" class="headerlink" title="badge"></a>badge</h5><ul>
+<li>管理员徽章文本</li>
+<li>{String}</li>
+<li>默认：<code>&quot;管理员&quot;</code></li>
+</ul>
+<h5 id="emoji-path"><a href="#emoji-path" class="headerlink" title="emoji_path"></a>emoji_path</h5><ul>
+<li>Emoji 表情 PNG 图片路径</li>
+<li>{String}</li>
+<li>默认：<code>&quot;https://assets-cdn.github.com/images/icons/emoji/unicode/&quot;</code></li>
+</ul>
+<h5 id="emoji-list"><a href="#emoji-list" class="headerlink" title="emoji_list"></a>emoji_list</h5><ul>
+<li>自定义评论框内的点选 Emoji 表情，具体可看 DEMO 页面</li>
+<li>{Object}</li>
+</ul>
+<h5 id="emoji-preview"><a href="#emoji-preview" class="headerlink" title="emoji_preview"></a>emoji_preview</h5><ul>
+<li>评论预览是否支持 Emoji 短代码</li>
+<li>{Boolean}</li>
+<li>默认：<code>false</code></li>
+</ul>
+<h3 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h3><h4 id="init-1"><a href="#init-1" class="headerlink" title="init"></a>init</h4><ul>
+<li>初始化评论框</li>
+</ul>
+<h4 id="destroy"><a href="#destroy" class="headerlink" title="destroy"></a>destroy</h4><ul>
+<li>销毁评论框 </li>
+</ul>
+<h4 id="count"><a href="#count" class="headerlink" title="count"></a>count</h4><ul>
+<li>加载评论数</li>
+<li>用法：创建容器（可多个），加属性 data-disqus-url 值放页面链接，创建实例后执行则可显示评论数，具体可查看DEMO 页面</li>
+</ul>
+<h4 id="popular"><a href="#popular" class="headerlink" title="popular"></a>popular</h4><ul>
+<li>最近热门列表</li>
+</ul>
+
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://7xu83c.com1.z0.glb.clouddn.com/2.pic.jpg"
+               alt="徐阿衡" />
+          <p class="site-author-name" itemprop="name">徐阿衡</p>
+          <p class="site-description motion-element" itemprop="description">读万卷书，行万里路 @SYSU @CMU</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">138</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Shuang0420" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.linkedin.com/in/shuang-xu-7008b894?trk=nav_responsive_tab_profile_pic" target="_blank" title="LinkedIn">
+                  
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  
+                  LinkedIn
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://starllap.space" title="Star" target="_blank">Star</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://liam0205.me" title="Liam Huang" target="_blank">Liam Huang</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <!-- Other code may be here -->
+<div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">徐阿衡</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv"><i class="fa fa-user"></i><span class="busuanzi-value" id="busuanzi_value_site_uv"></span></span>
+  
+
+  
+    <span class="site-pv"><i class="fa fa-eye"></i><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+    <link rel="stylesheet" href="/disqus/dist/iDisqus.min.css" />
+    <script src="/disqus/dist/iDisqus.min.js"></script>
+    <script>
+        var emojiList = [{
+            code:'smile',
+            title:'笑脸',
+            unicode:'1f604'
+        },{
+            code:'mask',
+            title:'生病',
+            unicode:'1f637'
+        },{
+            code:'joy',
+            title:'破涕为笑',
+            unicode:'1f602'
+        },{
+            code:'stuck_out_tongue_closed_eyes',
+            title:'吐舌',
+            unicode:'1f61d'
+        },{
+            code:'flushed',
+            title:'脸红',
+            unicode:'1f633'
+        },{
+            code:'scream',
+            title:'恐惧',
+            unicode:'1f631'
+        },{
+            code:'pensive',
+            title:'失望',
+            unicode:'1f614'
+        },{
+            code:'unamused',
+            title:'无语',
+            unicode:'1f612'
+        },{
+            code:'grin',
+            title:'露齿笑',
+            unicode:'1f601'
+        },{
+            code:'heart_eyes',
+            title:'色',
+            unicode:'1f60d'
+        },{
+            code:'sweat',
+            title:'汗',
+            unicode:'1f613'
+        },{
+            code:'smirk',
+            title:'得意',
+            unicode:'1f60f'
+        }]; 
+        var disq = new iDisqus('comments', {
+            forum: 'httpshuang0420githubio',
+            site: 'http://shuang0420.com',
+            api: 'http://112.74.62.201/disqus/api',
+            mode: 3,
+            badge: '博主',
+            timeout: 3000,
+            init: true,
+            emoji_list: emojiList
+        });
+        disq.count();
+    </script>
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
