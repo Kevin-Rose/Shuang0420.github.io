@@ -537,9 +537,9 @@
         
         <tags>
             
-            <tag> AI </tag>
-            
             <tag> NLP </tag>
+            
+            <tag> AI </tag>
             
             <tag> Machine Translation </tag>
             
@@ -8398,108 +8398,94 @@ python nb.py split.train split.test</pre>
     </entry>
     
     <entry>
-      <title><![CDATA[Search Engines笔记 - Search logs]]></title>
-      <url>http://www.shuang0420.com/2016/11/04/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/</url>
-      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。这一章开始的很多内容都是从论文的研究报告而来。重点是第四部分，怎样对 search log 划分 session，有哪些 feature 可以作为划分 session 的依据。<br><a id="more"></a></p>
-<h1 id="User-information-collection"><a href="#User-information-collection" class="headerlink" title="User information collection"></a>User information collection</h1><p>大多数搜索引擎会保存每一次搜索的信息，主要有下面的内容：</p>
-<ul>
-<li>query</li>
-<li>timestamp</li>
-<li>IP address of the search client</li>
-<li>possibly an id recorded in a cookie or obtained another way</li>
-<li>information about the operating system and browser</li>
-<li>clickthrough information</li>
-</ul>
-<p>目前公开的 web search logs</p>
-<ul>
-<li>The Excite log(1997)<br>18,113 users, 51,473 queries</li>
-<li>The AOL Log(2006)<br>$&gt;$ 650,000 users, $&gt;$ 20 million queries</li>
-<li>Alta Vista(1999)<br>285 million users, 1 billion queries</li>
-<li>Alta Vista(2001)<br>$&gt;$ 7 million queries</li>
-</ul>
-<h2 id="Query-characteristics"><a href="#Query-characteristics" class="headerlink" title="Query characteristics"></a>Query characteristics</h2><h3 id="Query-Length-Average-terms-per-query-3-5-terms"><a href="#Query-Length-Average-terms-per-query-3-5-terms" class="headerlink" title="Query Length: Average terms per query: 3.5 terms"></a>Query Length: Average terms per query: 3.5 terms</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryLen.jpg" class="ful-image" alt="queryLen.jpg">
-<h3 id="Who-queries"><a href="#Who-queries" class="headerlink" title="Who queries"></a>Who queries</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/whoQueries.jpg" class="ful-image" alt="whoQueries.jpg">
-<h3 id="Query-Frequency-Query-Frequency-Follows-a-Power-Law"><a href="#Query-Frequency-Query-Frequency-Follows-a-Power-Law" class="headerlink" title="Query Frequency: Query Frequency Follows a Power Law"></a>Query Frequency: Query Frequency Follows a Power Law</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryFreq.jpg" class="ful-image" alt="queryFreq.jpg">
-<p><strong>Power Law</strong><br>$$Frequency(q) = K*Rank(q)^{- \alpha}$$</p>
-<ul>
-<li>K: positive constant</li>
-<li>Rank(q): popularity rank(r=1 is the most popular)</li>
-<li>$\alpha$: constant, about 2.4 for the Excite query log</li>
-</ul>
-<p>和 Zipf’s law 一样的 shape，但不一样的斜率。</p>
-<p>一小部分的 query 非常常见，而大部分的 query 非常少见。 =&gt; 通过 <strong>缓存</strong> 来提高搜索效率。</p>
-<h3 id="Vary-over-time"><a href="#Vary-over-time" class="headerlink" title="Vary over time"></a>Vary over time</h3><p>最常见的 query 总是在不断变化<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryFreqVary.jpg" class="ful-image" alt="queryFreqVary.jpg"></p>
-<p>来自 google 的统计数据</p>
-<ul>
-<li>每天的 query 中有 20% 在之前从未出现过。(占每天所有 unique query 的 50%)</li>
-<li>8% 的 query 是名字(names)</li>
-</ul>
-<h1 id="Model-query"><a href="#Model-query" class="headerlink" title="Model query"></a>Model query</h1><ul>
-<li>Query topics: What<br>比如说在雅虎目录下的分类。</li>
-<li>User demographics: Who<br>如用户的年龄、性别（用户提供）、收入、教育程度（从邮编等信息推断）等。</li>
-<li>Session characteristics: How<br>eg. session length, number of queries/session, % of queries with low/high click entropy</li>
-</ul>
-<h1 id="Represent-users"><a href="#Represent-users" class="headerlink" title="Represent users"></a>Represent users</h1><p>需要用到的工具: Pseudo documents, clustering, control vocabulary<br><strong>How to represent users？</strong></p>
-<ul>
-<li>在 “what” 维度上对用户进行聚类</li>
-<li>在 (“who”,”how”) 维度上进一步 investigate groups</li>
-<li>根据 group 的显著特征对其打上标签</li>
-</ul>
-<p>根据用户的 query type 来对用户进行聚类：</p>
-<ol>
-<li>从日志中得到 (user,query) pairs</li>
-<li>为用户创建 pseudo documents<br>标题: user id<br>内容: 每条 query 的前 10 篇文档对应的 Yahoo! 分类目录</li>
-<li>计算相似度<br>e.g. JS divergence, cosine</li>
+      <title><![CDATA[Search Engines笔记 - Authority Metrics]]></title>
+      <url>http://www.shuang0420.com/2016/11/04/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/</url>
+      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。这一章 Authority Metrics（权威指数），用来判断哪些来源的信息更值得信任。介绍 PageRank、Topic-Sensitive PageRank(TSPR)、T-Fresh、Hyperlink-Induced Topic Search(HITS) 四种指数计算方式。<br><a id="more"></a></p>
+<h1 id="链接分析"><a href="#链接分析" class="headerlink" title="链接分析"></a>链接分析</h1><p>链接分析思想最早起源于引文分析领域，通过分析文献之间的引用模式来量化学术论文的影响力。文献引用代表某篇学术论文对所引用论文的权威度的认可。类似的，对于 Web 网页，我们把超链接看成是一个网页对另一个网页的权威度的认可。当然，并不是所有引用都代表权威度认可，因为某个人可以建立多个 web 网页来指向同一个目标网页，人工来提高目标网页入链数。这种链接通常叫垃圾链接或链接作弊（link spam）。尽管如此，引用现象的普遍性和可靠性足以使搜索引擎通过精妙的链接分析方法推导出有用的排序因子。链接分析也被证明是在 web 采集中选择下一个采集网页的非常好的方法之一。给定查询下，链接分析结果已经成为 Web 搜索引擎在计算某个网页的组合得分中的一个因子。PageRank 和 HITS 就是常用的两种链接分析方法。</p>
+<h2 id="基本假设"><a href="#基本假设" class="headerlink" title="基本假设"></a>基本假设</h2><ol>
+<li>指向页面 B 的锚文本是对 B 的一个很好的描述。</li>
+<li>A 到 B 的超链接表示 A 的作者对 B 的认可。</li>
 </ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/pseudo.jpg" class="ful-image" alt="pseudo.jpg">
-<h2 id="Types-of-users"><a href="#Types-of-users" class="headerlink" title="Types of users"></a>Types of users</h2><p>这一部分主要是介绍不同类型的用户特征，这些聚类结果有什么用？=&gt; 为下一步的个性化搜索引擎做准备。</p>
-<h3 id="Informational-Users"><a href="#Informational-Users" class="headerlink" title="Informational Users"></a>Informational Users</h3><p><strong>How:</strong><br>• More likely to issue non-navigational queries<br>• Less likely to have single-click sessions<br>• More likely to use query suggestions</p>
-<p><strong>What:</strong><br>• Wide range of topics<br>• Little interest in adult content</p>
-<p><strong>Who:</strong><br>• More likely to be well-educated<br>• More likely to have above-average income</p>
-<h3 id="Navigational-Users"><a href="#Navigational-Users" class="headerlink" title="Navigational Users"></a>Navigational Users</h3><p><strong>How:</strong><br>• More likely to issue navigational queries<br>• More likely to have single-click sessions<br>• Less likely to use query suggestions</p>
-<p><strong>What:</strong><br>• Dominated by popular websites (Facebook, YouTube, Craigslist) Who<br>• Mostly representative of the entire population</p>
-<h3 id="Transactional-Users"><a href="#Transactional-Users" class="headerlink" title="Transactional Users"></a>Transactional Users</h3><p><strong>How:</strong><br>• Somewhat similar to navigational users. But, multiple sites can perform the transaction<br>• Diverse clicks<br>• Short interaction with search engine What<br>• Shopping, adult content, gaming</p>
-<p><strong>Who:</strong><br>• Depends heavily on the type of transaction<br>• Topic “recreation/games” associated with low income &amp; education</p>
-<h2 id="聚类结果-Selected-groups"><a href="#聚类结果-Selected-groups" class="headerlink" title="聚类结果 - Selected groups"></a>聚类结果 - Selected groups</h2><p><strong>Baby boomers:</strong><br>• 50 years old<br>• Interested in finance<br>• Simple navigational queries related to online banking</p>
-<p><strong>Challenged youth:</strong><br>• Average age of 34<br>• Low-income neighborhoods with low-level of education<br>• Interested in music<br>• Navigational sessions</p>
-<p><strong>Liberal females:</strong><br>• Mostly female from areas that voted Democratic<br>• Shopping queries<br>• Long sessions (browsing and comparison)</p>
-<p><strong>White conservatives:</strong><br>• Mostly male from areas that voted Republican<br>• Interested in automotive, business, home &amp; garden</p>
-<p><strong>Older users:</strong> Health / diseases &amp; conditions, gambling, travel<br><strong>People in their late 20s:</strong> Health / fitness, reproductive health<br><strong>Younger people:</strong> Games, education<br><strong>Low income:</strong> Music, comics &amp; animation, military<br><strong>Asian descent:</strong> Computers &amp; internet, programming &amp; development</p>
-<p><strong>Some topics typically receive few clicks:</strong><br>• News &amp; media, society &amp; culture, computers &amp; internet People are more likely to click on suggestions for some topics<br>• Health, science, arts</p>
-<p><strong>People with higher educational levels:</strong><br>• Tend to have shorter sessions<br>• Click on query suggestions less often<br>• Are more likely to submit tail queries</p>
-<h1 id="Segmenting-search-logs-into-sessions"><a href="#Segmenting-search-logs-into-sessions" class="headerlink" title="Segmenting search logs into sessions"></a>Segmenting search logs into sessions</h1><p>通常，我们会把 search log 划分为一个个基于 information need 的 dialogue<br>dialogue 形式，实际就是用户发出初始查询，搜索引擎给出结果，用户不满意，重新修改查询语句再次搜索，然后得到新的结果，不断循环的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Person: query</div><div class="line">Engine: search results</div><div class="line">Person: reformulated query</div><div class="line">Engine: new search results ...</div></pre></td></tr></table></figure></p>
-<p>那么问题来了，怎么来区分这些不同的 dialogues 呢？<br>我们定义 information need = a search session(dialogue)，最简单粗暴划分 session 的方法就是通过时间，比如说三十分钟内一系列的用户行为就算作一个 session。</p>
-<p>划分 session 可以考虑的因素：</p>
-<ul>
-<li>Time: Same session iff |timestamp (q2) – timestamp| (q1) &lt; ∆<br>often ∆ = 30 minutes</li>
-<li>Common term: Same session iff q1 ∩ q2 ≠ Ø<br>Probably high Precision, low Recall</li>
-<li>Rewrite classes: Common reformulation patterns<br>E.g., term added, deleted, or replaced<br>Probably high Precision, low Recall</li>
-<li>Edit distance</li>
-<li>Co-occurrence<br>e.g., PMI, Chi-square of queries in a query log</li>
-<li>Same clicks<br>queries have co-occurring clicks in a query log</li>
-<li>Document categories<br>ODP or Yahoo page category overlap of top 10 results</li>
-<li>Same/overlap retrieved documents<br>JSD similarity of top 10 results<br>cosine distance among results</li>
-<li>Classifiers<br>…</li>
+<h2 id="锚文本"><a href="#锚文本" class="headerlink" title="锚文本"></a>锚文本</h2><h3 id="什么是锚文本"><a href="#什么是锚文本" class="headerlink" title="什么是锚文本"></a>什么是锚文本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;http://www.acm.org/jacm/&quot;&gt;Journal of the ACM.&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>这个 HTML 代码片段给出了一个指向 Journal of the ACM 的链接。链接指向 <a href="http://www.acm.org/jacm/，锚文本是" target="_blank" rel="external">http://www.acm.org/jacm/，锚文本是</a> Journal of the ACM。</p>
+<h3 id="锚文本的作用"><a href="#锚文本的作用" class="headerlink" title="锚文本的作用"></a>锚文本的作用</h3><p>Web 上随处可见的现象是，很多网页的内容并不包含对自身的精确描述，尤其是公司网页，因为它们往往是用作商业宣传而不是介绍公司内容。如 IBM 是计算机制造商，但公司主页 (www.ibm.com) 的 HTML 代码的任何地方都不包含词项 computer。这时候，锚文本的作用就体现出来了。锚文本的词项可以作为索引目标网页的词项，也就是说 computer 的 inverted list 包含了 www.ibm.com，这时再用一个特别的指示器表示这些词项在锚文本而不是网页内部，网页评分时也基于 term frequency 计算锚文本的 term weight，在多个锚文本中高频出现的词项(如 Click 和 here)会收到惩罚。<br>除了锚文本，锚文本周围窗口的文本(extended anchor text)，通常也可以当成锚文本来使用。</p>
+<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>网站可以通过构造具有误导性的锚文本来指向自己，以此提高在某些 query term 的排名。</p>
+<h1 id="PageRank"><a href="#PageRank" class="headerlink" title="PageRank"></a>PageRank</h1><p>PageRank 是 query-independent 的，也就是说与用户输入的查询无关。PageRank 高的网页并不代表一定适合某个特定的 query。如 kanye west wikipedia 网页有很高的 PageRank，但并不适合 “obama family tree” 这个特定的 query。</p>
+<h2 id="Random-Walk-Algorithm"><a href="#Random-Walk-Algorithm" class="headerlink" title="Random Walk Algorithm"></a>Random Walk Algorithm</h2><p>PageRank 可以被看作是一个随机游走的算法。基本思想是模拟一个悠闲的上网者，上网者首先随机选择一个网页打开，然后在这个网页上呆了几分钟后，跳转到该网页所指向的链接，这样无所事事、漫无目的地在网页上跳来跳去，PageRank 就是估计这个悠闲的上网者分布在各个网页上的概率。</p>
+<ol>
+<li>随机选一个网页 A 。</li>
+<li>网页 A 有 n 条出链（outlinks），这时候有两种方法进行下一步。<ul>
+<li>随机在出链中选一个到下一个网页。</li>
+<li>随机从所有 web 网页里选一个其它网页(teleport)。（因为网页 A 可能没有出链）</li>
 </ul>
-<p>训练一个分类器是最好的方法，对任意一对 queries 大概有 95-97% 的准确率。然而 heuristics 也不差，尤其是 edit distance 和 cosine distance among results 都非常有效，时间尺度通常会和其他 heuristic 合用，效果更佳。</p>
-<p>各种 heuristic 都可以作为分类器的 Features</p>
+</li>
+<li>不断重复以上过程。</li>
+</ol>
+<p>随机游走中访问越频繁的网页越重要。<br>计算方法<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PageRank.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PageRank.jpg"></p>
+<h2 id="Voting-Algorithm"><a href="#Voting-Algorithm" class="headerlink" title="Voting Algorithm"></a>Voting Algorithm</h2><p>PageRank 也可以被看作是一个 Voting algorithm。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">While (Not done)</div><div class="line">  For each page p</div><div class="line">    p votes for each page that it links to</div></pre></td></tr></table></figure></p>
+<p>再具体些<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">For each page p</div><div class="line">  current PR = 1 / |C|    C: Number of nodes in the graph next PR = 0</div><div class="line">While (Not done)</div><div class="line">  For each page p</div><div class="line">    use p’s current PR to update the next PR of each outlink page</div><div class="line">  For each page p</div><div class="line">    current PR = next PR</div><div class="line">    next PR = 0</div></pre></td></tr></table></figure></p>
 <ul>
-<li>Temporal<br>– ≤ {5, 30, 60, 120} minutes, ∆ time, are_sequential</li>
-<li>Edit distance<br>– Several character and token-based metrics</li>
-<li>Query log<br>– Various types of (q1, q2) co-occurrence in a larger query log</li>
-<li>Web search<br>– Cosine distance of top 50 search results for each query<br>(“prisma”)</li>
+<li>每次循环，网页 Pi 可以左 PR(Pi) 次投票。</li>
+<li>把投票平均分发给每一个它指向的网页。</li>
+<li>如果两个网页在第 i 次循环中有相同的 PageRank:<br>PR(p1)=0.4, p1 有 2 个 outlinks, 那么 p1 的每一个 vote 是 0.4/2=0.2<br>PR(p2)=0.4, p2 有 4 个 outlinks, 那么 p2 的每一个 vote 是 0.4/4=0.1</li>
 </ul>
-<p>我们训练分类器一般需要完成两个任务</p>
+<p>在每一个循环中, PR 的计算方法都如之前的图示。</p>
+<h2 id="d-的选择"><a href="#d-的选择" class="headerlink" title="d 的选择"></a>d 的选择</h2><p>假定 A 有两条出链，指向 B 和 C，B 和 C 各自有一条出链，都指向 A。<br>如果 d=0.5，那么经历 14 次循环 PR 会 converge<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.5.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.5.jpg"></p>
+<p>如果 d=0.85，那么经历 58 次循环 PR 会 converge<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.85.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.85.jpg"></p>
+<h2 id="Transformation-of-PageRank"><a href="#Transformation-of-PageRank" class="headerlink" title="Transformation of PageRank"></a>Transformation of PageRank</h2><p>有些 PageRank varies over a wide range，我们可以把这个 range 进行压缩和转化。如<br>$$PR_T = log_{10}(PR)+11$$</p>
+<p>效果是<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PR_trans.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PR_trans.jpg"></p>
+<p>Google 的 PageRank 范围是 1-10，我们通常说的 PageRank 都是经过这种转化的 PageRank。</p>
+<h2 id="怎样产生-high-PageRank"><a href="#怎样产生-high-PageRank" class="headerlink" title="怎样产生 high PageRank"></a>怎样产生 high PageRank</h2><ul>
+<li>有很多入链</li>
+<li>有很多来自具有高 PageRank 网页的入链</li>
+<li>入链有很少的出链<br>因为在每一次 propagation 时，一个网页的 PR 会被它的出链平分，所以一个有很多出链的入链网页并不是非常有帮助。</li>
+</ul>
+<h2 id="PageRank-的其它问题"><a href="#PageRank-的其它问题" class="headerlink" title="PageRank 的其它问题"></a>PageRank 的其它问题</h2><ul>
+<li>同一个站点的网页链接算不算？</li>
+<li>新的网页的 PR 怎么算？</li>
+<li>怎么处理 sinks（没有出链的网页）?</li>
+<li>怎么处理 link farms 和链接交换？</li>
+</ul>
+<p>还有一个问题就是 PR 是 topic-independent 的，一个网页可能有很高的 PR 但是对某个 query 来说却是一个很坏的选择。Topic-Sensitive PageRank(TSPR) 可以解决这个问题。</p>
+<h1 id="Topic-Sensitive-PageRank-TSPR"><a href="#Topic-Sensitive-PageRank-TSPR" class="headerlink" title="Topic-Sensitive PageRank(TSPR)"></a>Topic-Sensitive PageRank(TSPR)</h1><p>之前考虑的 PageRank 是等概率跳到一个随机网页的情况，关于 topic PageRank，我们考虑的是非等概率跳到一个随机网页的情况，计算的是基于特定兴趣/主题的 PageRank。如一个体育迷希望有关体育主题的网页的排名高于非体育主题的网页，假定这些有关体育的网页在 web 图中彼此相近，那么随机游走过程中，一个喜欢体育网页的人就可能在这类网页上停留大量的时间，因此，体育类网页的稳态分布概率被提升。</p>
+<p>主要逻辑是</p>
 <ul>
-<li>Boundary task: Given a pair of sequential queries</li>
-<li>Same task: Given a pair of queries</li>
+<li>在索引过程中，每一个网页都被自动分配一个 topic (用文本分类的方法)。</li>
+<li>为每一个网页计算一个 topic-specific 的 PageRank。</li>
+<li>每一个 query 都被分配一个 topic，根据用户在这个 search session 中浏览的网页来确定 topic。</li>
+<li>对每一个页面，只考虑 topic-related PageRank，如 $PR_{sports}(d)$</li>
 </ul>
-<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>用户的信息需求可能是跨越了几天甚至是几周的，比如用户写论文、找学校信息等，可能出现的情况是：</p>
+<p><strong>注：</strong> DMOZ 是一个著名的开放式分类目录，有很多可以用来做 training data 的网页。可以从 top-level 中定义 topics。</p>
+<h1 id="T-Fresh"><a href="#T-Fresh" class="headerlink" title="T-Fresh"></a>T-Fresh</h1><p>PageRank rewards older web pages。old web 网页有更多的时间来积累 inlinks，有些 link 可能是来自已经废弃不用的网页，然而用户可能更偏好新的网页。<br>网页快照提供了 freshness 的线索。</p>
 <ul>
-<li>用户有交叉的任务<br>如查 paper 的时候顺便查下中午吃什么</li>
-<li>用户把一个任务分成若干个子任务分阶段完成<br>比如今天查为什么，明天查怎么做</li>
-<li>子任务可能看起来是独立的实际确实相关的</li>
+<li>Page freshness：网页最近什么时候被更新过。Page text(↑)，url(↑)，anchor text(↑↑)，new link(↑↑↑)</li>
+<li>Link freshness：有多少 inlinks 来自 fresh page。</li>
+<li>Decay freshness measures exponentially.</li>
 </ul>
+<p>follow a link 的概率取决于网页的新鲜度。<br>有 fresh inlinks 的 fresh page 有更高的 authority score。</p>
+<p><strong>BM2500+T-Fresh vs BM2500+PageRank</strong><br>Relevance: +8% in P@10，+11-30% in NDCG@k<br>Freshness: +8% in P@10，+10-12% in NDCG@k</p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/BM2500.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/BM2500.jpg">
+<p>其它相同作用的 model 如 TimedPageRank, T-Rank, BuzzRank, TemporalPageRank。</p>
+<h1 id="Hyperlink-Induced-Topic-Search-HITS"><a href="#Hyperlink-Induced-Topic-Search-HITS" class="headerlink" title="Hyperlink-Induced Topic Search(HITS)"></a>Hyperlink-Induced Topic Search(HITS)</h1><p>在泛主题搜索（broad-topic search），也就是 informational needs 时，主要有两种非常有用的网页结果。</p>
+<ul>
+<li>Authority 网页：一些权威性的网页。</li>
+<li>Hub 网页：导航型网页，本身不是权威型网页，而是对某个主题感兴趣的人花时间编辑整理出的权威型网页列表。可以通过这种导航型网页来帮我们找到权威型网页。</li>
+</ul>
+<p>一个好的 hub 网页会同时指向多个好的 authority 网页，而一个好的 authority 网页同时会被多个好的 hub 网页所指向。给定某个查询，我们对每个网页给出两个得分，一个是 hub 值，一个是 authority 值，所以对任何一个查询，我们都能得到两个排序结果列表。所以，我们其实可以给出一个 hub 值和 authority 值的循环定义，然后通过迭代计算求解。</p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/HITS.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/HITS.jpg">
+<p>并不是对整个 web 计算 Hubs 和 Authority 分数。而是对一个小的 set 来进行计算，set 的创建方法如下：</p>
+<ul>
+<li>收集 query q 的 top n 网页构成 the root set</li>
+<li>用 root set 的入链和出链扩充这个 set。</li>
+</ul>
+<p>之后在这个网页子集上来计算 hub 和 authority 值。这个 set 的好处是有一个 strong, query-specific focus，而且 set 规模相对较小，大概只有 200 个网页。然而这些 score 必须在 query time 时进行计算。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/rootset.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/rootset.jpg"></p>
+<p><strong>HITS 在大规模的搜索引擎中不会被使用</strong></p>
+<ul>
+<li>计算 spam 要比计算 PageRank 简单</li>
+<li>创建一个有 high hub score 的网页很简单</li>
+<li>运行成本比 PageRank 高。</li>
+</ul>
+<p>HITS 通常用于别的目标。如找 communities 或是找一个 community 里的专家，因为它们会有 tightly-bound hubs 和 authorities。</p>
 ]]></content>
       
         <categories>
@@ -8635,94 +8621,108 @@ python nb.py split.train split.test</pre>
     </entry>
     
     <entry>
-      <title><![CDATA[Search Engines笔记 - Authority Metrics]]></title>
-      <url>http://www.shuang0420.com/2016/11/04/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/</url>
-      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。这一章 Authority Metrics（权威指数），用来判断哪些来源的信息更值得信任。介绍 PageRank、Topic-Sensitive PageRank(TSPR)、T-Fresh、Hyperlink-Induced Topic Search(HITS) 四种指数计算方式。<br><a id="more"></a></p>
-<h1 id="链接分析"><a href="#链接分析" class="headerlink" title="链接分析"></a>链接分析</h1><p>链接分析思想最早起源于引文分析领域，通过分析文献之间的引用模式来量化学术论文的影响力。文献引用代表某篇学术论文对所引用论文的权威度的认可。类似的，对于 Web 网页，我们把超链接看成是一个网页对另一个网页的权威度的认可。当然，并不是所有引用都代表权威度认可，因为某个人可以建立多个 web 网页来指向同一个目标网页，人工来提高目标网页入链数。这种链接通常叫垃圾链接或链接作弊（link spam）。尽管如此，引用现象的普遍性和可靠性足以使搜索引擎通过精妙的链接分析方法推导出有用的排序因子。链接分析也被证明是在 web 采集中选择下一个采集网页的非常好的方法之一。给定查询下，链接分析结果已经成为 Web 搜索引擎在计算某个网页的组合得分中的一个因子。PageRank 和 HITS 就是常用的两种链接分析方法。</p>
-<h2 id="基本假设"><a href="#基本假设" class="headerlink" title="基本假设"></a>基本假设</h2><ol>
-<li>指向页面 B 的锚文本是对 B 的一个很好的描述。</li>
-<li>A 到 B 的超链接表示 A 的作者对 B 的认可。</li>
-</ol>
-<h2 id="锚文本"><a href="#锚文本" class="headerlink" title="锚文本"></a>锚文本</h2><h3 id="什么是锚文本"><a href="#什么是锚文本" class="headerlink" title="什么是锚文本"></a>什么是锚文本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;http://www.acm.org/jacm/&quot;&gt;Journal of the ACM.&lt;/a&gt;</div></pre></td></tr></table></figure>
-<p>这个 HTML 代码片段给出了一个指向 Journal of the ACM 的链接。链接指向 <a href="http://www.acm.org/jacm/，锚文本是" target="_blank" rel="external">http://www.acm.org/jacm/，锚文本是</a> Journal of the ACM。</p>
-<h3 id="锚文本的作用"><a href="#锚文本的作用" class="headerlink" title="锚文本的作用"></a>锚文本的作用</h3><p>Web 上随处可见的现象是，很多网页的内容并不包含对自身的精确描述，尤其是公司网页，因为它们往往是用作商业宣传而不是介绍公司内容。如 IBM 是计算机制造商，但公司主页 (www.ibm.com) 的 HTML 代码的任何地方都不包含词项 computer。这时候，锚文本的作用就体现出来了。锚文本的词项可以作为索引目标网页的词项，也就是说 computer 的 inverted list 包含了 www.ibm.com，这时再用一个特别的指示器表示这些词项在锚文本而不是网页内部，网页评分时也基于 term frequency 计算锚文本的 term weight，在多个锚文本中高频出现的词项(如 Click 和 here)会收到惩罚。<br>除了锚文本，锚文本周围窗口的文本(extended anchor text)，通常也可以当成锚文本来使用。</p>
-<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>网站可以通过构造具有误导性的锚文本来指向自己，以此提高在某些 query term 的排名。</p>
-<h1 id="PageRank"><a href="#PageRank" class="headerlink" title="PageRank"></a>PageRank</h1><p>PageRank 是 query-independent 的，也就是说与用户输入的查询无关。PageRank 高的网页并不代表一定适合某个特定的 query。如 kanye west wikipedia 网页有很高的 PageRank，但并不适合 “obama family tree” 这个特定的 query。</p>
-<h2 id="Random-Walk-Algorithm"><a href="#Random-Walk-Algorithm" class="headerlink" title="Random Walk Algorithm"></a>Random Walk Algorithm</h2><p>PageRank 可以被看作是一个随机游走的算法。基本思想是模拟一个悠闲的上网者，上网者首先随机选择一个网页打开，然后在这个网页上呆了几分钟后，跳转到该网页所指向的链接，这样无所事事、漫无目的地在网页上跳来跳去，PageRank 就是估计这个悠闲的上网者分布在各个网页上的概率。</p>
+      <title><![CDATA[Search Engines笔记 - Search logs]]></title>
+      <url>http://www.shuang0420.com/2016/11/04/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/</url>
+      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。这一章开始的很多内容都是从论文的研究报告而来。重点是第四部分，怎样对 search log 划分 session，有哪些 feature 可以作为划分 session 的依据。<br><a id="more"></a></p>
+<h1 id="User-information-collection"><a href="#User-information-collection" class="headerlink" title="User information collection"></a>User information collection</h1><p>大多数搜索引擎会保存每一次搜索的信息，主要有下面的内容：</p>
+<ul>
+<li>query</li>
+<li>timestamp</li>
+<li>IP address of the search client</li>
+<li>possibly an id recorded in a cookie or obtained another way</li>
+<li>information about the operating system and browser</li>
+<li>clickthrough information</li>
+</ul>
+<p>目前公开的 web search logs</p>
+<ul>
+<li>The Excite log(1997)<br>18,113 users, 51,473 queries</li>
+<li>The AOL Log(2006)<br>$&gt;$ 650,000 users, $&gt;$ 20 million queries</li>
+<li>Alta Vista(1999)<br>285 million users, 1 billion queries</li>
+<li>Alta Vista(2001)<br>$&gt;$ 7 million queries</li>
+</ul>
+<h2 id="Query-characteristics"><a href="#Query-characteristics" class="headerlink" title="Query characteristics"></a>Query characteristics</h2><h3 id="Query-Length-Average-terms-per-query-3-5-terms"><a href="#Query-Length-Average-terms-per-query-3-5-terms" class="headerlink" title="Query Length: Average terms per query: 3.5 terms"></a>Query Length: Average terms per query: 3.5 terms</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryLen.jpg" class="ful-image" alt="queryLen.jpg">
+<h3 id="Who-queries"><a href="#Who-queries" class="headerlink" title="Who queries"></a>Who queries</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/whoQueries.jpg" class="ful-image" alt="whoQueries.jpg">
+<h3 id="Query-Frequency-Query-Frequency-Follows-a-Power-Law"><a href="#Query-Frequency-Query-Frequency-Follows-a-Power-Law" class="headerlink" title="Query Frequency: Query Frequency Follows a Power Law"></a>Query Frequency: Query Frequency Follows a Power Law</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryFreq.jpg" class="ful-image" alt="queryFreq.jpg">
+<p><strong>Power Law</strong><br>$$Frequency(q) = K*Rank(q)^{- \alpha}$$</p>
+<ul>
+<li>K: positive constant</li>
+<li>Rank(q): popularity rank(r=1 is the most popular)</li>
+<li>$\alpha$: constant, about 2.4 for the Excite query log</li>
+</ul>
+<p>和 Zipf’s law 一样的 shape，但不一样的斜率。</p>
+<p>一小部分的 query 非常常见，而大部分的 query 非常少见。 =&gt; 通过 <strong>缓存</strong> 来提高搜索效率。</p>
+<h3 id="Vary-over-time"><a href="#Vary-over-time" class="headerlink" title="Vary over time"></a>Vary over time</h3><p>最常见的 query 总是在不断变化<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/queryFreqVary.jpg" class="ful-image" alt="queryFreqVary.jpg"></p>
+<p>来自 google 的统计数据</p>
+<ul>
+<li>每天的 query 中有 20% 在之前从未出现过。(占每天所有 unique query 的 50%)</li>
+<li>8% 的 query 是名字(names)</li>
+</ul>
+<h1 id="Model-query"><a href="#Model-query" class="headerlink" title="Model query"></a>Model query</h1><ul>
+<li>Query topics: What<br>比如说在雅虎目录下的分类。</li>
+<li>User demographics: Who<br>如用户的年龄、性别（用户提供）、收入、教育程度（从邮编等信息推断）等。</li>
+<li>Session characteristics: How<br>eg. session length, number of queries/session, % of queries with low/high click entropy</li>
+</ul>
+<h1 id="Represent-users"><a href="#Represent-users" class="headerlink" title="Represent users"></a>Represent users</h1><p>需要用到的工具: Pseudo documents, clustering, control vocabulary<br><strong>How to represent users？</strong></p>
+<ul>
+<li>在 “what” 维度上对用户进行聚类</li>
+<li>在 (“who”,”how”) 维度上进一步 investigate groups</li>
+<li>根据 group 的显著特征对其打上标签</li>
+</ul>
+<p>根据用户的 query type 来对用户进行聚类：</p>
 <ol>
-<li>随机选一个网页 A 。</li>
-<li>网页 A 有 n 条出链（outlinks），这时候有两种方法进行下一步。<ul>
-<li>随机在出链中选一个到下一个网页。</li>
-<li>随机从所有 web 网页里选一个其它网页(teleport)。（因为网页 A 可能没有出链）</li>
-</ul>
-</li>
-<li>不断重复以上过程。</li>
+<li>从日志中得到 (user,query) pairs</li>
+<li>为用户创建 pseudo documents<br>标题: user id<br>内容: 每条 query 的前 10 篇文档对应的 Yahoo! 分类目录</li>
+<li>计算相似度<br>e.g. JS divergence, cosine</li>
 </ol>
-<p>随机游走中访问越频繁的网页越重要。<br>计算方法<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PageRank.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PageRank.jpg"></p>
-<h2 id="Voting-Algorithm"><a href="#Voting-Algorithm" class="headerlink" title="Voting Algorithm"></a>Voting Algorithm</h2><p>PageRank 也可以被看作是一个 Voting algorithm。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">While (Not done)</div><div class="line">  For each page p</div><div class="line">    p votes for each page that it links to</div></pre></td></tr></table></figure></p>
-<p>再具体些<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">For each page p</div><div class="line">  current PR = 1 / |C|    C: Number of nodes in the graph next PR = 0</div><div class="line">While (Not done)</div><div class="line">  For each page p</div><div class="line">    use p’s current PR to update the next PR of each outlink page</div><div class="line">  For each page p</div><div class="line">    current PR = next PR</div><div class="line">    next PR = 0</div></pre></td></tr></table></figure></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Search%20logs/pseudo.jpg" class="ful-image" alt="pseudo.jpg">
+<h2 id="Types-of-users"><a href="#Types-of-users" class="headerlink" title="Types of users"></a>Types of users</h2><p>这一部分主要是介绍不同类型的用户特征，这些聚类结果有什么用？=&gt; 为下一步的个性化搜索引擎做准备。</p>
+<h3 id="Informational-Users"><a href="#Informational-Users" class="headerlink" title="Informational Users"></a>Informational Users</h3><p><strong>How:</strong><br>• More likely to issue non-navigational queries<br>• Less likely to have single-click sessions<br>• More likely to use query suggestions</p>
+<p><strong>What:</strong><br>• Wide range of topics<br>• Little interest in adult content</p>
+<p><strong>Who:</strong><br>• More likely to be well-educated<br>• More likely to have above-average income</p>
+<h3 id="Navigational-Users"><a href="#Navigational-Users" class="headerlink" title="Navigational Users"></a>Navigational Users</h3><p><strong>How:</strong><br>• More likely to issue navigational queries<br>• More likely to have single-click sessions<br>• Less likely to use query suggestions</p>
+<p><strong>What:</strong><br>• Dominated by popular websites (Facebook, YouTube, Craigslist) Who<br>• Mostly representative of the entire population</p>
+<h3 id="Transactional-Users"><a href="#Transactional-Users" class="headerlink" title="Transactional Users"></a>Transactional Users</h3><p><strong>How:</strong><br>• Somewhat similar to navigational users. But, multiple sites can perform the transaction<br>• Diverse clicks<br>• Short interaction with search engine What<br>• Shopping, adult content, gaming</p>
+<p><strong>Who:</strong><br>• Depends heavily on the type of transaction<br>• Topic “recreation/games” associated with low income &amp; education</p>
+<h2 id="聚类结果-Selected-groups"><a href="#聚类结果-Selected-groups" class="headerlink" title="聚类结果 - Selected groups"></a>聚类结果 - Selected groups</h2><p><strong>Baby boomers:</strong><br>• 50 years old<br>• Interested in finance<br>• Simple navigational queries related to online banking</p>
+<p><strong>Challenged youth:</strong><br>• Average age of 34<br>• Low-income neighborhoods with low-level of education<br>• Interested in music<br>• Navigational sessions</p>
+<p><strong>Liberal females:</strong><br>• Mostly female from areas that voted Democratic<br>• Shopping queries<br>• Long sessions (browsing and comparison)</p>
+<p><strong>White conservatives:</strong><br>• Mostly male from areas that voted Republican<br>• Interested in automotive, business, home &amp; garden</p>
+<p><strong>Older users:</strong> Health / diseases &amp; conditions, gambling, travel<br><strong>People in their late 20s:</strong> Health / fitness, reproductive health<br><strong>Younger people:</strong> Games, education<br><strong>Low income:</strong> Music, comics &amp; animation, military<br><strong>Asian descent:</strong> Computers &amp; internet, programming &amp; development</p>
+<p><strong>Some topics typically receive few clicks:</strong><br>• News &amp; media, society &amp; culture, computers &amp; internet People are more likely to click on suggestions for some topics<br>• Health, science, arts</p>
+<p><strong>People with higher educational levels:</strong><br>• Tend to have shorter sessions<br>• Click on query suggestions less often<br>• Are more likely to submit tail queries</p>
+<h1 id="Segmenting-search-logs-into-sessions"><a href="#Segmenting-search-logs-into-sessions" class="headerlink" title="Segmenting search logs into sessions"></a>Segmenting search logs into sessions</h1><p>通常，我们会把 search log 划分为一个个基于 information need 的 dialogue<br>dialogue 形式，实际就是用户发出初始查询，搜索引擎给出结果，用户不满意，重新修改查询语句再次搜索，然后得到新的结果，不断循环的过程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Person: query</div><div class="line">Engine: search results</div><div class="line">Person: reformulated query</div><div class="line">Engine: new search results ...</div></pre></td></tr></table></figure></p>
+<p>那么问题来了，怎么来区分这些不同的 dialogues 呢？<br>我们定义 information need = a search session(dialogue)，最简单粗暴划分 session 的方法就是通过时间，比如说三十分钟内一系列的用户行为就算作一个 session。</p>
+<p>划分 session 可以考虑的因素：</p>
 <ul>
-<li>每次循环，网页 Pi 可以左 PR(Pi) 次投票。</li>
-<li>把投票平均分发给每一个它指向的网页。</li>
-<li>如果两个网页在第 i 次循环中有相同的 PageRank:<br>PR(p1)=0.4, p1 有 2 个 outlinks, 那么 p1 的每一个 vote 是 0.4/2=0.2<br>PR(p2)=0.4, p2 有 4 个 outlinks, 那么 p2 的每一个 vote 是 0.4/4=0.1</li>
+<li>Time: Same session iff |timestamp (q2) – timestamp| (q1) &lt; ∆<br>often ∆ = 30 minutes</li>
+<li>Common term: Same session iff q1 ∩ q2 ≠ Ø<br>Probably high Precision, low Recall</li>
+<li>Rewrite classes: Common reformulation patterns<br>E.g., term added, deleted, or replaced<br>Probably high Precision, low Recall</li>
+<li>Edit distance</li>
+<li>Co-occurrence<br>e.g., PMI, Chi-square of queries in a query log</li>
+<li>Same clicks<br>queries have co-occurring clicks in a query log</li>
+<li>Document categories<br>ODP or Yahoo page category overlap of top 10 results</li>
+<li>Same/overlap retrieved documents<br>JSD similarity of top 10 results<br>cosine distance among results</li>
+<li>Classifiers<br>…</li>
 </ul>
-<p>在每一个循环中, PR 的计算方法都如之前的图示。</p>
-<h2 id="d-的选择"><a href="#d-的选择" class="headerlink" title="d 的选择"></a>d 的选择</h2><p>假定 A 有两条出链，指向 B 和 C，B 和 C 各自有一条出链，都指向 A。<br>如果 d=0.5，那么经历 14 次循环 PR 会 converge<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.5.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.5.jpg"></p>
-<p>如果 d=0.85，那么经历 58 次循环 PR 会 converge<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.85.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/0.85.jpg"></p>
-<h2 id="Transformation-of-PageRank"><a href="#Transformation-of-PageRank" class="headerlink" title="Transformation of PageRank"></a>Transformation of PageRank</h2><p>有些 PageRank varies over a wide range，我们可以把这个 range 进行压缩和转化。如<br>$$PR_T = log_{10}(PR)+11$$</p>
-<p>效果是<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PR_trans.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/PR_trans.jpg"></p>
-<p>Google 的 PageRank 范围是 1-10，我们通常说的 PageRank 都是经过这种转化的 PageRank。</p>
-<h2 id="怎样产生-high-PageRank"><a href="#怎样产生-high-PageRank" class="headerlink" title="怎样产生 high PageRank"></a>怎样产生 high PageRank</h2><ul>
-<li>有很多入链</li>
-<li>有很多来自具有高 PageRank 网页的入链</li>
-<li>入链有很少的出链<br>因为在每一次 propagation 时，一个网页的 PR 会被它的出链平分，所以一个有很多出链的入链网页并不是非常有帮助。</li>
-</ul>
-<h2 id="PageRank-的其它问题"><a href="#PageRank-的其它问题" class="headerlink" title="PageRank 的其它问题"></a>PageRank 的其它问题</h2><ul>
-<li>同一个站点的网页链接算不算？</li>
-<li>新的网页的 PR 怎么算？</li>
-<li>怎么处理 sinks（没有出链的网页）?</li>
-<li>怎么处理 link farms 和链接交换？</li>
-</ul>
-<p>还有一个问题就是 PR 是 topic-independent 的，一个网页可能有很高的 PR 但是对某个 query 来说却是一个很坏的选择。Topic-Sensitive PageRank(TSPR) 可以解决这个问题。</p>
-<h1 id="Topic-Sensitive-PageRank-TSPR"><a href="#Topic-Sensitive-PageRank-TSPR" class="headerlink" title="Topic-Sensitive PageRank(TSPR)"></a>Topic-Sensitive PageRank(TSPR)</h1><p>之前考虑的 PageRank 是等概率跳到一个随机网页的情况，关于 topic PageRank，我们考虑的是非等概率跳到一个随机网页的情况，计算的是基于特定兴趣/主题的 PageRank。如一个体育迷希望有关体育主题的网页的排名高于非体育主题的网页，假定这些有关体育的网页在 web 图中彼此相近，那么随机游走过程中，一个喜欢体育网页的人就可能在这类网页上停留大量的时间，因此，体育类网页的稳态分布概率被提升。</p>
-<p>主要逻辑是</p>
+<p>训练一个分类器是最好的方法，对任意一对 queries 大概有 95-97% 的准确率。然而 heuristics 也不差，尤其是 edit distance 和 cosine distance among results 都非常有效，时间尺度通常会和其他 heuristic 合用，效果更佳。</p>
+<p>各种 heuristic 都可以作为分类器的 Features</p>
 <ul>
-<li>在索引过程中，每一个网页都被自动分配一个 topic (用文本分类的方法)。</li>
-<li>为每一个网页计算一个 topic-specific 的 PageRank。</li>
-<li>每一个 query 都被分配一个 topic，根据用户在这个 search session 中浏览的网页来确定 topic。</li>
-<li>对每一个页面，只考虑 topic-related PageRank，如 $PR_{sports}(d)$</li>
+<li>Temporal<br>– ≤ {5, 30, 60, 120} minutes, ∆ time, are_sequential</li>
+<li>Edit distance<br>– Several character and token-based metrics</li>
+<li>Query log<br>– Various types of (q1, q2) co-occurrence in a larger query log</li>
+<li>Web search<br>– Cosine distance of top 50 search results for each query<br>(“prisma”)</li>
 </ul>
-<p><strong>注：</strong> DMOZ 是一个著名的开放式分类目录，有很多可以用来做 training data 的网页。可以从 top-level 中定义 topics。</p>
-<h1 id="T-Fresh"><a href="#T-Fresh" class="headerlink" title="T-Fresh"></a>T-Fresh</h1><p>PageRank rewards older web pages。old web 网页有更多的时间来积累 inlinks，有些 link 可能是来自已经废弃不用的网页，然而用户可能更偏好新的网页。<br>网页快照提供了 freshness 的线索。</p>
+<p>我们训练分类器一般需要完成两个任务</p>
 <ul>
-<li>Page freshness：网页最近什么时候被更新过。Page text(↑)，url(↑)，anchor text(↑↑)，new link(↑↑↑)</li>
-<li>Link freshness：有多少 inlinks 来自 fresh page。</li>
-<li>Decay freshness measures exponentially.</li>
+<li>Boundary task: Given a pair of sequential queries</li>
+<li>Same task: Given a pair of queries</li>
 </ul>
-<p>follow a link 的概率取决于网页的新鲜度。<br>有 fresh inlinks 的 fresh page 有更高的 authority score。</p>
-<p><strong>BM2500+T-Fresh vs BM2500+PageRank</strong><br>Relevance: +8% in P@10，+11-30% in NDCG@k<br>Freshness: +8% in P@10，+10-12% in NDCG@k</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/BM2500.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/BM2500.jpg">
-<p>其它相同作用的 model 如 TimedPageRank, T-Rank, BuzzRank, TemporalPageRank。</p>
-<h1 id="Hyperlink-Induced-Topic-Search-HITS"><a href="#Hyperlink-Induced-Topic-Search-HITS" class="headerlink" title="Hyperlink-Induced Topic Search(HITS)"></a>Hyperlink-Induced Topic Search(HITS)</h1><p>在泛主题搜索（broad-topic search），也就是 informational needs 时，主要有两种非常有用的网页结果。</p>
+<h2 id="Challenges"><a href="#Challenges" class="headerlink" title="Challenges"></a>Challenges</h2><p>用户的信息需求可能是跨越了几天甚至是几周的，比如用户写论文、找学校信息等，可能出现的情况是：</p>
 <ul>
-<li>Authority 网页：一些权威性的网页。</li>
-<li>Hub 网页：导航型网页，本身不是权威型网页，而是对某个主题感兴趣的人花时间编辑整理出的权威型网页列表。可以通过这种导航型网页来帮我们找到权威型网页。</li>
+<li>用户有交叉的任务<br>如查 paper 的时候顺便查下中午吃什么</li>
+<li>用户把一个任务分成若干个子任务分阶段完成<br>比如今天查为什么，明天查怎么做</li>
+<li>子任务可能看起来是独立的实际确实相关的</li>
 </ul>
-<p>一个好的 hub 网页会同时指向多个好的 authority 网页，而一个好的 authority 网页同时会被多个好的 hub 网页所指向。给定某个查询，我们对每个网页给出两个得分，一个是 hub 值，一个是 authority 值，所以对任何一个查询，我们都能得到两个排序结果列表。所以，我们其实可以给出一个 hub 值和 authority 值的循环定义，然后通过迭代计算求解。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/HITS.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/HITS.jpg">
-<p>并不是对整个 web 计算 Hubs 和 Authority 分数。而是对一个小的 set 来进行计算，set 的创建方法如下：</p>
-<ul>
-<li>收集 query q 的 top n 网页构成 the root set</li>
-<li>用 root set 的入链和出链扩充这个 set。</li>
-</ul>
-<p>之后在这个网页子集上来计算 hub 和 authority 值。这个 set 的好处是有一个 strong, query-specific focus，而且 set 规模相对较小，大概只有 200 个网页。然而这些 score 必须在 query time 时进行计算。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/rootset.jpg" class="ful-image" alt="Search-Engines%E7%AC%94%E8%AE%B0-Authority-Metrics/rootset.jpg"></p>
-<p><strong>HITS 在大规模的搜索引擎中不会被使用</strong></p>
-<ul>
-<li>计算 spam 要比计算 PageRank 简单</li>
-<li>创建一个有 high hub score 的网页很简单</li>
-<li>运行成本比 PageRank 高。</li>
-</ul>
-<p>HITS 通常用于别的目标。如找 communities 或是找一个 community 里的专家，因为它们会有 tightly-bound hubs 和 authorities。</p>
 ]]></content>
       
         <categories>
@@ -8739,6 +8739,74 @@ python nb.py split.train split.test</pre>
             <tag> NLP </tag>
             
             <tag> Search Engines </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
+      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
+      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
+<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
+<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
+<li>双方共享一把密钥。</li>
+<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
+<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
+</ol>
+<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
+<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
+<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
+<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
+<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
+<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
+<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
+<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
+<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
+<li>A、B 可以用 session key 来交流了。</li>
+</ol>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
+<p>可以防止 replay，但 <strong>问题是:</strong></p>
+<ul>
+<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
+<li>S 是唯一可能导致失败的因素。</li>
+</ul>
+<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
+<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
+<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
+<ol>
+<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
+<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
+<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
+</ol>
+<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
+<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
+<li>A 和 B 想要建立一个共享的密钥</li>
+<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
+<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
+<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
+<li>B 有很多公钥所以 A 发送公钥的名字。</li>
+<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
+<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
+</ol>
+<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
+<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
+<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
+<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
+<p>用于数字签名，双方都算了一遍 MAC</p>
+<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Distributed Systems </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Web Service </tag>
             
         </tags>
         
@@ -8800,74 +8868,6 @@ python nb.py split.train split.test</pre>
 </ul>
 <h3 id="Handle-duplicates"><a href="#Handle-duplicates" class="headerlink" title="Handle duplicates"></a>Handle duplicates</h3><p>根据 client 的 acknowledgement 来清空历史。</p>
 <h2 id="Request-Reply-Message-Structure"><a href="#Request-Reply-Message-Structure" class="headerlink" title="Request-Reply Message Structure"></a>Request-Reply Message Structure</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">messageType: int (0=Request, 1=Reply)</div><div class="line">requestId: int</div><div class="line">objectReference: RemoteObjectRef</div><div class="line">methodId: int or Method</div><div class="line">argument: array of bytes</div></pre></td></tr></table></figure>
-]]></content>
-      
-        <categories>
-            
-            <category> Distributed Systems </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Web Service </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
-      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
-      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
-<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
-<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
-<li>双方共享一把密钥。</li>
-<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
-<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
-</ol>
-<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
-<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
-<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
-<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
-<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
-<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
-<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
-<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
-<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
-<li>A、B 可以用 session key 来交流了。</li>
-</ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
-<p>可以防止 replay，但 <strong>问题是:</strong></p>
-<ul>
-<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
-<li>S 是唯一可能导致失败的因素。</li>
-</ul>
-<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
-<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
-<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
-<ol>
-<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
-<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
-<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
-</ol>
-<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
-<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
-<li>A 和 B 想要建立一个共享的密钥</li>
-<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
-<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
-<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
-<li>B 有很多公钥所以 A 发送公钥的名字。</li>
-<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
-<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
-</ol>
-<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
-<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
-<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
-<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
-<p>用于数字签名，双方都算了一遍 MAC</p>
-<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
 ]]></content>
       
         <categories>
