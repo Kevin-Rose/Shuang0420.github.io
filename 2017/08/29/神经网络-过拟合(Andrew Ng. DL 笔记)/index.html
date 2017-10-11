@@ -99,8 +99,9 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/l2_bp.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/why%20reg1.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/why%20reg2.png">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/why_dropout1.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/early_stop.jpg">
-<meta property="og:updated_time" content="2017-10-11T13:31:04.000Z">
+<meta property="og:updated_time" content="2017-10-11T13:35:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络-过拟合(Andrew Ng. DL 笔记)">
 <meta name="twitter:description" content="Andrew Ng. Deep Learning Course 2 Improving Deep Neural Networks 过拟合部分的笔记。">
@@ -399,7 +400,7 @@
 <h2 id="Why-dropout"><a href="#Why-dropout" class="headerlink" title="Why dropout"></a>Why dropout</h2><p>很直接的思路，每次迭代网络都变小了，自然就减少了过拟合的可能。另一种解释是，dropout 使得神经网络不能依靠任何一个特征，因为每个特征都有可能被随机清除，这样的将结果是网络不会给一个 unit 特别大的权重，而是会 spread out weight，给每个 unit 都增加一点权重。而分散所有权重其实就产生了和 L2 类似的压缩权重的效果。</p>
 <p>相对于 L2 正则，dropout 可以处理多样化的输入，然而 dropout 方法不会阻止参数过大，参数之间也不会互相牵制，所以有时需要配合使用 L2 或者其他正则化来改变这个情况。</p>
 <p>另外提到的一个技巧是，可以对不同层设置不同的 keep_prob。如下图，第一层 W 矩阵是 3x7，过拟合的可能性小一些，可以留下 70% 的 unit，第二层是 7x7，更可能过拟合，所以少保留一些，设 keep_prob=0.5，由此类推，给每一层设定不同的 keep_prob，对不需要担心过拟合的层，直接设为 1。</p>
-<img http="//ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/why_dropout1.png" class="ful-image" alt="why_dropout1.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88%28Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0%29/why_dropout1.png" class="ful-image" alt="why_dropout1.png">
 <p>还有要注意的是，dropout 开启的情况下损失函数不再是定义良好的，也就没法根据损失函数的效果图来 debug，所以一般在看代码有没有 bug 的时候先会关闭 dropout。</p>
 <h1 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h1><ul>
 <li><strong>Data Augmentation</strong><br>解决过拟合的另一个思路是使用更多的数据，所以当数据量不够的时候，会进行数据增强。<ul>
