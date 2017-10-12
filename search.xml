@@ -1396,7 +1396,7 @@
     
     <entry>
       <title><![CDATA[卷积神经网络 CNN 笔记 - 目标探测]]></title>
-      <url>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</url>
+      <url>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</url>
       <content type="html"><![CDATA[<p>介绍目标探测的基本方法，传统方法 DPM，神经网络分类 R-CNN 系列方法和神经网络回归 YoLo 系列方法。<br><a id="more"></a></p>
 <h1 id="目标探测"><a href="#目标探测" class="headerlink" title="目标探测"></a>目标探测</h1><p>先来看下什么是目标探测，下图<strong>矩形框(running box)</strong>表示的物体都可以作为目标探测的对象。不止矩形框，椭圆形框在某些场合更适合做目标探测，因为它能更好的捕捉对象，并对物体朝向做相应调整，机变性更好。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png"></p>
 <p>目标探测的任务一般分为<strong>单目标探测</strong>和<strong>多目标探测</strong>。目的一是找到目标的位置坐标，二是判定目标类别。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E4%BB%BB%E5%8A%A1.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E4%BB%BB%E5%8A%A1.png"></p>
@@ -8806,6 +8806,74 @@ python nb.py split.train split.test</pre>
     </entry>
     
     <entry>
+      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
+      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
+      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
+<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
+<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
+<li>双方共享一把密钥。</li>
+<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
+<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
+</ol>
+<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
+<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
+<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
+<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
+<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
+<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
+<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
+<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
+<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
+<li>A、B 可以用 session key 来交流了。</li>
+</ol>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
+<p>可以防止 replay，但 <strong>问题是:</strong></p>
+<ul>
+<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
+<li>S 是唯一可能导致失败的因素。</li>
+</ul>
+<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
+<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
+<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
+<ol>
+<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
+<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
+<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
+</ol>
+<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
+<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
+<li>A 和 B 想要建立一个共享的密钥</li>
+<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
+<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
+<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
+<li>B 有很多公钥所以 A 发送公钥的名字。</li>
+<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
+<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
+</ol>
+<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
+<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
+<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
+<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
+<p>用于数字签名，双方都算了一遍 MAC</p>
+<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Distributed Systems </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Web Service </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Distributed Systems笔记－middlewares]]></title>
       <url>http://www.shuang0420.com/2016/11/02/Web-service-middlewares/</url>
       <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍分布式系统中解决 interoperability concern 的几种方案 Cobra’s CDR, Java serialization 和 XML/JSON。这章整理的比较简单。<br><a id="more"></a></p>
@@ -8861,74 +8929,6 @@ python nb.py split.train split.test</pre>
 </ul>
 <h3 id="Handle-duplicates"><a href="#Handle-duplicates" class="headerlink" title="Handle duplicates"></a>Handle duplicates</h3><p>根据 client 的 acknowledgement 来清空历史。</p>
 <h2 id="Request-Reply-Message-Structure"><a href="#Request-Reply-Message-Structure" class="headerlink" title="Request-Reply Message Structure"></a>Request-Reply Message Structure</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">messageType: int (0=Request, 1=Reply)</div><div class="line">requestId: int</div><div class="line">objectReference: RemoteObjectRef</div><div class="line">methodId: int or Method</div><div class="line">argument: array of bytes</div></pre></td></tr></table></figure>
-]]></content>
-      
-        <categories>
-            
-            <category> Distributed Systems </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Web Service </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
-      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
-      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
-<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
-<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
-<li>双方共享一把密钥。</li>
-<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
-<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
-</ol>
-<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
-<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
-<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
-<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
-<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
-<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
-<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
-<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
-<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
-<li>A、B 可以用 session key 来交流了。</li>
-</ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
-<p>可以防止 replay，但 <strong>问题是:</strong></p>
-<ul>
-<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
-<li>S 是唯一可能导致失败的因素。</li>
-</ul>
-<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
-<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
-<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
-<ol>
-<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
-<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
-<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
-</ol>
-<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
-<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
-<li>A 和 B 想要建立一个共享的密钥</li>
-<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
-<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
-<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
-<li>B 有很多公钥所以 A 发送公钥的名字。</li>
-<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
-<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
-</ol>
-<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
-<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
-<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
-<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
-<p>用于数字签名，双方都算了一遍 MAC</p>
-<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
 ]]></content>
       
         <categories>
