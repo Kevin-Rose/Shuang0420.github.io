@@ -1418,9 +1418,9 @@
     
       <category term="Alexa" scheme="http://www.shuang0420.com/tags/Alexa/"/>
     
-      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
-    
       <category term="Slack" scheme="http://www.shuang0420.com/tags/Slack/"/>
+    
+      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
     
       <category term="物联网" scheme="http://www.shuang0420.com/tags/%E7%89%A9%E8%81%94%E7%BD%91/"/>
     
@@ -1428,8 +1428,8 @@
   
   <entry>
     <title>卷积神经网络 CNN 笔记 - 目标探测</title>
-    <link href="http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/"/>
-    <id>http://www.shuang0420.com/2017/06/20/卷积神经网络 - 目标探测/</id>
+    <link href="http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/"/>
+    <id>http://www.shuang0420.com/2017/06/20/卷积神经网络-目标探测/</id>
     <published>2017-06-20T02:45:12.000Z</published>
     <updated>2017-10-12T09:26:50.000Z</updated>
     
@@ -1658,9 +1658,9 @@
     
       <category term="Alexa" scheme="http://www.shuang0420.com/tags/Alexa/"/>
     
-      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
-    
       <category term="Slack" scheme="http://www.shuang0420.com/tags/Slack/"/>
+    
+      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
     
       <category term="物联网" scheme="http://www.shuang0420.com/tags/%E7%89%A9%E8%81%94%E7%BD%91/"/>
     
@@ -2029,9 +2029,9 @@
     
       <category term="Alexa" scheme="http://www.shuang0420.com/tags/Alexa/"/>
     
-      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
-    
       <category term="Slack" scheme="http://www.shuang0420.com/tags/Slack/"/>
+    
+      <category term="chatbot" scheme="http://www.shuang0420.com/tags/chatbot/"/>
     
       <category term="物联网" scheme="http://www.shuang0420.com/tags/%E7%89%A9%E8%81%94%E7%BD%91/"/>
     

@@ -1384,9 +1384,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> chatbot </tag>
-            
             <tag> Slack </tag>
+            
+            <tag> chatbot </tag>
             
             <tag> 物联网 </tag>
             
@@ -1396,7 +1396,7 @@
     
     <entry>
       <title><![CDATA[卷积神经网络 CNN 笔记 - 目标探测]]></title>
-      <url>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</url>
+      <url>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</url>
       <content type="html"><![CDATA[<p>介绍目标探测的基本方法，传统方法 DPM，神经网络分类 R-CNN 系列方法和神经网络回归 YoLo 系列方法。<br><a id="more"></a></p>
 <h1 id="目标探测"><a href="#目标探测" class="headerlink" title="目标探测"></a>目标探测</h1><p>先来看下什么是目标探测，下图<strong>矩形框(running box)</strong>表示的物体都可以作为目标探测的对象。不止矩形框，椭圆形框在某些场合更适合做目标探测，因为它能更好的捕捉对象，并对物体朝向做相应调整，机变性更好。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png" class="ful-image" alt="%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png"></p>
 <p>目标探测的任务一般分为<strong>单目标探测</strong>和<strong>多目标探测</strong>。目的一是找到目标的位置坐标，二是判定目标类别。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BB%BB%E5%8A%A1.png" class="ful-image" alt="%E4%BB%BB%E5%8A%A1.png"></p>
@@ -1620,9 +1620,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> chatbot </tag>
-            
             <tag> Slack </tag>
+            
+            <tag> chatbot </tag>
             
             <tag> 物联网 </tag>
             
@@ -1983,9 +1983,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> chatbot </tag>
-            
             <tag> Slack </tag>
+            
+            <tag> chatbot </tag>
             
             <tag> 物联网 </tag>
             
@@ -7685,6 +7685,85 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
     </entry>
     
     <entry>
+      <title><![CDATA[EM算法]]></title>
+      <url>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</url>
+      <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
+<h1 id="Mixtures-of-Gaussians"><a href="#Mixtures-of-Gaussians" class="headerlink" title="Mixtures of Gaussians"></a>Mixtures of Gaussians</h1><p>MLE 的通用步骤：<br>Steps:</p>
+<ol>
+<li>写出似然函数；</li>
+<li>对似然函数取对数，并整理；</li>
+<li>求导数，令导数为0，得到似然方程；</li>
+<li>解似然方程，得到的参数即为所求；</li>
+</ol>
+<p>然而有的时候我们会陷入困境，因为似然方程没法求解，比如 Mixtures of Gaussians。</p>
+<h2 id="One-Gaussian"><a href="#One-Gaussian" class="headerlink" title="One Gaussian"></a>One Gaussian</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Gaussian, $\sigma^2$=1/2<br><strong>LE</strong><br>$$P(x_1,..,x_n|\mu)={1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu)^2 \over 2 \sigma^2} $$</p>
+<p><strong>MLE:</strong> $\hat \mu_{ML}= argmax \ L(x_1,..,x_n|\mu)$<br>$\mu_{ML} = {\sum_{i=1}^n \ x_i \over n} = \overline x_i$</p>
+<h2 id="K-Gaussians"><a href="#K-Gaussians" class="headerlink" title="K Gaussians"></a>K Gaussians</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Mixture of K Gaussians    $\sigma^2$=1/2, $\mu_1,…\mu_k$<br><strong>Prior probability over Gaussians:</strong> $\lambda_1,…,\lambda_k \ 0 \le \lambda_j \le 1 \ \sum \lambda_j=1$, distribution of j is unknown, $\lambda_j, \mu_j$ is unknown<br><strong>LE</strong><br>$$<br>\begin{aligned}<br>P(x_1,..,x_n|\hat \lambda,\hat \mu,\sigma^2=0.5) &amp; = \prod_i^n[\sum_j^k P(Gaussian \ j \ was \ chosen)P(xi|Gaussian \ j \ was \ chosen)] \\<br> &amp; = \prod_i^n[\sum_j^k \lambda_j{1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu_j)^2 \over 2 \sigma_j^2}]<br>\end{aligned}<br>$$</p>
+<p><strong>MLE:</strong> $(\hat \mu, \hat \lambda)_{ML}= argmax \ L(x1,..,xn|\hat \lambda,\hat \mu,\sigma^2=0.5)$</p>
+<p><strong>How to find MLE?</strong></p>
+<h2 id="“SOFT”-K-MEANS"><a href="#“SOFT”-K-MEANS" class="headerlink" title="“SOFT” K-MEANS"></a>“SOFT” K-MEANS</h2><p><strong>soft:</strong> our guesses are probabilities and taking values in [0,1]<br><strong>hard:</strong> represents a single best guess (taking values in {0,1} or {1,…k})</p>
+<p>Special case of the EM Algorithm<br>$\sigma^2$=1/2</p>
+<p><strong>初始化</strong><br>初始化分布参数θ, $\mu^{(0)}$,$\lambda^{(0)}$</p>
+<p><strong>重复 EM 步骤直到收敛</strong><br><strong>1.E-step</strong><br>Fill in    the    missing    variables    with the expected values<br>根据参数初始值或上一次迭代的模型参数来计算出隐性变量的后验概率，其实就是隐性变量的期望。作为隐藏变量的现估计值：<br>$$w_j^{(i)}=P(z^{(i)}=j|x^{(i)};\mu,\lambda,\sigma^2=0.5) $$</p>
+<p><strong>2.M-Step</strong><br>Regular    maximum    likelihood estimation    (MLE)    using    the    values computed    in the E step    and    the    values of    the    other    variables<br>将似然函数最大化以获得新的参数值 $\mu^{(l+1)}$,$\lambda^{(l+1)}$</p>
+<ul>
+<li>l: index over EM iterations</li>
+<li>j: index of Gaussians</li>
+<li>i: index of datapoints<br>$$\hat \lambda_j={\# j \ was \ chosen \over n}={\sum_{i=1}^n w_j^{(i)} \over n}$$<br>$$\hat \mu_j={\sum_{i=1}^n w_j^{(i)} x^{(i)} \over \sum_{i=1}^n w_j^{(i)}}$$</li>
+</ul>
+<p><strong>EM Algorithm guarantees:</strong><br>$$L(D|\theta^{[0]}) \le L(D|\theta^{[1]}) \le L(D|\theta^{[2]})…$$<br>This is a Non-decreasing function. And if the likelihood function is bounded, the sequence will converge. Here the example is bounded, because $\sigma$ is fixed.<br>It might end up with local optimal.</p>
+<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/draft.jpg" class="ful-image" alt="draft.jpg">
+<p>第一次 iteration 的表格表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/table.jpg" class="ful-image" alt="table.jpg"></p>
+<h1 id="General-EM-algorithm"><a href="#General-EM-algorithm" class="headerlink" title="General EM algorithm"></a>General EM algorithm</h1><p><strong>X</strong> observed data<br><strong>Z</strong> unobserved ‘data’<br><strong>Complete data</strong> Y=(X,Z)<br><strong>Likelihood function</strong> $L(X,Z|\theta)$ known</p>
+<p><strong>Problem:</strong> find MLE<br>$$<br>  \begin{aligned}<br>  \hat \theta_{ML} &amp; = argmax \ L(X|\theta)= argmax \sum_Z P(X,Z|\theta) \\<br>   &amp; = argmax \sum_Z P(Z|\theta)P(X|Z,\theta) \\<br>   &amp; = argmax \sum_Z P(X|\theta)P(Z|X,\theta)P(X|Z,\theta)<br>  \end{aligned}<br>$$</p>
+<p><strong>Chicken-egg Problem</strong> with regard to P(Z),$\theta$<br>先有鸡还是先有蛋的问题。当我们知道了哪些 datapoints 属于同一个高斯分布的时候，我们才能够对这个分布的参数作出靠谱的预测，然而现在 datapoints 混在了一起，我们不知道哪个属于哪个，也就没办法估计参数。反过来，只有当我们对 K 个分布的参数作了准确的估计的时候，才知道哪些 datapoints 属于同一个高斯分布。<br>所以陷入了僵局，怎么办？不如就先随便整一个值出来，看你怎么变，然后我再根据你的变化调整我的变化，然后如此迭代着不断互相推导，最终就会收敛到一个解。这就是EM算法的基本思想。 -&gt; chicken stay, egg change</p>
+<p><strong>EM solution</strong></p>
+<ol>
+<li>Initialize $\theta$ to some value</li>
+<li>EM 方程<br>$$\theta^{[l+1]}=argmax \ E_{Z|\theta^l}[logP(Z,X|\theta)]$$<br>E 就是 expectation 的 E, write expression for E as function of $\theta$, expression: auxiliary function $Q(\theta^{[l]}|\theta)$<br>M 就是 argmax 的 M, find the MAX over $\theta$<br>=&gt;<br><strong>Simple EM solution:</strong><ul>
+<li><strong>E-step:</strong> express MLE as function of X’s and Z’s<br>know the value of Z, what would the ML solution</li>
+<li><strong>M-step:</strong> replace each Z with $E[Z|\theta]$</li>
+</ul>
+</li>
+</ol>
+<p><strong>EM guarantees</strong><br>$$L(X|\theta^{[l]}) \le L(X|\theta^{l+1})$$</p>
+<p>If likelihood is bounded, the sequence will converge.</p>
+<p><strong>Special but most commonly use:</strong><br>$L(X,Z|\theta)$ is a member of the exponential family</p>
+<h1 id="适用情景"><a href="#适用情景" class="headerlink" title="适用情景"></a>适用情景</h1><p>When to use:</p>
+<ul>
+<li>Data is only partially observable</li>
+<li>Unsupervised clustering(target value unobservable)</li>
+<li>Supervised learning(some instance attributes unobservable)</li>
+</ul>
+<p>Some uses:</p>
+<ul>
+<li>Train Bayesian Belief Networks</li>
+<li>Unsupervised clustering(AUTOCLASS)</li>
+<li>Learning Hidden Markov Models</li>
+</ul>
+<blockquote>
+<p>参考链接：<br><a href="http://blog.csdn.net/zouxy09/article/details/8537620" target="_blank" rel="external">从最大似然到EM算法浅解</a><br><a href="http://www.cnblogs.com/jerrylead/archive/2011/04/06/2006936.html" target="_blank" rel="external">（EM算法）The EM Algorithm</a><br><a href="http://blog.csdn.net/livecoldsun/article/details/40833829" target="_blank" rel="external"> EM（Expectation-Maximization）算法 </a></p>
+</blockquote>
+]]></content>
+      
+        <categories>
+            
+            <category> Machine Learning </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> machine learning </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Graphical Models]]></title>
       <url>http://www.shuang0420.com/2016/12/04/Graphical%20Models/</url>
       <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
@@ -7755,85 +7834,6 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
 <h1 id="Conditional-Random-Fields"><a href="#Conditional-Random-Fields" class="headerlink" title="Conditional Random Fields"></a>Conditional Random Fields</h1><p>CRF = UGM Trained Discriminatively<br>$argmax \ L(labels|inputs,\theta)$</p>
 <p><strong>generative modeling</strong><br>$\theta=argmax \ L(D|\theta)$<br>MAP=argmax P(|x)</p>
 <p><strong>discriminative method</strong><br>$argmin \ ERR(classifier|D,\theta)$<br>better when training data is small</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Machine Learning </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> NLP </tag>
-            
-            <tag> machine learning </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[EM算法]]></title>
-      <url>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</url>
-      <content type="html"><![CDATA[<p>CMU 10601 的课程笔记。EM 算法计算含有隐含变量的概率模型参数估计，能使用在一些无监督的聚类方法上。在 EM 算法总结提出以前就有该算法思想的方法提出，例如 HMM 中用的 Baum-Welch 算法。<br><a id="more"></a></p>
-<h1 id="Mixtures-of-Gaussians"><a href="#Mixtures-of-Gaussians" class="headerlink" title="Mixtures of Gaussians"></a>Mixtures of Gaussians</h1><p>MLE 的通用步骤：<br>Steps:</p>
-<ol>
-<li>写出似然函数；</li>
-<li>对似然函数取对数，并整理；</li>
-<li>求导数，令导数为0，得到似然方程；</li>
-<li>解似然方程，得到的参数即为所求；</li>
-</ol>
-<p>然而有的时候我们会陷入困境，因为似然方程没法求解，比如 Mixtures of Gaussians。</p>
-<h2 id="One-Gaussian"><a href="#One-Gaussian" class="headerlink" title="One Gaussian"></a>One Gaussian</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Gaussian, $\sigma^2$=1/2<br><strong>LE</strong><br>$$P(x_1,..,x_n|\mu)={1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu)^2 \over 2 \sigma^2} $$</p>
-<p><strong>MLE:</strong> $\hat \mu_{ML}= argmax \ L(x_1,..,x_n|\mu)$<br>$\mu_{ML} = {\sum_{i=1}^n \ x_i \over n} = \overline x_i$</p>
-<h2 id="K-Gaussians"><a href="#K-Gaussians" class="headerlink" title="K Gaussians"></a>K Gaussians</h2><p><strong>Given data:</strong> X1,…Xn<br><strong>Modeling assumption:</strong> Xi(independently) ~ Mixture of K Gaussians    $\sigma^2$=1/2, $\mu_1,…\mu_k$<br><strong>Prior probability over Gaussians:</strong> $\lambda_1,…,\lambda_k \ 0 \le \lambda_j \le 1 \ \sum \lambda_j=1$, distribution of j is unknown, $\lambda_j, \mu_j$ is unknown<br><strong>LE</strong><br>$$<br>\begin{aligned}<br>P(x_1,..,x_n|\hat \lambda,\hat \mu,\sigma^2=0.5) &amp; = \prod_i^n[\sum_j^k P(Gaussian \ j \ was \ chosen)P(xi|Gaussian \ j \ was \ chosen)] \\<br> &amp; = \prod_i^n[\sum_j^k \lambda_j{1 \over \sqrt{2 \pi \sigma^2}} e^{-(x_i-\mu_j)^2 \over 2 \sigma_j^2}]<br>\end{aligned}<br>$$</p>
-<p><strong>MLE:</strong> $(\hat \mu, \hat \lambda)_{ML}= argmax \ L(x1,..,xn|\hat \lambda,\hat \mu,\sigma^2=0.5)$</p>
-<p><strong>How to find MLE?</strong></p>
-<h2 id="“SOFT”-K-MEANS"><a href="#“SOFT”-K-MEANS" class="headerlink" title="“SOFT” K-MEANS"></a>“SOFT” K-MEANS</h2><p><strong>soft:</strong> our guesses are probabilities and taking values in [0,1]<br><strong>hard:</strong> represents a single best guess (taking values in {0,1} or {1,…k})</p>
-<p>Special case of the EM Algorithm<br>$\sigma^2$=1/2</p>
-<p><strong>初始化</strong><br>初始化分布参数θ, $\mu^{(0)}$,$\lambda^{(0)}$</p>
-<p><strong>重复 EM 步骤直到收敛</strong><br><strong>1.E-step</strong><br>Fill in    the    missing    variables    with the expected values<br>根据参数初始值或上一次迭代的模型参数来计算出隐性变量的后验概率，其实就是隐性变量的期望。作为隐藏变量的现估计值：<br>$$w_j^{(i)}=P(z^{(i)}=j|x^{(i)};\mu,\lambda,\sigma^2=0.5) $$</p>
-<p><strong>2.M-Step</strong><br>Regular    maximum    likelihood estimation    (MLE)    using    the    values computed    in the E step    and    the    values of    the    other    variables<br>将似然函数最大化以获得新的参数值 $\mu^{(l+1)}$,$\lambda^{(l+1)}$</p>
-<ul>
-<li>l: index over EM iterations</li>
-<li>j: index of Gaussians</li>
-<li>i: index of datapoints<br>$$\hat \lambda_j={\# j \ was \ chosen \over n}={\sum_{i=1}^n w_j^{(i)} \over n}$$<br>$$\hat \mu_j={\sum_{i=1}^n w_j^{(i)} x^{(i)} \over \sum_{i=1}^n w_j^{(i)}}$$</li>
-</ul>
-<p><strong>EM Algorithm guarantees:</strong><br>$$L(D|\theta^{[0]}) \le L(D|\theta^{[1]}) \le L(D|\theta^{[2]})…$$<br>This is a Non-decreasing function. And if the likelihood function is bounded, the sequence will converge. Here the example is bounded, because $\sigma$ is fixed.<br>It might end up with local optimal.</p>
-<h2 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/draft.jpg" class="ful-image" alt="draft.jpg">
-<p>第一次 iteration 的表格表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/EM%E7%AE%97%E6%B3%95/table.jpg" class="ful-image" alt="table.jpg"></p>
-<h1 id="General-EM-algorithm"><a href="#General-EM-algorithm" class="headerlink" title="General EM algorithm"></a>General EM algorithm</h1><p><strong>X</strong> observed data<br><strong>Z</strong> unobserved ‘data’<br><strong>Complete data</strong> Y=(X,Z)<br><strong>Likelihood function</strong> $L(X,Z|\theta)$ known</p>
-<p><strong>Problem:</strong> find MLE<br>$$<br>  \begin{aligned}<br>  \hat \theta_{ML} &amp; = argmax \ L(X|\theta)= argmax \sum_Z P(X,Z|\theta) \\<br>   &amp; = argmax \sum_Z P(Z|\theta)P(X|Z,\theta) \\<br>   &amp; = argmax \sum_Z P(X|\theta)P(Z|X,\theta)P(X|Z,\theta)<br>  \end{aligned}<br>$$</p>
-<p><strong>Chicken-egg Problem</strong> with regard to P(Z),$\theta$<br>先有鸡还是先有蛋的问题。当我们知道了哪些 datapoints 属于同一个高斯分布的时候，我们才能够对这个分布的参数作出靠谱的预测，然而现在 datapoints 混在了一起，我们不知道哪个属于哪个，也就没办法估计参数。反过来，只有当我们对 K 个分布的参数作了准确的估计的时候，才知道哪些 datapoints 属于同一个高斯分布。<br>所以陷入了僵局，怎么办？不如就先随便整一个值出来，看你怎么变，然后我再根据你的变化调整我的变化，然后如此迭代着不断互相推导，最终就会收敛到一个解。这就是EM算法的基本思想。 -&gt; chicken stay, egg change</p>
-<p><strong>EM solution</strong></p>
-<ol>
-<li>Initialize $\theta$ to some value</li>
-<li>EM 方程<br>$$\theta^{[l+1]}=argmax \ E_{Z|\theta^l}[logP(Z,X|\theta)]$$<br>E 就是 expectation 的 E, write expression for E as function of $\theta$, expression: auxiliary function $Q(\theta^{[l]}|\theta)$<br>M 就是 argmax 的 M, find the MAX over $\theta$<br>=&gt;<br><strong>Simple EM solution:</strong><ul>
-<li><strong>E-step:</strong> express MLE as function of X’s and Z’s<br>know the value of Z, what would the ML solution</li>
-<li><strong>M-step:</strong> replace each Z with $E[Z|\theta]$</li>
-</ul>
-</li>
-</ol>
-<p><strong>EM guarantees</strong><br>$$L(X|\theta^{[l]}) \le L(X|\theta^{l+1})$$</p>
-<p>If likelihood is bounded, the sequence will converge.</p>
-<p><strong>Special but most commonly use:</strong><br>$L(X,Z|\theta)$ is a member of the exponential family</p>
-<h1 id="适用情景"><a href="#适用情景" class="headerlink" title="适用情景"></a>适用情景</h1><p>When to use:</p>
-<ul>
-<li>Data is only partially observable</li>
-<li>Unsupervised clustering(target value unobservable)</li>
-<li>Supervised learning(some instance attributes unobservable)</li>
-</ul>
-<p>Some uses:</p>
-<ul>
-<li>Train Bayesian Belief Networks</li>
-<li>Unsupervised clustering(AUTOCLASS)</li>
-<li>Learning Hidden Markov Models</li>
-</ul>
-<blockquote>
-<p>参考链接：<br><a href="http://blog.csdn.net/zouxy09/article/details/8537620" target="_blank" rel="external">从最大似然到EM算法浅解</a><br><a href="http://www.cnblogs.com/jerrylead/archive/2011/04/06/2006936.html" target="_blank" rel="external">（EM算法）The EM Algorithm</a><br><a href="http://blog.csdn.net/livecoldsun/article/details/40833829" target="_blank" rel="external"> EM（Expectation-Maximization）算法 </a></p>
-</blockquote>
 ]]></content>
       
         <categories>
