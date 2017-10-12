@@ -1384,9 +1384,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> Slack </tag>
-            
             <tag> chatbot </tag>
+            
+            <tag> Slack </tag>
             
             <tag> 物联网 </tag>
             
@@ -1398,13 +1398,13 @@
       <title><![CDATA[卷积神经网络 CNN 笔记 - 目标探测]]></title>
       <url>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</url>
       <content type="html"><![CDATA[<p>介绍目标探测的基本方法，传统方法 DPM，神经网络分类 R-CNN 系列方法和神经网络回归 YoLo 系列方法。<br><a id="more"></a></p>
-<h1 id="目标探测"><a href="#目标探测" class="headerlink" title="目标探测"></a>目标探测</h1><p>先来看下什么是目标探测，下图<strong>矩形框(running box)</strong>表示的物体都可以作为目标探测的对象。不止矩形框，椭圆形框在某些场合更适合做目标探测，因为它能更好的捕捉对象，并对物体朝向做相应调整，机变性更好。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png"></p>
-<p>目标探测的任务一般分为<strong>单目标探测</strong>和<strong>多目标探测</strong>。目的一是找到目标的位置坐标，二是判定目标类别。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E4%BB%BB%E5%8A%A1.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E4%BB%BB%E5%8A%A1.png"></p>
+<h1 id="目标探测"><a href="#目标探测" class="headerlink" title="目标探测"></a>目标探测</h1><p>先来看下什么是目标探测，下图<strong>矩形框(running box)</strong>表示的物体都可以作为目标探测的对象。不止矩形框，椭圆形框在某些场合更适合做目标探测，因为它能更好的捕捉对象，并对物体朝向做相应调整，机变性更好。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png" class="ful-image" alt="%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png"></p>
+<p>目标探测的任务一般分为<strong>单目标探测</strong>和<strong>多目标探测</strong>。目的一是找到目标的位置坐标，二是判定目标类别。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BB%BB%E5%8A%A1.png" class="ful-image" alt="%E4%BB%BB%E5%8A%A1.png"></p>
 <p>目标探测的<strong>应用场景</strong>有安防、自动驾驶等。从技术方面讲，目标探测传统方法用的是<strong>DPM</strong>，虽然目前已经被神经网络超越，但是很多思想可以借鉴。神经网络大体上有两类方法，一类是分类方法主要是<strong>RCNN系列方法</strong> ，先找到若干候选区，然后一个区域一个区域排查，判断有没有要找的物体；另一类是回归方法主要是<strong>YoLo系列方法</strong>，直接找到区域，以及区域有什么物体。</p>
 <p>下面来看下目标探测的两个直接思路。</p>
-<h2 id="直接思路一：回归问题"><a href="#直接思路一：回归问题" class="headerlink" title="直接思路一：回归问题"></a>直接思路一：回归问题</h2><p>一类思路是把目标探测看作是一个<strong>回归问题</strong>。直接生成 class score，也就是判断是该类别(物品)的 confidence value，和 box coordinates，也就是检测框的坐标值。整个任务的损失函数其实是位置差和分类差的一个组合。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%B4%E6%8E%A5%E6%80%9D%E8%B7%AF.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%B4%E6%8E%A5%E6%80%9D%E8%B7%AF.png"></p>
-<h2 id="直接思路二：局部识别问题"><a href="#直接思路二：局部识别问题" class="headerlink" title="直接思路二：局部识别问题"></a>直接思路二：局部识别问题</h2><p>另一类思路是在很多位置上尝试识别，能够完成识别的地方就是目标位置。如下图，我们生成潜在的<strong>候选区域(proposal)</strong>，然后采用分类器逐个判别这些区域内图像是不是目标物体，如果是，可以把候选区域做延展(用 regression)，看有没有更合适的候选框。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/cat1.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/cat1.png"></p>
-<p>一个问题是<strong>怎样找到这些候选位置？</strong><br>一种方法是用不同 scale 的 sliding windows 来遍历所有的位置，这种方法代价太高，另一种更有效的方法是直接计算候选区域。现在有很多算法能够有效的产生候选区域，比较常用的是 <strong>EdgeBoxes</strong>（在 RCNN 中使用）。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%80%99%E9%80%89%E5%8C%BA%E5%9F%9F%E4%BA%A7%E7%94%9F.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%80%99%E9%80%89%E5%8C%BA%E5%9F%9F%E4%BA%A7%E7%94%9F.png"></p>
+<h2 id="直接思路一：回归问题"><a href="#直接思路一：回归问题" class="headerlink" title="直接思路一：回归问题"></a>直接思路一：回归问题</h2><p>一类思路是把目标探测看作是一个<strong>回归问题</strong>。直接生成 class score，也就是判断是该类别(物品)的 confidence value，和 box coordinates，也就是检测框的坐标值。整个任务的损失函数其实是位置差和分类差的一个组合。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%9B%B4%E6%8E%A5%E6%80%9D%E8%B7%AF.png" class="ful-image" alt="%E7%9B%B4%E6%8E%A5%E6%80%9D%E8%B7%AF.png"></p>
+<h2 id="直接思路二：局部识别问题"><a href="#直接思路二：局部识别问题" class="headerlink" title="直接思路二：局部识别问题"></a>直接思路二：局部识别问题</h2><p>另一类思路是在很多位置上尝试识别，能够完成识别的地方就是目标位置。如下图，我们生成潜在的<strong>候选区域(proposal)</strong>，然后采用分类器逐个判别这些区域内图像是不是目标物体，如果是，可以把候选区域做延展(用 regression)，看有没有更合适的候选框。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/cat1.png" class="ful-image" alt="cat1.png"></p>
+<p>一个问题是<strong>怎样找到这些候选位置？</strong><br>一种方法是用不同 scale 的 sliding windows 来遍历所有的位置，这种方法代价太高，另一种更有效的方法是直接计算候选区域。现在有很多算法能够有效的产生候选区域，比较常用的是 <strong>EdgeBoxes</strong>（在 RCNN 中使用）。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%80%99%E9%80%89%E5%8C%BA%E5%9F%9F%E4%BA%A7%E7%94%9F.png" class="ful-image" alt="%E5%80%99%E9%80%89%E5%8C%BA%E5%9F%9F%E4%BA%A7%E7%94%9F.png"></p>
 <h1 id="传统方法-DPM"><a href="#传统方法-DPM" class="headerlink" title="传统方法-DPM"></a>传统方法-DPM</h1><p>传统方法主要包括 3 个步骤：</p>
 <ol>
 <li>利用不同尺度的滑动窗口在图像上进行区域搜索，定位候选区域；</li>
@@ -1412,7 +1412,7 @@
 <li>利用分类器进行分类识别，svm等</li>
 </ol>
 <p>主要思路就是提取图像特征，制作出激励模板，在原始图像滑动计算，得到激励效果图，然后根据激励分布确定目标位置。如下图人物识别把人为设计的激励模板和 HOG 特征图结合，如果有人，会得到加强的激励，然而同样的，柱子也会得到激励。</p>
-<p><strong>DPM(Deformable Part Model)</strong>可以看做是<strong>HOG(Histograms of Oriented Gradients)+SVM(Surpport Vector Machine) 方法</strong>的扩展，大体思路是一致的 — 先计算梯度方向直方图，然后用 SVM 训练得到物体的梯度模型。有了这样的模板就可以直接用来分类了，简单理解就是模型和目标匹配。DPM 只是在模型上做了很多改进工作。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/dpm1.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/dpm1.png"></p>
+<p><strong>DPM(Deformable Part Model)</strong>可以看做是<strong>HOG(Histograms of Oriented Gradients)+SVM(Surpport Vector Machine) 方法</strong>的扩展，大体思路是一致的 — 先计算梯度方向直方图，然后用 SVM 训练得到物体的梯度模型。有了这样的模板就可以直接用来分类了，简单理解就是模型和目标匹配。DPM 只是在模型上做了很多改进工作。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/dpm1.png" class="ful-image" alt="dpm1.png"></p>
 <p>由于目标可能会形变，之前模型不能很好的适应复杂场景的探测，所以一个改进是各个部分单独考虑，对物体的不同部分单独进行学习，所以<strong>DPM</strong>把物体看成了多个组成部件(比如说人脸的鼻子，嘴巴等)，用部件间的关系来描述物体，这个特点非常符合自然界许多物体的非刚性特征。基本思路如下:</p>
 <ol>
 <li>产生多个模板，整体模板(root filter)以及不同局部模板(part filter)<br>root filter 包含目标的整体信息，而 part filter 采用高分辨率的细节建模，看的梯度会更加精细</li>
@@ -1421,30 +1421,30 @@
 <li>对融合特征进行传统分类，回归，得到目标位置</li>
 <li>模型在图像特定位置和尺度的得分， 等于 root filter 的得分加上各个 part filter 得分的总和。每个 part filter 的得分等于该 part 在所有空间位置的得分的最大值，而部件在某位置的得分等于 part filter 在此位置的得分减去此位置的变形代价(也就是 part 偏离其理想位置的程度)</li>
 </ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/dpm2.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/dpm2.jpg">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/dpm2.jpg" class="ful-image" alt="dpm2.jpg">
 <p>DPM 的优点是方法比较直观、简单，运算速度快，也可以适应运动物体变形，很好的处理遮挡、非刚性可变和视觉变换问题，到 2012 年前，是最好的方法。然而 DPM 也有一些缺点</p>
 <ul>
 <li>性能一般</li>
 <li>激励特征人为设计，表达能力有限，工作量大，难以进行迁移学习</li>
 <li>大幅度旋转无法适应，稳定性差</li>
 </ul>
-<h1 id="神经网络分类-R-CNN-系列方法"><a href="#神经网络分类-R-CNN-系列方法" class="headerlink" title="神经网络分类: R-CNN 系列方法"></a>神经网络分类: R-CNN 系列方法</h1><h2 id="R-CNN-CVPR2014-TPAMI2015"><a href="#R-CNN-CVPR2014-TPAMI2015" class="headerlink" title="R-CNN(CVPR2014, TPAMI2015)"></a>R-CNN(CVPR2014, TPAMI2015)</h2><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>神经网络的分类思想是<strong>对多个位置，不同尺寸，用卷积神经网络判断区域内图片是不是某物</strong>，<strong>候选位置(proposal)</strong>提出方法一般用 <strong>EdgeBox</strong>。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn1.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn1.png"></p>
-<p>R-CNN 最初提出的时候选择 20 类进行探测，是在 ImageNet 模型的基础上，把 1000 类的分类模型变成能识别 21 类(20类+other)的 Fine-tune 分类模型。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn2.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn2.jpg"><br>=&gt;<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn3.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn3.jpg"></p>
-<p><strong>特征的提取过程:</strong> 对图片计算候选区域；对候选区域切分图片，对切分部分进行 resize 变成输入大小；提取相应高级特征；存储特征(大容量，200-300G空间存储图片)<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn4.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn4.jpg"></p>
-<p><strong>单独目标探测器训练：</strong>对每一类进行单独训练，保证每一类训练数据平衡，每一类都是 binary 分类(yes/no)。比如猫的分类器，可能大部分图片没有一个理想的猫，只有一个耳朵，这不算猫，我们要与真值进行比较，看左上右下区域，如果重合(共有区域)比较多，就认为是猫的图片。每一类都有很多的正例反例(1/0)。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn5.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn5.jpg"></p>
-<p><strong>单独目标回归器训练-基于候选区域微调:</strong> 同样的，每一类单独训练，保证每一类训练数据平衡，这里是每一类做 BBOX 回归。目的是在知道是不是猫以及位置的偏移后，用回归对位置进行 offset，离真值(ground truth)更近，最终的探测精度会更高。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn6.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn6.jpg"></p>
+<h1 id="神经网络分类-R-CNN-系列方法"><a href="#神经网络分类-R-CNN-系列方法" class="headerlink" title="神经网络分类: R-CNN 系列方法"></a>神经网络分类: R-CNN 系列方法</h1><h2 id="R-CNN-CVPR2014-TPAMI2015"><a href="#R-CNN-CVPR2014-TPAMI2015" class="headerlink" title="R-CNN(CVPR2014, TPAMI2015)"></a>R-CNN(CVPR2014, TPAMI2015)</h2><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><p>神经网络的分类思想是<strong>对多个位置，不同尺寸，用卷积神经网络判断区域内图片是不是某物</strong>，<strong>候选位置(proposal)</strong>提出方法一般用 <strong>EdgeBox</strong>。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn1.png" class="ful-image" alt="rcnn1.png"></p>
+<p>R-CNN 最初提出的时候选择 20 类进行探测，是在 ImageNet 模型的基础上，把 1000 类的分类模型变成能识别 21 类(20类+other)的 Fine-tune 分类模型。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn2.jpg" class="ful-image" alt="rcnn2.jpg"><br>=&gt;<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn3.jpg" class="ful-image" alt="rcnn3.jpg"></p>
+<p><strong>特征的提取过程:</strong> 对图片计算候选区域；对候选区域切分图片，对切分部分进行 resize 变成输入大小；提取相应高级特征；存储特征(大容量，200-300G空间存储图片)<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn4.jpg" class="ful-image" alt="rcnn4.jpg"></p>
+<p><strong>单独目标探测器训练：</strong>对每一类进行单独训练，保证每一类训练数据平衡，每一类都是 binary 分类(yes/no)。比如猫的分类器，可能大部分图片没有一个理想的猫，只有一个耳朵，这不算猫，我们要与真值进行比较，看左上右下区域，如果重合(共有区域)比较多，就认为是猫的图片。每一类都有很多的正例反例(1/0)。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn5.jpg" class="ful-image" alt="rcnn5.jpg"></p>
+<p><strong>单独目标回归器训练-基于候选区域微调:</strong> 同样的，每一类单独训练，保证每一类训练数据平衡，这里是每一类做 BBOX 回归。目的是在知道是不是猫以及位置的偏移后，用回归对位置进行 offset，离真值(ground truth)更近，最终的探测精度会更高。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn6.jpg" class="ful-image" alt="rcnn6.jpg"></p>
 <p><strong>总的来说，R-CNN 的测试过程就是</strong></p>
 <ol>
 <li>对每个图像生成 1k-2k 个候选区域</li>
 <li>对每个候选区域，使用深度网络进行特征计算</li>
 <li>特征喂给每一类的 svm 分类器，判别是否属于该类分类；同时用回归修正候选框位置</li>
-<li>后续处理<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn7.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/rcnn7.jpg">
+<li>后续处理<img src="http://ox5l2b8f4.bkt.clouddn.com/images/rcnn7.jpg" class="ful-image" alt="rcnn7.jpg">
 </li>
 </ol>
-<h3 id="常用数据集"><a href="#常用数据集" class="headerlink" title="常用数据集"></a>常用数据集</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%95%B0%E6%8D%AE%E9%9B%86.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%95%B0%E6%8D%AE%E9%9B%86.jpg">
+<h3 id="常用数据集"><a href="#常用数据集" class="headerlink" title="常用数据集"></a>常用数据集</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E6%95%B0%E6%8D%AE%E9%9B%86.jpg" class="ful-image" alt="%E6%95%B0%E6%8D%AE%E9%9B%86.jpg">
 <h3 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h3><ul>
 <li><strong>MAP(mean average precision)</strong></li>
-<li><strong>IoU</strong>，真值和预测值多重叠部分与两者的并集的比值，一般大于 0.5 就认为是正确的<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/IoU.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/IoU.jpg">
+<li><strong>IoU</strong>，真值和预测值多重叠部分与两者的并集的比值，一般大于 0.5 就认为是正确的<img src="http://ox5l2b8f4.bkt.clouddn.com/images/IoU.jpg" class="ful-image" alt="IoU.jpg">
 </li>
 </ul>
 <h3 id="R-CNN-结果对比"><a href="#R-CNN-结果对比" class="headerlink" title="R-CNN 结果对比"></a>R-CNN 结果对比</h3><p>Regionlets(2013) 并没有经过 fine-tune，R-CNN(2014, AlexNet) 用事先训练好的分类器进行了 fine-tune，R-CNN+bbox reg(AlexNet)，用了 regression，加了 offset 对检测框做了范围调整，R-CNN(vgg-16)把 base model 改成了 vgg</p>
@@ -1452,7 +1452,7 @@
 <ol>
 <li>Finetune</li>
 <li>回归微调</li>
-<li>Base 模型<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/crnn9.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/crnn9.jpg">
+<li>Base 模型<img src="http://ox5l2b8f4.bkt.clouddn.com/images/crnn9.jpg" class="ful-image" alt="crnn9.jpg">
 </li>
 </ol>
 <h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><p><strong>优点:</strong></p>
@@ -1471,27 +1471,27 @@
 <ul>
 <li>共享卷积计算<br>增加 ROI pooling layer</li>
 <li>完整训练(end-to-end)<br>用 softmax 代替 svm 分类，用多目标损失函数加入候选框回归，除 region proposal 提取外实现了 end-to-end</li>
-<li>多目标一起学习<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/fast%20rcnn.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/fast%20rcnn.jpg">
+<li>多目标一起学习<img src="http://ox5l2b8f4.bkt.clouddn.com/images/fast%20rcnn.jpg" class="ful-image" alt="fast%20rcnn.jpg">
 </li>
 </ul>
 <h3 id="共享卷积计算"><a href="#共享卷积计算" class="headerlink" title="共享卷积计算"></a>共享卷积计算</h3><p>Fast R-CNN 在最后一个卷积层后加了一个 ROI pooling layer，实际上就是上面提到的 SPP-NET 的一个精简版，特点是:</p>
 <ol>
 <li>卷积计算保持空间位置</li>
 <li>共同区域的卷积计算只需进行一次</li>
-<li>切割候选区+提取特征图=计算完整特征图+切割对应候选区<br>把图片的 region proposal 切割出来，resize，提取特征，其实就等同于在原图特征图里找到 region proposal<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%85%B1%E4%BA%AB%E5%8D%B7%E7%A7%AF.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%85%B1%E4%BA%AB%E5%8D%B7%E7%A7%AF.jpg">
+<li>切割候选区+提取特征图=计算完整特征图+切割对应候选区<br>把图片的 region proposal 切割出来，resize，提取特征，其实就等同于在原图特征图里找到 region proposal<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%85%B1%E4%BA%AB%E5%8D%B7%E7%A7%AF.jpg" class="ful-image" alt="%E5%85%B1%E4%BA%AB%E5%8D%B7%E7%A7%AF.jpg">
 </li>
 </ol>
-<p>一个重要的问题是<strong>不同区域的特征如何保持一致？</strong><br>全连接层要求接的区域形状一致；所以要特征图里区域的一致性处理，也就是做一个 pooling<br><strong>特征一致化 - Max Pooling</strong><br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%89%B9%E5%BE%81%E4%B8%80%E8%87%B4%E5%8C%96.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%89%B9%E5%BE%81%E4%B8%80%E8%87%B4%E5%8C%96.jpg"></p>
+<p>一个重要的问题是<strong>不同区域的特征如何保持一致？</strong><br>全连接层要求接的区域形状一致；所以要特征图里区域的一致性处理，也就是做一个 pooling<br><strong>特征一致化 - Max Pooling</strong><br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%89%B9%E5%BE%81%E4%B8%80%E8%87%B4%E5%8C%96.jpg" class="ful-image" alt="%E7%89%B9%E5%BE%81%E4%B8%80%E8%87%B4%E5%8C%96.jpg"></p>
 <p>局部区域<br>100x50 =&gt;按 4:2 pooling<br>50x100 =&gt; 按 2:4 pooling<br>=&gt; 25x25 feature<br>=&gt; 225 FC</p>
 <p>如果 pooling size 不完美，其实也没有问题，pooling 本身就是填充 pooling 后的图的每一个 pixel，只要从 pooling 前某区域选一个 pixel 值即可，不一定要规整</p>
-<h3 id="位置-类别联合学习"><a href="#位置-类别联合学习" class="headerlink" title="位置 + 类别联合学习"></a>位置 + 类别联合学习</h3><p><strong>图片 =&gt; cnn feature map计算 =&gt; proposal应用 =&gt; feature map相应区域做 region pooling 得到固定大小的 feature map =&gt; classification &amp; regression</strong><br>用 softmax 代替 svm 分类，使用<strong>多任务损失函数(multi-task loss)</strong>，将候选框回归直接加入到 cnn 网络中训练，除去 region proposal 的提取阶段，这样的训练过程是端到端的(end-to-end)，整个网络的训练和测试十分方便<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/fast%20rcnn.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/fast%20rcnn.png"></p>
-<h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3><p>看一下性能提升的情况<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%80%A7%E8%83%BD.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%80%A7%E8%83%BD.jpg"><br>然而前提是 不考虑候选区域(proposal)的生成，如果加上候选区域(proposal)的时间<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%80%A7%E8%83%BD2.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E6%80%A7%E8%83%BD2.jpg"><br>region proposal 的提取使用 selective search，目标检测时间大多消耗在这上面(提region proposal 2~3s，而提特征分类只需0.32s)，无法满足实时应用，那么，怎么解决候选区域的计算呢？一个方法是也靠神经网络。</p>
+<h3 id="位置-类别联合学习"><a href="#位置-类别联合学习" class="headerlink" title="位置 + 类别联合学习"></a>位置 + 类别联合学习</h3><p><strong>图片 =&gt; cnn feature map计算 =&gt; proposal应用 =&gt; feature map相应区域做 region pooling 得到固定大小的 feature map =&gt; classification &amp; regression</strong><br>用 softmax 代替 svm 分类，使用<strong>多任务损失函数(multi-task loss)</strong>，将候选框回归直接加入到 cnn 网络中训练，除去 region proposal 的提取阶段，这样的训练过程是端到端的(end-to-end)，整个网络的训练和测试十分方便<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/fast%20rcnn.png" class="ful-image" alt="fast%20rcnn.png"></p>
+<h3 id="性能提升"><a href="#性能提升" class="headerlink" title="性能提升"></a>性能提升</h3><p>看一下性能提升的情况<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E6%80%A7%E8%83%BD.jpg" class="ful-image" alt="%E6%80%A7%E8%83%BD.jpg"><br>然而前提是 不考虑候选区域(proposal)的生成，如果加上候选区域(proposal)的时间<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E6%80%A7%E8%83%BD2.jpg" class="ful-image" alt="%E6%80%A7%E8%83%BD2.jpg"><br>region proposal 的提取使用 selective search，目标检测时间大多消耗在这上面(提region proposal 2~3s，而提特征分类只需0.32s)，无法满足实时应用，那么，怎么解决候选区域的计算呢？一个方法是也靠神经网络。</p>
 <h2 id="Faster-R-CNN-NIPS2015"><a href="#Faster-R-CNN-NIPS2015" class="headerlink" title="Faster R-CNN(NIPS2015)"></a>Faster R-CNN(NIPS2015)</h2><h3 id="RPN-Region-Proposal-Network"><a href="#RPN-Region-Proposal-Network" class="headerlink" title="RPN(Region Proposal Network)"></a>RPN(Region Proposal Network)</h3><p>用神经网络来解决候选区域的生成问题，主要是神经网络特征增加一组输出 <strong>RPN(Region Proposal Network)候选区域网络</strong></p>
 <ol>
 <li>直接产生候选区域，无需额外生成<br>本质上是 sliding window，RPN 只需在最后的卷积层上滑动一遍，因为 anchor 机制和候选框回归可以得到多尺度多长宽比多 region proposal</li>
 <li>直接用于后续特征图切割</li>
 </ol>
-<p>最后的特征图中有很多个 pixel，每个 pixel 和卷积核进行计算，生成 k 个可能的 prpoposal(实际中 k 往往=9，一个区域可能同时被多个物体占用，所以尽可能把可能分布的形状都生成)，每个 proposal 有个 score 的计算。如图，左边是 3x3 的卷积网络的特征图，右边是 k 个 anchor box(相当于小的候选生成单元)。我们对特征图进行 sliding window 的计算，每个 pixel 生成 256 长的向量(向量长度其实是自己设计的，vgg 建议 512-d)，这个向量用来生成 k 个 proposal 的值，以及对应的 2k score(是/不是目标物体)，4k 个 coordinates(上下左右坐标)。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn1.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn1.jpg"></p>
+<p>最后的特征图中有很多个 pixel，每个 pixel 和卷积核进行计算，生成 k 个可能的 prpoposal(实际中 k 往往=9，一个区域可能同时被多个物体占用，所以尽可能把可能分布的形状都生成)，每个 proposal 有个 score 的计算。如图，左边是 3x3 的卷积网络的特征图，右边是 k 个 anchor box(相当于小的候选生成单元)。我们对特征图进行 sliding window 的计算，每个 pixel 生成 256 长的向量(向量长度其实是自己设计的，vgg 建议 512-d)，这个向量用来生成 k 个 proposal 的值，以及对应的 2k score(是/不是目标物体)，4k 个 coordinates(上下左右坐标)。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/faster%20rcnn1.jpg" class="ful-image" alt="faster%20rcnn1.jpg"></p>
 <p><strong>网络输出的值：</strong></p>
 <ol>
 <li>是不是一个目标</li>
@@ -1507,7 +1507,7 @@
 <li>使用在 ImageNet 上预训练的模型初始化网络参数，微调 RPN 网络；</li>
 <li>使用(1)中RPN网络提取 region proposal 训练 Fast R-CNN网络；</li>
 <li>使用(2)的 Fast R-CNN 网络重新初始化 RPN, 固定卷积层进行微调；</li>
-<li>固定(2)中 Fast R-CNN 的卷积层，使用 (3) 中 RPN 提取的 region proposal 微调网络<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn2.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn2.jpg">
+<li>固定(2)中 Fast R-CNN 的卷积层，使用 (3) 中 RPN 提取的 region proposal 微调网络<img src="http://ox5l2b8f4.bkt.clouddn.com/images/faster%20rcnn2.jpg" class="ful-image" alt="faster%20rcnn2.jpg">
 </li>
 </ol>
 <p>Faster R-CNN 用了<strong>直接联合学习(joint learning)</strong> 的方法，如上图，一个网络有 4 个损失函数</p>
@@ -1517,23 +1517,23 @@
 <li>Fast R-CNN 分类</li>
 <li>Fast R-CNN 基于候选位置回归<br>联合学习的方法产生了更少的候选区，但是精度不会受到影响，速度却快了 10 倍，接近于实时处理(@K40 GPU, 12G)。</li>
 </ol>
-<h3 id="性能提升-1"><a href="#性能提升-1" class="headerlink" title="性能提升"></a>性能提升</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn3.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/faster%20rcnn3.jpg">
+<h3 id="性能提升-1"><a href="#性能提升-1" class="headerlink" title="性能提升"></a>性能提升</h3><img src="http://ox5l2b8f4.bkt.clouddn.com/images/faster%20rcnn3.jpg" class="ful-image" alt="faster%20rcnn3.jpg">
 <p>接近于实时处理，然而还是很难实时的目标探测，下面的 YOLO 这类方法可以达到实时性。</p>
-<h1 id="神经网络回归-YoLo-系列方法"><a href="#神经网络回归-YoLo-系列方法" class="headerlink" title="神经网络回归: YoLo 系列方法"></a>神经网络回归: YoLo 系列方法</h1><h2 id="YoLo"><a href="#YoLo" class="headerlink" title="YoLo"></a>YoLo</h2><h3 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h3><p>YoLo 将目标探测任务看作目标区域预测和类别预测的回归问题，用单个神经网络直接预测物品边界和类别分数，可以<strong>直接找到物体是什么，在哪里</strong>。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/YoLo.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/YoLo.jpg"></p>
+<h1 id="神经网络回归-YoLo-系列方法"><a href="#神经网络回归-YoLo-系列方法" class="headerlink" title="神经网络回归: YoLo 系列方法"></a>神经网络回归: YoLo 系列方法</h1><h2 id="YoLo"><a href="#YoLo" class="headerlink" title="YoLo"></a>YoLo</h2><h3 id="算法-1"><a href="#算法-1" class="headerlink" title="算法"></a>算法</h3><p>YoLo 将目标探测任务看作目标区域预测和类别预测的回归问题，用单个神经网络直接预测物品边界和类别分数，可以<strong>直接找到物体是什么，在哪里</strong>。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/YoLo.jpg" class="ful-image" alt="YoLo.jpg"></p>
 <p>把图片分成 SxS 的格子(grid cell)，一般是 7x7 的网络，每个网格生成：</p>
 <ol>
 <li>B 个 Bbox，4 个 coordinates + 1 个 confidence score</li>
 <li>N 个类别分数 $Pr(Class_i|Object)$<br>与 Anchor 不同的是，这里有 N 个分数，表示属于每一类的分数分别是多少</li>
 </ol>
-<p>S=7, B=2, N=20<br><strong>总共的回归目标：</strong> SxSx(5B+N)<br>​     2x5+20=30 个参数，49x30=1470 个数值，用来回归<br><strong>候选区域个数：</strong> (B=2) 98 个 &lt;&lt; Faster R-CNN<br>每个小区域生成 2 个候选区，一个小的区域就是一个粗糙的 proposal，对小区域进行大范围的 regression，找到目标<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo2.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo2.jpg"></p>
-<p><strong>损失函数:</strong><br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo3.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo3.png"></p>
+<p>S=7, B=2, N=20<br><strong>总共的回归目标：</strong> SxSx(5B+N)<br>​     2x5+20=30 个参数，49x30=1470 个数值，用来回归<br><strong>候选区域个数：</strong> (B=2) 98 个 &lt;&lt; Faster R-CNN<br>每个小区域生成 2 个候选区，一个小的区域就是一个粗糙的 proposal，对小区域进行大范围的 regression，找到目标<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/yolo2.jpg" class="ful-image" alt="yolo2.jpg"></p>
+<p><strong>损失函数:</strong><br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/yolo3.png" class="ful-image" alt="yolo3.png"></p>
 <h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p><strong>性能：</strong></p>
 <ul>
 <li>实时运行</li>
 <li>精度稍微下降</li>
 <li>定位精度较差</li>
 </ul>
-<p>经过大量的 pooling，位置的响应会有一定弱化<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo4.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/yolo4.png"></p>
+<p>经过大量的 pooling，位置的响应会有一定弱化<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/yolo4.png" class="ful-image" alt="yolo4.png"></p>
 <h3 id="Limitations"><a href="#Limitations" class="headerlink" title="Limitations"></a>Limitations</h3><ol>
 <li>YoLo 的每一个网格只预测两个 boxes，一种类别。这导致模型对相邻目标预测准确率下降。因此，YOLO 对成队列的目标（如一群鸟）识别准确率较低。</li>
 <li>YoLo 是从数据中学习预测 bounding boxes，因此，对新的或者不常见角度的目标无法识别。</li>
@@ -1545,7 +1545,7 @@
 <li>速度 21:46 (vgg base)</li>
 <li>精度 66.4:74.3</li>
 </ul>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/ssd.jpg" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/ssd.jpg">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/ssd.jpg" class="ful-image" alt="ssd.jpg">
 <blockquote>
 <p>参考链接：<br><a href="http://bealin.github.io/2016/10/23/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%96%B9%E6%B3%95%E2%80%94%E2%80%94%E4%BB%8ERCNN%E3%80%81Fast-RCNN%E5%88%B0Faster-RCNN/" target="_blank" rel="external">目标检测方法——从RCNN、Fast-RCNN到Faster-RCNN</a><br><a href="https://zhuanlan.zhihu.com/p/25045711" target="_blank" rel="external">YOLO：实时快速目标检测</a></p>
 </blockquote>
@@ -1620,9 +1620,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> Slack </tag>
-            
             <tag> chatbot </tag>
+            
+            <tag> Slack </tag>
             
             <tag> 物联网 </tag>
             
@@ -1983,9 +1983,9 @@
             
             <tag> Alexa </tag>
             
-            <tag> Slack </tag>
-            
             <tag> chatbot </tag>
+            
+            <tag> Slack </tag>
             
             <tag> 物联网 </tag>
             
@@ -7092,282 +7092,6 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
     </entry>
     
     <entry>
-      <title><![CDATA[Search Engines笔记 - Federated Search]]></title>
-      <url>http://www.shuang0420.com/2016/12/07/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/</url>
-      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。垂直数据库能获得更准确的搜索结果。那么对一个 query，我们可以放到合适的多个垂直数据库里检索，然后合并结果呈现给用户。<br><a id="more"></a><br>简单解释就是结果来自多个数据库。用图片表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs1.jpg" class="ful-image" alt="fs1.jpg"></p>
-<p>当然，大多数数据库与我们的需求并不相关，所以可以略过。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs2.jpg" class="ful-image" alt="fs2.jpg"></p>
-<p>Search portals 可以有不同的策略来处理不同类型的请求</p>
-<ul>
-<li>搜索非结构化数据<ul>
-<li>将初始查询映射为对应的结构化查询</li>
-<li>将查询定向到特定的搜索引擎<br>» 汽车，音乐，图片，视频…</li>
-</ul>
-</li>
-<li>搜索结构化数据（数据库） - 例如，邮政编码，股票代码…<ul>
-<li>调用服务或进程<ul>
-<li>如，计算器，股票价格，航班跟踪…</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs3.jpg" class="ful-image" alt="fs3.jpg">
-<h1 id="Constrains"><a href="#Constrains" class="headerlink" title="Constrains"></a>Constrains</h1><p><strong>不合作环境</strong></p>
-<ul>
-<li>没有特别的 federated search 的支持</li>
-<li>资源不受信任</li>
-</ul>
-<p><strong>合作环境</strong></p>
-<ul>
-<li>资源支持公共协议/ API</li>
-<li>资源是受信任的，能够提供准确的信息</li>
-</ul>
-<h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><ol>
-<li>Resource representation(资源表达)。即获取每个数据库的信息</li>
-<li>Resource selection(资源选择)。即对 resource/databases 进行排序，对每个查询选择少量资源进行检索。</li>
-<li>Result-merging(结果合并)。即对来自不同搜索引擎／数据库对结果进行 merge，产生最终展现给用户的 ranking list。</li>
-</ol>
-<p>其中 1 是在线下完成的(offline)，2、3 是在查询时完成的。</p>
-<h1 id="Resource-representation"><a href="#Resource-representation" class="headerlink" title="Resource representation"></a>Resource representation</h1><p><strong>如何表达资源的内容？</strong></p>
-<ol>
-<li>Bag of words: terms and frequencies</li>
-<li>Sample queries: Queries that this resource is good for</li>
-<li>Sample documents: Typical documents from this resource</li>
-</ol>
-<p>一个例子解释<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/rr1.jpg" class="ful-image" alt="rr1.jpg"></p>
-<p><strong>资源的内容信息如何获取</strong></p>
-<ul>
-<li>通过 protocol 向资源发出请求</li>
-<li>对 query log 请求相关性评价 (relevance assessments)</li>
-<li>Query-based sampling: 提交查询，查看返回的内容</li>
-</ul>
-<p>下面主要介绍第三种 <strong>query-based sampling</strong></p>
-<h2 id="Query-based-sampling"><a href="#Query-based-sampling" class="headerlink" title="Query-based sampling"></a>Query-based sampling</h2><p>过程</p>
-<ol>
-<li>选择一个初始查询</li>
-<li>重复 N 次（例如，N = 100）<ul>
-<li>向搜索引擎提交查询</li>
-<li>下载一些结果（例如，2-4 条）</li>
-<li>得到并更新 representation (words and frequencies)</li>
-<li>从新的 representation 中随机选择 query term(s)形成新的查询</li>
-</ul>
-</li>
-</ol>
-<p><strong>为什么可行?</strong><br>因为词汇分布服从 Heaps’ Law</p>
-<p><strong>如果第一条查询非常糟糕怎么办？</strong><br>如在一个医学领域的语料库里找 car，可能并没有结果(如果是 boolean ranking 的话)，那么就重新选择一个查询？</p>
-<p><strong>抽样的大小有什么影响</strong><br>一条 query 取多少文档呢？实验决定吧，2-4 篇应该就够了</p>
-<p><strong>在合作环境下随机采样</strong><br>只比 query-based sampling 好一点点</p>
-<h1 id="Resource-selection"><a href="#Resource-selection" class="headerlink" title="Resource selection"></a>Resource selection</h1><p>两大类方法，无监督学习通常是通过对 P(ri|q) 排序来解决，监督算法通常通过分类解决。</p>
-<h2 id="Unsupervised-Resource-Selection"><a href="#Unsupervised-Resource-Selection" class="headerlink" title="Unsupervised Resource Selection"></a>Unsupervised Resource Selection</h2><p><strong>Task:</strong> 给定查询 q，决定要搜索的资源(resources)</p>
-<p>无监督方法将这个问题看作 resource ranking 的问题。</p>
-<ol>
-<li>估计 p(ri|q)</li>
-<li>选择前 k 个资源<br>– 通常 k 是给出的<br>– 动态设置 k 是一个开放的研究问题</li>
-</ol>
-<p>两种具体方法，content-based methods 和 query-based methods</p>
-<ul>
-<li>Content-based methods(基于内容的方法)<br>– 对各个资源下 query 和 content 的相似度 $S(q,c)$ 来对资源进行排序<br>– 有不同的方法来实现，区分点在于：<br>» Representation type: bag of words vs. sampled documents<br>» Ranking algorithm: e.g., CORI</li>
-<li>Query-based methods(基于查询的方法)<br>– 对 query，搜索各个资源下的 query log，找出 match 的 query，然后求当前 query 和历史 query 的相似度 $S(q,q_{past})$，对资源进行排序<br>– 之前用的并不多，因为缺少好的 query log</li>
-</ul>
-<h3 id="Content-based-methods"><a href="#Content-based-methods" class="headerlink" title="Content-based methods"></a>Content-based methods</h3><h4 id="Bag-of-words-method"><a href="#Bag-of-words-method" class="headerlink" title="Bag-of-words method"></a>Bag-of-words method</h4><p>基本思想是 <strong>将每个资源视为一个（非常大的）词袋(bag of words)</strong>，排序算法可以用 KL divergence 或者 query likelihood 等方法。<br>eg. CORI<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/cori.jpg" class="ful-image" alt="cori.jpg"></p>
-<p>然而，Bag of words methods (e.g., CORI)是根据 resources 和 query 的相似度进行的排序，这并不是我们的初衷。这种方法 <strong>偏好具有较高 p(qi|Rj) 的资源</strong>，通常意义上也就是 homogeneous (通常很小)的资源。这并不是我们需要的，我们想要的是，选择能够返回更多相关文档的资源，sampled document method 更能达到这个目标。</p>
-<p><strong>Bag of words (“large documents”) 方法的特点</strong></p>
-<ul>
-<li>大文档更好的代表了 resource representation</li>
-<li>偏好具有较大比例相关内容的资源<br>– i.e., small or homogeneous resources</li>
-<li>非常有效，很有竞争力</li>
-</ul>
-<h4 id="Sample-documents-method"><a href="#Sample-documents-method" class="headerlink" title="Sample documents method"></a>Sample documents method</h4><p><strong>基本思想：</strong> 对每个资源采样然后合并得到一个 centralized index，记录每个文档来自哪个 resource。<br>eg. ReDDE<br>给定一个查询</p>
-<ol>
-<li>搜索 centralized sample index 得到相关文档</li>
-<li>取前 T 的文档</li>
-<li>检查哪些资源提供了这些相关文档</li>
-<li>估计每个资源中相关文档的数量<br>• 计算资源 i 中高于阈值 T 的文档数量 n<br>• n * resource_size / sample_size</li>
-</ol>
-<p>ReDDE 可以看作是 sample-based voting method，每个 top-ranked document 可以看作是对它属于的那个资源的一个投票。</p>
-<p><strong>特点：</strong></p>
-<ul>
-<li>高召回率: 选择包含更多相关文档的资源</li>
-<li>高准确率: 选择能够返回更多的出现在合并结果集 top T 的文档的资源</li>
-<li>有很多算法的变种<br>– 来自更可靠/权威的资源的 sample 获得更多的投票<br>– 更相关的 sample 获得更多的投票</li>
-</ul>
-<h4 id="CORI-vs-ReDDE"><a href="#CORI-vs-ReDDE" class="headerlink" title="CORI vs ReDDE"></a>CORI vs ReDDE</h4><ul>
-<li>ReDDE 相对而言更加准确<br>– 通常效果更好，几乎不会有更糟的情况</li>
-<li>当各个 collection size 的分布是 skewed 时，ReDDE 的性能优于 CORI<br>– CORI 偏向小集合。他们更可能是同质的，它错过了大型，异质的 collections<br>– ReDDE 对大型 collection 的偏见没那么强</li>
-<li>CORI 比 ReDDE 更有效<br>– 一个资源一个文档 vs. 一个资源多个文档</li>
-</ul>
-<h2 id="Supervised-Resource-Selection"><a href="#Supervised-Resource-Selection" class="headerlink" title="Supervised Resource Selection"></a>Supervised Resource Selection</h2><p>当我们有可用的训练数据时，就可以进行有监督的资源选择</p>
-<ul>
-<li>利用广泛的特征</li>
-<li>将任务框架化为分类问题</li>
-<li>让机器学习算法学习如何给不同的特征分配权重</li>
-</ul>
-<p><strong>Main issues</strong></p>
-<ul>
-<li>特征工程</li>
-<li>获取训练数据</li>
-<li>确定要选择的资源数</li>
-</ul>
-<h3 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h3><p><strong>Task:</strong> 给定一个查询，选择一个或更多的 verticals</p>
-<p>将问题定义为一个 “one-vs-all” 的分类任务</p>
-<ul>
-<li>对每个 vertical 都训练一个分类器</li>
-<li>对 “no vertical” (web only) 也训练一个分类器</li>
-<li>E.g., Arguello, et al (2009) 用了逻辑回归模型</li>
-</ul>
-<p><strong>典型的选择策略</strong></p>
-<ul>
-<li>选择一个具有最高置信度(confidence score)的分类器</li>
-<li>选择 n 个最好的分类器</li>
-<li>选择所有置信度分数高于 threshold 的分类器</li>
-</ul>
-<h3 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h3><p><strong>Query features</strong></p>
-<ul>
-<li>Boolean: keywords and regular expressions<br>– E.g., “weather”, “news”, “videos”, …</li>
-<li>Geographic: Probabilities associated with geographic entities<br>– E.g., “Pittsburgh pizza”</li>
-<li>Category: query’s affinity to a set of topic categories<pre><code>– E.g., “Cancun vacations”
-</code></pre></li>
-</ul>
-<p><strong>Corpus Features</strong><br>ReDDE 是非常流行的资源排序算法</p>
-<p><strong>Clarity (Cronen-Townsend, et al., 2002)</strong><br>Clarity 用来预测给定语料库上的查询的有效性，本质上是 top-ranked 文档和完整集合之间的 KL divergence，如果排名靠前的文档看起来像是 collection 的 random sample，搜索结果将会很差</p>
-<p><strong>Query Log Features</strong></p>
-<ul>
-<li>人工评估/点击率</li>
-</ul>
-<p><strong>qlog feature</strong></p>
-<ul>
-<li>用查询日志中的 query 来构建语言模型 v</li>
-<li>用 query likelihood 来建模 $P(q|v)=\prod_t^q P(t|v)$</li>
-<li>p(t | v) is a smoothed MLE</li>
-</ul>
-<p><strong>Soft.ReDDE feature:</strong></p>
-<ul>
-<li>用查询日志中的 query 来构建语言模型 v</li>
-<li>用 query 对外部的 collection 检索<br>– E.g., wikipedia</li>
-<li>选择前 n 个文档</li>
-<li>文档 di 的投票是 KLD (di || v)<br>– 与查询日志相似的文档具有更高的投票</li>
-</ul>
-<h1 id="Result-merging"><a href="#Result-merging" class="headerlink" title="Result merging"></a>Result merging</h1><p><strong>主要问题：</strong><br><strong>idf</strong><br>同一个 term，在不同数据库的 idf 不同怎么办？</p>
-<p><strong>scores</strong><br>不同数据库的 doc score 不是可比的怎么办？</p>
-<p><strong>＝&gt; Map resource-specific scores to resource-neutral scores</strong></p>
-<p><strong>Result merging</strong></p>
-<ul>
-<li>用所有的 sampled documents 创建一个 index (offline)</li>
-<li>从选定的资源里检索文档<br>– 因为资源并不提供文档分数，所以对每个文档计算 sim (q, d)<br>– 利用 index 的 corpus statistics 来计算每个文档的 authority score</li>
-<li>score(d) = f ( sim (q, d), authority (d) )</li>
-</ul>
-<h2 id="Semi-Supervised-Learning"><a href="#Semi-Supervised-Learning" class="headerlink" title="Semi-Supervised Learning"></a>Semi-Supervised Learning</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/ss.jpg" class="ful-image" alt="ss.jpg">
-<p>由资源 i 返回的一些文档可能同时出现在 sample index 里<br>对这些文档我们有两个分数</p>
-<ul>
-<li>Sample index (resource neutral) score</li>
-<li>Resource i (resource-specific) score<br>这就是我们用来学习 f (resource-specific) = resource-neutral 的训练数据</li>
-</ul>
-<p>对这个所需的 “normalization” 用线性函数进行建模，因为线性模型可以利用少量的数据进行训练，而且 Ad-hoc CORI 的合并就是线性的<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/ss2.jpg" class="ful-image" alt="ss2.jpg"></p>
-<p>使用线性回归(linear regression)推导出权重</p>
-<ul>
-<li>f（resource-specific score）= a×dRi，j + b = resource-neutral score</li>
-<li>每个(query, resource) pair 对应不同的函数</li>
-</ul>
-<p><strong>它有效么?</strong><br>目前为止是最好的选择，因为 mapping 是 query-specific 和 resource-specific 的。</p>
-<p><strong>有没有足够的训练数据?</strong><br>通常有，因为 resource selection 和 sample index 可以用相同的文档。如果没有，下载 1-3 篇文档来产生训练数据。</p>
-<h1 id="Large-Scale-Search-Architecture"><a href="#Large-Scale-Search-Architecture" class="headerlink" title="Large-Scale Search Architecture"></a>Large-Scale Search Architecture</h1><p>之前讲过 large-scale search architecture 的相关内容。我们可以把数据集分为两层 <strong>高价值</strong> 和 <strong>低价值</strong>，然后将每一层进行分区(shards)，再将分区分配给计算机。</p>
-<p>事实上我们并不需要对每个查询都检索每一个分区，这样做成本很高，为什么不直接搜索最好/最合适的分区呢？</p>
-<p>通常带来的结果是：</p>
-<ul>
-<li>高准确率 (尤其是 top ranks)</li>
-<li>低召回率 (可能会错过许多有用的文档)<br>– 只搜索了少量资源，这也是广泛应用的障碍</li>
-</ul>
-<p><strong>所以分为两步:</strong></p>
-<ol>
-<li>资源定义(Resource definition)<ul>
-<li>对文档分区</li>
-</ul>
-</li>
-<li>资源选择(Resource selection)<ul>
-<li>对特定 query 选择要搜索的分区</li>
-</ul>
-</li>
-</ol>
-<p>下面进行详细的介绍。</p>
-<h2 id="Resource-definition"><a href="#Resource-definition" class="headerlink" title="Resource definition"></a>Resource definition</h2><p><strong>Goal:</strong> 搜索更少的分区得到更高的 recall</p>
-<p><strong>Requirement:</strong><br>对于可能提交的任何 query，大多数的相关文档必须出现在同一个分区中</p>
-<p><strong>How:</strong><br>把 closely-associated documents 也就是相似（相同主题）的文档归到同一个分区。</p>
-<p><strong>Hypothesis:</strong> Closely-associated ≈ topically-related &amp; Each shard covers one topic/subject</p>
-<p><strong>对给定的语料库，应该使用哪些 topics/subjects?</strong></p>
-<ul>
-<li>人工开发类别? – LCSH, DMOZ, Reuters, …</li>
-<li>自动学习 corpus-specific topics? – Clustering, LDA, PLSA, …</li>
-</ul>
-<p>我们想要一个可以应用于任何语料库的解决方案，因此，需要能自动学习基于语料库的特定的主题。许多算法能产生语料库特定的“主题”：</p>
-<ul>
-<li>聚类: E.g., k-means clustering</li>
-<li>主题模型: E.g., Latent Dirichlet Allocation (LDA)</li>
-</ul>
-<p>当然我们也要保证解决方案必须对 large collections 是有效的：</p>
-<ul>
-<li>从 collection 的一个随机样本里创建主题</li>
-<li>将其余文档分配给最相似的主题</li>
-</ul>
-<h2 id="Resource-selection-1"><a href="#Resource-selection-1" class="headerlink" title="Resource selection"></a>Resource selection</h2><p><strong>Goal:</strong> 给定查询，选择最好的分区</p>
-<p><strong>两类重要的资源选择算法:</strong></p>
-<ul>
-<li>Model-based: CORI, CRCS, Taily, …</li>
-<li>Sample-based: ReDDE, SUSHI, Rank-S, …</li>
-</ul>
-<p>有很多好的算法</p>
-<ul>
-<li>Sample-based 的算法被认为是最有效的</li>
-<li>在初始工作中常常使用 ReDDE 变种</li>
-<li>Taily 和 Rank-S 也经常被研究/考虑</li>
-</ul>
-<p><strong>对每个分区采样:</strong><br>将样本存储到 sample index 里 =&gt; offline</p>
-<p><strong>给定查询</strong></p>
-<ul>
-<li>搜索 sample index，得到 top documents</li>
-<li>Top documents 对它们所在的分区投票</li>
-<li>将 query 发送到得到最多投票的分区<br>=&gt; online</li>
-</ul>
-<h2 id="Cost"><a href="#Cost" class="headerlink" title="Cost"></a>Cost</h2><p>$C_{Total}$:</p>
-<ul>
-<li>处理 inverted list 的数量</li>
-<li>用于资源选择</li>
-<li>用于分区选择</li>
-<li>I/O 和计算成本</li>
-</ul>
-<p>Selective search 分为两步：</p>
-<ul>
-<li>选择要搜索的分区（resource selection）</li>
-<li>搜索所选的分区</li>
-</ul>
-<p>ReDDE 具有更高的计算成本</p>
-<p><strong>Key techniques</strong></p>
-<ol>
-<li>Resource definition for selective search<br>– How to partition a large corpus effectively</li>
-<li>Resource representation<br>– How to represent the contents of each resource<br>– Vocabulary-based, sample-documents-based, feature-based</li>
-<li>Resource selection<br>– How to select the right resources for a particular query</li>
-</ol>
-]]></content>
-      
-        <categories>
-            
-            <category> NLP </category>
-            
-            <category> Search Engines </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> NLP </tag>
-            
-            <tag> Search Engines </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Search Engines笔记 - Diversity]]></title>
       <url>http://www.shuang0420.com/2016/12/07/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Diversity/</url>
       <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。一个 query 可能表现了不同的信息需求，之前的相关性模型可能带来的结果是大多文档只能满足同一个信息需求，所以有些用户满意了，有些 user 抓狂了。我们希望检索到的 document 是能够 diverse 的，这样的话可以尽可能的满足不同用户的需求。这一章就讲了怎么实现 diversity。<br><a id="more"></a></p>
@@ -7663,6 +7387,282 @@ Weights for each of 10*10*5 neurons: 5*5*3=75
 <li>1-α controls the discount</li>
 <li>If α=0.5<br>Value (j+1th reldoc, qi) = 0.5 ×Value (jth reldoc, qi)<br>(each document is worth 1⁄2 the previous document)</li>
 </ul>
+]]></content>
+      
+        <categories>
+            
+            <category> NLP </category>
+            
+            <category> Search Engines </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> Search Engines </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Search Engines笔记 - Federated Search]]></title>
+      <url>http://www.shuang0420.com/2016/12/07/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/</url>
+      <content type="html"><![CDATA[<p>CMU 11642 的课程笔记。垂直数据库能获得更准确的搜索结果。那么对一个 query，我们可以放到合适的多个垂直数据库里检索，然后合并结果呈现给用户。<br><a id="more"></a><br>简单解释就是结果来自多个数据库。用图片表示<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs1.jpg" class="ful-image" alt="fs1.jpg"></p>
+<p>当然，大多数数据库与我们的需求并不相关，所以可以略过。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs2.jpg" class="ful-image" alt="fs2.jpg"></p>
+<p>Search portals 可以有不同的策略来处理不同类型的请求</p>
+<ul>
+<li>搜索非结构化数据<ul>
+<li>将初始查询映射为对应的结构化查询</li>
+<li>将查询定向到特定的搜索引擎<br>» 汽车，音乐，图片，视频…</li>
+</ul>
+</li>
+<li>搜索结构化数据（数据库） - 例如，邮政编码，股票代码…<ul>
+<li>调用服务或进程<ul>
+<li>如，计算器，股票价格，航班跟踪…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/fs3.jpg" class="ful-image" alt="fs3.jpg">
+<h1 id="Constrains"><a href="#Constrains" class="headerlink" title="Constrains"></a>Constrains</h1><p><strong>不合作环境</strong></p>
+<ul>
+<li>没有特别的 federated search 的支持</li>
+<li>资源不受信任</li>
+</ul>
+<p><strong>合作环境</strong></p>
+<ul>
+<li>资源支持公共协议/ API</li>
+<li>资源是受信任的，能够提供准确的信息</li>
+</ul>
+<h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><ol>
+<li>Resource representation(资源表达)。即获取每个数据库的信息</li>
+<li>Resource selection(资源选择)。即对 resource/databases 进行排序，对每个查询选择少量资源进行检索。</li>
+<li>Result-merging(结果合并)。即对来自不同搜索引擎／数据库对结果进行 merge，产生最终展现给用户的 ranking list。</li>
+</ol>
+<p>其中 1 是在线下完成的(offline)，2、3 是在查询时完成的。</p>
+<h1 id="Resource-representation"><a href="#Resource-representation" class="headerlink" title="Resource representation"></a>Resource representation</h1><p><strong>如何表达资源的内容？</strong></p>
+<ol>
+<li>Bag of words: terms and frequencies</li>
+<li>Sample queries: Queries that this resource is good for</li>
+<li>Sample documents: Typical documents from this resource</li>
+</ol>
+<p>一个例子解释<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/rr1.jpg" class="ful-image" alt="rr1.jpg"></p>
+<p><strong>资源的内容信息如何获取</strong></p>
+<ul>
+<li>通过 protocol 向资源发出请求</li>
+<li>对 query log 请求相关性评价 (relevance assessments)</li>
+<li>Query-based sampling: 提交查询，查看返回的内容</li>
+</ul>
+<p>下面主要介绍第三种 <strong>query-based sampling</strong></p>
+<h2 id="Query-based-sampling"><a href="#Query-based-sampling" class="headerlink" title="Query-based sampling"></a>Query-based sampling</h2><p>过程</p>
+<ol>
+<li>选择一个初始查询</li>
+<li>重复 N 次（例如，N = 100）<ul>
+<li>向搜索引擎提交查询</li>
+<li>下载一些结果（例如，2-4 条）</li>
+<li>得到并更新 representation (words and frequencies)</li>
+<li>从新的 representation 中随机选择 query term(s)形成新的查询</li>
+</ul>
+</li>
+</ol>
+<p><strong>为什么可行?</strong><br>因为词汇分布服从 Heaps’ Law</p>
+<p><strong>如果第一条查询非常糟糕怎么办？</strong><br>如在一个医学领域的语料库里找 car，可能并没有结果(如果是 boolean ranking 的话)，那么就重新选择一个查询？</p>
+<p><strong>抽样的大小有什么影响</strong><br>一条 query 取多少文档呢？实验决定吧，2-4 篇应该就够了</p>
+<p><strong>在合作环境下随机采样</strong><br>只比 query-based sampling 好一点点</p>
+<h1 id="Resource-selection"><a href="#Resource-selection" class="headerlink" title="Resource selection"></a>Resource selection</h1><p>两大类方法，无监督学习通常是通过对 P(ri|q) 排序来解决，监督算法通常通过分类解决。</p>
+<h2 id="Unsupervised-Resource-Selection"><a href="#Unsupervised-Resource-Selection" class="headerlink" title="Unsupervised Resource Selection"></a>Unsupervised Resource Selection</h2><p><strong>Task:</strong> 给定查询 q，决定要搜索的资源(resources)</p>
+<p>无监督方法将这个问题看作 resource ranking 的问题。</p>
+<ol>
+<li>估计 p(ri|q)</li>
+<li>选择前 k 个资源<br>– 通常 k 是给出的<br>– 动态设置 k 是一个开放的研究问题</li>
+</ol>
+<p>两种具体方法，content-based methods 和 query-based methods</p>
+<ul>
+<li>Content-based methods(基于内容的方法)<br>– 对各个资源下 query 和 content 的相似度 $S(q,c)$ 来对资源进行排序<br>– 有不同的方法来实现，区分点在于：<br>» Representation type: bag of words vs. sampled documents<br>» Ranking algorithm: e.g., CORI</li>
+<li>Query-based methods(基于查询的方法)<br>– 对 query，搜索各个资源下的 query log，找出 match 的 query，然后求当前 query 和历史 query 的相似度 $S(q,q_{past})$，对资源进行排序<br>– 之前用的并不多，因为缺少好的 query log</li>
+</ul>
+<h3 id="Content-based-methods"><a href="#Content-based-methods" class="headerlink" title="Content-based methods"></a>Content-based methods</h3><h4 id="Bag-of-words-method"><a href="#Bag-of-words-method" class="headerlink" title="Bag-of-words method"></a>Bag-of-words method</h4><p>基本思想是 <strong>将每个资源视为一个（非常大的）词袋(bag of words)</strong>，排序算法可以用 KL divergence 或者 query likelihood 等方法。<br>eg. CORI<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/cori.jpg" class="ful-image" alt="cori.jpg"></p>
+<p>然而，Bag of words methods (e.g., CORI)是根据 resources 和 query 的相似度进行的排序，这并不是我们的初衷。这种方法 <strong>偏好具有较高 p(qi|Rj) 的资源</strong>，通常意义上也就是 homogeneous (通常很小)的资源。这并不是我们需要的，我们想要的是，选择能够返回更多相关文档的资源，sampled document method 更能达到这个目标。</p>
+<p><strong>Bag of words (“large documents”) 方法的特点</strong></p>
+<ul>
+<li>大文档更好的代表了 resource representation</li>
+<li>偏好具有较大比例相关内容的资源<br>– i.e., small or homogeneous resources</li>
+<li>非常有效，很有竞争力</li>
+</ul>
+<h4 id="Sample-documents-method"><a href="#Sample-documents-method" class="headerlink" title="Sample documents method"></a>Sample documents method</h4><p><strong>基本思想：</strong> 对每个资源采样然后合并得到一个 centralized index，记录每个文档来自哪个 resource。<br>eg. ReDDE<br>给定一个查询</p>
+<ol>
+<li>搜索 centralized sample index 得到相关文档</li>
+<li>取前 T 的文档</li>
+<li>检查哪些资源提供了这些相关文档</li>
+<li>估计每个资源中相关文档的数量<br>• 计算资源 i 中高于阈值 T 的文档数量 n<br>• n * resource_size / sample_size</li>
+</ol>
+<p>ReDDE 可以看作是 sample-based voting method，每个 top-ranked document 可以看作是对它属于的那个资源的一个投票。</p>
+<p><strong>特点：</strong></p>
+<ul>
+<li>高召回率: 选择包含更多相关文档的资源</li>
+<li>高准确率: 选择能够返回更多的出现在合并结果集 top T 的文档的资源</li>
+<li>有很多算法的变种<br>– 来自更可靠/权威的资源的 sample 获得更多的投票<br>– 更相关的 sample 获得更多的投票</li>
+</ul>
+<h4 id="CORI-vs-ReDDE"><a href="#CORI-vs-ReDDE" class="headerlink" title="CORI vs ReDDE"></a>CORI vs ReDDE</h4><ul>
+<li>ReDDE 相对而言更加准确<br>– 通常效果更好，几乎不会有更糟的情况</li>
+<li>当各个 collection size 的分布是 skewed 时，ReDDE 的性能优于 CORI<br>– CORI 偏向小集合。他们更可能是同质的，它错过了大型，异质的 collections<br>– ReDDE 对大型 collection 的偏见没那么强</li>
+<li>CORI 比 ReDDE 更有效<br>– 一个资源一个文档 vs. 一个资源多个文档</li>
+</ul>
+<h2 id="Supervised-Resource-Selection"><a href="#Supervised-Resource-Selection" class="headerlink" title="Supervised Resource Selection"></a>Supervised Resource Selection</h2><p>当我们有可用的训练数据时，就可以进行有监督的资源选择</p>
+<ul>
+<li>利用广泛的特征</li>
+<li>将任务框架化为分类问题</li>
+<li>让机器学习算法学习如何给不同的特征分配权重</li>
+</ul>
+<p><strong>Main issues</strong></p>
+<ul>
+<li>特征工程</li>
+<li>获取训练数据</li>
+<li>确定要选择的资源数</li>
+</ul>
+<h3 id="Framework"><a href="#Framework" class="headerlink" title="Framework"></a>Framework</h3><p><strong>Task:</strong> 给定一个查询，选择一个或更多的 verticals</p>
+<p>将问题定义为一个 “one-vs-all” 的分类任务</p>
+<ul>
+<li>对每个 vertical 都训练一个分类器</li>
+<li>对 “no vertical” (web only) 也训练一个分类器</li>
+<li>E.g., Arguello, et al (2009) 用了逻辑回归模型</li>
+</ul>
+<p><strong>典型的选择策略</strong></p>
+<ul>
+<li>选择一个具有最高置信度(confidence score)的分类器</li>
+<li>选择 n 个最好的分类器</li>
+<li>选择所有置信度分数高于 threshold 的分类器</li>
+</ul>
+<h3 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h3><p><strong>Query features</strong></p>
+<ul>
+<li>Boolean: keywords and regular expressions<br>– E.g., “weather”, “news”, “videos”, …</li>
+<li>Geographic: Probabilities associated with geographic entities<br>– E.g., “Pittsburgh pizza”</li>
+<li>Category: query’s affinity to a set of topic categories<pre><code>– E.g., “Cancun vacations”
+</code></pre></li>
+</ul>
+<p><strong>Corpus Features</strong><br>ReDDE 是非常流行的资源排序算法</p>
+<p><strong>Clarity (Cronen-Townsend, et al., 2002)</strong><br>Clarity 用来预测给定语料库上的查询的有效性，本质上是 top-ranked 文档和完整集合之间的 KL divergence，如果排名靠前的文档看起来像是 collection 的 random sample，搜索结果将会很差</p>
+<p><strong>Query Log Features</strong></p>
+<ul>
+<li>人工评估/点击率</li>
+</ul>
+<p><strong>qlog feature</strong></p>
+<ul>
+<li>用查询日志中的 query 来构建语言模型 v</li>
+<li>用 query likelihood 来建模 $P(q|v)=\prod_t^q P(t|v)$</li>
+<li>p(t | v) is a smoothed MLE</li>
+</ul>
+<p><strong>Soft.ReDDE feature:</strong></p>
+<ul>
+<li>用查询日志中的 query 来构建语言模型 v</li>
+<li>用 query 对外部的 collection 检索<br>– E.g., wikipedia</li>
+<li>选择前 n 个文档</li>
+<li>文档 di 的投票是 KLD (di || v)<br>– 与查询日志相似的文档具有更高的投票</li>
+</ul>
+<h1 id="Result-merging"><a href="#Result-merging" class="headerlink" title="Result merging"></a>Result merging</h1><p><strong>主要问题：</strong><br><strong>idf</strong><br>同一个 term，在不同数据库的 idf 不同怎么办？</p>
+<p><strong>scores</strong><br>不同数据库的 doc score 不是可比的怎么办？</p>
+<p><strong>＝&gt; Map resource-specific scores to resource-neutral scores</strong></p>
+<p><strong>Result merging</strong></p>
+<ul>
+<li>用所有的 sampled documents 创建一个 index (offline)</li>
+<li>从选定的资源里检索文档<br>– 因为资源并不提供文档分数，所以对每个文档计算 sim (q, d)<br>– 利用 index 的 corpus statistics 来计算每个文档的 authority score</li>
+<li>score(d) = f ( sim (q, d), authority (d) )</li>
+</ul>
+<h2 id="Semi-Supervised-Learning"><a href="#Semi-Supervised-Learning" class="headerlink" title="Semi-Supervised Learning"></a>Semi-Supervised Learning</h2><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/ss.jpg" class="ful-image" alt="ss.jpg">
+<p>由资源 i 返回的一些文档可能同时出现在 sample index 里<br>对这些文档我们有两个分数</p>
+<ul>
+<li>Sample index (resource neutral) score</li>
+<li>Resource i (resource-specific) score<br>这就是我们用来学习 f (resource-specific) = resource-neutral 的训练数据</li>
+</ul>
+<p>对这个所需的 “normalization” 用线性函数进行建模，因为线性模型可以利用少量的数据进行训练，而且 Ad-hoc CORI 的合并就是线性的<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Federated%20Search/ss2.jpg" class="ful-image" alt="ss2.jpg"></p>
+<p>使用线性回归(linear regression)推导出权重</p>
+<ul>
+<li>f（resource-specific score）= a×dRi，j + b = resource-neutral score</li>
+<li>每个(query, resource) pair 对应不同的函数</li>
+</ul>
+<p><strong>它有效么?</strong><br>目前为止是最好的选择，因为 mapping 是 query-specific 和 resource-specific 的。</p>
+<p><strong>有没有足够的训练数据?</strong><br>通常有，因为 resource selection 和 sample index 可以用相同的文档。如果没有，下载 1-3 篇文档来产生训练数据。</p>
+<h1 id="Large-Scale-Search-Architecture"><a href="#Large-Scale-Search-Architecture" class="headerlink" title="Large-Scale Search Architecture"></a>Large-Scale Search Architecture</h1><p>之前讲过 large-scale search architecture 的相关内容。我们可以把数据集分为两层 <strong>高价值</strong> 和 <strong>低价值</strong>，然后将每一层进行分区(shards)，再将分区分配给计算机。</p>
+<p>事实上我们并不需要对每个查询都检索每一个分区，这样做成本很高，为什么不直接搜索最好/最合适的分区呢？</p>
+<p>通常带来的结果是：</p>
+<ul>
+<li>高准确率 (尤其是 top ranks)</li>
+<li>低召回率 (可能会错过许多有用的文档)<br>– 只搜索了少量资源，这也是广泛应用的障碍</li>
+</ul>
+<p><strong>所以分为两步:</strong></p>
+<ol>
+<li>资源定义(Resource definition)<ul>
+<li>对文档分区</li>
+</ul>
+</li>
+<li>资源选择(Resource selection)<ul>
+<li>对特定 query 选择要搜索的分区</li>
+</ul>
+</li>
+</ol>
+<p>下面进行详细的介绍。</p>
+<h2 id="Resource-definition"><a href="#Resource-definition" class="headerlink" title="Resource definition"></a>Resource definition</h2><p><strong>Goal:</strong> 搜索更少的分区得到更高的 recall</p>
+<p><strong>Requirement:</strong><br>对于可能提交的任何 query，大多数的相关文档必须出现在同一个分区中</p>
+<p><strong>How:</strong><br>把 closely-associated documents 也就是相似（相同主题）的文档归到同一个分区。</p>
+<p><strong>Hypothesis:</strong> Closely-associated ≈ topically-related &amp; Each shard covers one topic/subject</p>
+<p><strong>对给定的语料库，应该使用哪些 topics/subjects?</strong></p>
+<ul>
+<li>人工开发类别? – LCSH, DMOZ, Reuters, …</li>
+<li>自动学习 corpus-specific topics? – Clustering, LDA, PLSA, …</li>
+</ul>
+<p>我们想要一个可以应用于任何语料库的解决方案，因此，需要能自动学习基于语料库的特定的主题。许多算法能产生语料库特定的“主题”：</p>
+<ul>
+<li>聚类: E.g., k-means clustering</li>
+<li>主题模型: E.g., Latent Dirichlet Allocation (LDA)</li>
+</ul>
+<p>当然我们也要保证解决方案必须对 large collections 是有效的：</p>
+<ul>
+<li>从 collection 的一个随机样本里创建主题</li>
+<li>将其余文档分配给最相似的主题</li>
+</ul>
+<h2 id="Resource-selection-1"><a href="#Resource-selection-1" class="headerlink" title="Resource selection"></a>Resource selection</h2><p><strong>Goal:</strong> 给定查询，选择最好的分区</p>
+<p><strong>两类重要的资源选择算法:</strong></p>
+<ul>
+<li>Model-based: CORI, CRCS, Taily, …</li>
+<li>Sample-based: ReDDE, SUSHI, Rank-S, …</li>
+</ul>
+<p>有很多好的算法</p>
+<ul>
+<li>Sample-based 的算法被认为是最有效的</li>
+<li>在初始工作中常常使用 ReDDE 变种</li>
+<li>Taily 和 Rank-S 也经常被研究/考虑</li>
+</ul>
+<p><strong>对每个分区采样:</strong><br>将样本存储到 sample index 里 =&gt; offline</p>
+<p><strong>给定查询</strong></p>
+<ul>
+<li>搜索 sample index，得到 top documents</li>
+<li>Top documents 对它们所在的分区投票</li>
+<li>将 query 发送到得到最多投票的分区<br>=&gt; online</li>
+</ul>
+<h2 id="Cost"><a href="#Cost" class="headerlink" title="Cost"></a>Cost</h2><p>$C_{Total}$:</p>
+<ul>
+<li>处理 inverted list 的数量</li>
+<li>用于资源选择</li>
+<li>用于分区选择</li>
+<li>I/O 和计算成本</li>
+</ul>
+<p>Selective search 分为两步：</p>
+<ul>
+<li>选择要搜索的分区（resource selection）</li>
+<li>搜索所选的分区</li>
+</ul>
+<p>ReDDE 具有更高的计算成本</p>
+<p><strong>Key techniques</strong></p>
+<ol>
+<li>Resource definition for selective search<br>– How to partition a large corpus effectively</li>
+<li>Resource representation<br>– How to represent the contents of each resource<br>– Vocabulary-based, sample-documents-based, feature-based</li>
+<li>Resource selection<br>– How to select the right resources for a particular query</li>
+</ol>
 ]]></content>
       
         <categories>
@@ -8806,74 +8806,6 @@ python nb.py split.train split.test</pre>
     </entry>
     
     <entry>
-      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
-      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
-      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
-<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
-<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
-<li>双方共享一把密钥。</li>
-<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
-<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
-</ol>
-<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
-<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
-<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
-<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
-<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
-<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
-<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
-<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
-<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
-<li>A、B 可以用 session key 来交流了。</li>
-</ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
-<p>可以防止 replay，但 <strong>问题是:</strong></p>
-<ul>
-<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
-<li>S 是唯一可能导致失败的因素。</li>
-</ul>
-<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
-<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
-<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
-<ol>
-<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
-<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
-<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
-</ol>
-<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
-<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
-<li>A 和 B 想要建立一个共享的密钥</li>
-<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
-<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
-<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
-<li>B 有很多公钥所以 A 发送公钥的名字。</li>
-<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
-<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
-</ol>
-<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
-<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
-<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
-<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
-<p>用于数字签名，双方都算了一遍 MAC</p>
-<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Distributed Systems </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Web Service </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Distributed Systems笔记－middlewares]]></title>
       <url>http://www.shuang0420.com/2016/11/02/Web-service-middlewares/</url>
       <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍分布式系统中解决 interoperability concern 的几种方案 Cobra’s CDR, Java serialization 和 XML/JSON。这章整理的比较简单。<br><a id="more"></a></p>
@@ -8929,6 +8861,74 @@ python nb.py split.train split.test</pre>
 </ul>
 <h3 id="Handle-duplicates"><a href="#Handle-duplicates" class="headerlink" title="Handle duplicates"></a>Handle duplicates</h3><p>根据 client 的 acknowledgement 来清空历史。</p>
 <h2 id="Request-Reply-Message-Structure"><a href="#Request-Reply-Message-Structure" class="headerlink" title="Request-Reply Message Structure"></a>Request-Reply Message Structure</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">messageType: int (0=Request, 1=Reply)</div><div class="line">requestId: int</div><div class="line">objectReference: RemoteObjectRef</div><div class="line">methodId: int or Method</div><div class="line">argument: array of bytes</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> Distributed Systems </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Web Service </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Distributed Systems笔记－Cryptographic Protocols]]></title>
+      <url>http://www.shuang0420.com/2016/11/02/Cryptographic-Protocols/</url>
+      <content type="html"><![CDATA[<p>CMU 95702 Distributed Systems 笔记。简单介绍几种加密、签名方式。<br><a id="more"></a></p>
+<p><a href="http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/">AES 和 RSA 笔记</a> 的续章。</p>
+<h1 id="Scenario-1-Like-WWII-和-TEA"><a href="#Scenario-1-Like-WWII-和-TEA" class="headerlink" title="Scenario 1 (Like WWII 和 TEA)"></a>Scenario 1 (Like WWII 和 TEA)</h1><ol>
+<li>双方共享一把密钥。</li>
+<li>A 用密钥对信息加密。$E(K_AB,M_i)$，发送给 B</li>
+<li>B 用 $D(K_AB,{M_i}K_AB)$ 解密读取信息。</li>
+</ol>
+<p><strong>问题是：</strong><br>双方如何同步密钥？<br>怎么确定 B 收到的 ${M_i}K_AB$ 不是 replay of an old message?</p>
+<h1 id="Scenario-2-Like-Kerberos"><a href="#Scenario-2-Like-Kerberos" class="headerlink" title="Scenario 2 (Like Kerberos)"></a>Scenario 2 (Like Kerberos)</h1><ol>
+<li>A 向第三方 S 索要一张和 B 通话的 ticket。</li>
+<li>S 知道 A 的 password 所以他可以计算 $K_A$</li>
+<li>S 发送给 A $\{\{Ticket\}K_B,K_{AB}\}, K_A$</li>
+<li>A 知道自己的 password 所以可以计算 $K_A$，注意 A 的 password 不会在网络中传输。</li>
+<li>A 可以计算出 $K_{AB}$ 和 $\{Ticket\}K_B$</li>
+<li>A 向 B 发送一个读的请求，发送的信息是 $\{Ticket\}K_B$,Alice,Read</li>
+<li>B 用 $K_B$ 来读取 Ticket 的内容，Ticket 的内容是 $K_{AB}$，Alice</li>
+<li>A、B 可以用 session key 来交流了。</li>
+</ol>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/scenario2.jpg" class="ful-image" alt="Cryptographic-Protocols/scenario2.jpg">
+<p>可以防止 replay，但 <strong>问题是:</strong></p>
+<ul>
+<li>难以 scale,S 必须知道 $K_A$, $K_B$,…</li>
+<li>S 是唯一可能导致失败的因素。</li>
+</ul>
+<p>Kerberos 这一名词来源于希腊神话“三个头的狗——地狱之门守护者”系统设计上采用客户端/服务器结构与DES加密技术，并且能够进行相互认证，即客户端和服务器端均可对对方进行身份认证。可以用于防止窃听、防止 repla y攻击、保护数据完整性等场合，是一种应用对称密钥体制进行密钥管理的系统。</p>
+<h2 id="Needham-Schroeder-protocol"><a href="#Needham-Schroeder-protocol" class="headerlink" title="Needham-Schroeder protocol"></a>Needham-Schroeder protocol</h2><p>这层协议是 Kerberos 的基础，在这之后，Alice and Bob share a secret (KAB)</p>
+<h1 id="Scenario-3-Authentication"><a href="#Scenario-3-Authentication" class="headerlink" title="Scenario 3 (Authentication)"></a>Scenario 3 (Authentication)</h1><p>数字签名，用私钥签名，公钥解密。注意公钥加密比私钥慢 100-1000倍。<br>很难找到 digest(M1) == digest(M2)</p>
+<ol>
+<li>A 发送 Message＋用密钥加密的 Message 的 digest。{Digest(M)}$K_Apriv$</li>
+<li>B 收到签名的文件，取出 Message，计算 Message 的 digest。</li>
+<li>B 用 A 的公钥 $K_Apub$ 解密 {Digest(M)}$K_Apriv$ 然后和自己算的 digest 比较，如果匹配，签名验证。</li>
+</ol>
+<p><strong>问题：</strong><br>如果 A 说他没有签名？说自己的私钥泄漏了？只要 A、B 互相信任，还是有用的。</p>
+<h1 id="Scenario-4-Like-SSL"><a href="#Scenario-4-Like-SSL" class="headerlink" title="Scenario 4 (Like SSL)"></a>Scenario 4 (Like SSL)</h1><ol>
+<li>A 和 B 想要建立一个共享的密钥</li>
+<li>A 拿到 B 的公钥，这个公钥被可信任的第三方 T 签名认证了，所以这个公钥确实是 B 的。</li>
+<li>A 确认第三方 T 对 $K_Bpub$ 签名了。怎么确认？A 和 T 都有 B 的 public key，T 把 $K_Bpub$ 加密后给 A，A 对其进行解密然后比对自己手上的 B 的 public key 看是不是一致。</li>
+<li>A 生成了 $K_{AB}$ 并用 $K_Bpub$ 加密。</li>
+<li>B 有很多公钥所以 A 发送公钥的名字。</li>
+<li>A 发送了 key name $\{K_{AB}\}K_Bpub$</li>
+<li>B 用这个 key name 选择了对应的私钥并计算 $\{\{K_{AB}\}K_Bpub\}K_Bpriv == K_{AB}$</li>
+</ol>
+<p>最后 A 和 B 共享了对称的钥匙 $K_{AB}$</p>
+<p><strong>问题：</strong><br>在 A 第一次得到 B 的公钥时（A 认为这是 B 的公钥，然而这并不是，这是 C 也经过第三方 T 签名认证的公钥。</p>
+<p>TLS 和这个相似<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/Cryptographic-Protocols/Cryptographic-Protocols/TLS_config.jpg" class="ful-image" alt="Cryptographic-Protocols/TLS_config.jpg"></p>
+<h1 id="Message-Authentication-Codes-MACs"><a href="#Message-Authentication-Codes-MACs" class="headerlink" title="Message Authentication Codes(MACs)"></a>Message Authentication Codes(MACs)</h1><p>对称加密生成的数字签名。<br>双方都有 Key(K)，sender 把 Key(K) 通过 MAC 算法加密后连同 message 一起给 receiver，receiver 比对收到的 MAC 和自己用 MAC 算法对自己这里的 Key(K) 加密后的 MAC 是否一致，如果一致，那么信息真实性和完整性就得到了证实。</p>
+<p>用于数字签名，双方都算了一遍 MAC</p>
+<h1 id="JAVA-里的-keystore-和-truststore"><a href="#JAVA-里的-keystore-和-truststore" class="headerlink" title="JAVA 里的 keystore 和 truststore"></a>JAVA 里的 keystore 和 truststore</h1><p>keystore: 存了公钥、私钥、证书<br>truststore：存了公钥，只能存 server 发过来的东西</p>
 ]]></content>
       
         <categories>

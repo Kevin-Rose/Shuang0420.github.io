@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20-%20%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/</loc>
     
-    <lastmod>2017-10-12T09:22:39.000Z</lastmod>
+    <lastmod>2017-10-12T09:26:50.000Z</lastmod>
     
   </url>
   
@@ -16,14 +16,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/11/02/Web-Service-Design-Patterns/</loc>
+    <loc>http://www.shuang0420.com/2016/11/02/Web-service-middlewares/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/06/18/AWS%20API%20Gateway%20+%20Lambda%20%E6%95%99%E7%A8%8B%20-%20%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</loc>
+    <loc>http://www.shuang0420.com/2017/06/19/AWS%20API%20Gateway%20+%20Lambda%20+%20Slack%20App%20-%20%E6%96%B0%E5%BB%BA%20slash%20command/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -37,14 +37,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/06/09/AWS%20Lex%20%E5%88%9B%E5%BB%BA%20Slack%20Bot%20-%20Integrating%20Lex%20Bot%20with%20Slack/</loc>
+    <loc>http://www.shuang0420.com/2017/07/04/AWS%20Lambda%20+%20API%20Gateway%20+%20DynamoDB%20%E6%B7%BB%E5%8A%A0%20slash%20command%20%E5%BE%85%E5%8A%9E%E6%B8%85%E5%8D%95/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/11/28/Bayesian-Learning/</loc>
+    <loc>http://www.shuang0420.com/2017/06/09/AWS%20Lex%20%E5%88%9B%E5%BB%BA%20Slack%20Bot%20-%20Integrating%20Lex%20Bot%20with%20Slack/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -58,13 +58,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/07/04/AWS%20Lambda%20+%20API%20Gateway%20+%20DynamoDB%20%E6%B7%BB%E5%8A%A0%20slash%20command%20%E5%BE%85%E5%8A%9E%E6%B8%85%E5%8D%95/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2017/05/02/Alexa%20%E5%BC%80%E5%8F%91%E6%96%B0%E6%8A%80%E8%83%BD/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -72,7 +65,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/07/15/CCF-GAIR%20%E5%8F%82%E4%BC%9A%E7%AC%94%E8%AE%B0/</loc>
+    <loc>http://www.shuang0420.com/2016/11/28/Bayesian-Learning/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2017/02/06/CMU%2011642%20Search%20Engines%20-%20%E5%A4%A7%E7%BA%B2%E6%A2%B3%E7%90%86/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -86,7 +86,7 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/02/06/CMU%2011642%20Search%20Engines%20-%20%E5%A4%A7%E7%BA%B2%E6%A2%B3%E7%90%86/</loc>
+    <loc>http://www.shuang0420.com/2017/07/15/CCF-GAIR%20%E5%8F%82%E4%BC%9A%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -107,13 +107,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2017/08/21/EMNLP%202017%20%E5%8C%97%E4%BA%AC%E8%AE%BA%E6%96%87%E6%8A%A5%E5%91%8A%E4%BC%9A%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -128,7 +121,21 @@
   </url>
   
   <url>
+    <loc>http://www.shuang0420.com/2016/12/04/EM%E7%AE%97%E6%B3%95/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.shuang0420.com/2016/05/18/Gensim-%E7%94%A8Python%E5%81%9A%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2016/05/12/Github-Pages-Hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -149,21 +156,7 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/05/12/Github-Pages-Hexo%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2016/10/07/Hexo%20local%20search%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.shuang0420.com/2016/05/16/JGibbLDA%E5%AE%9E%E6%88%98/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -177,14 +170,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/07/07/Meteor-App-Recommender-System/</loc>
+    <loc>http://www.shuang0420.com/2016/05/16/JGibbLDA%E5%AE%9E%E6%88%98/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/04/07/NLP%20%E7%AC%94%E8%AE%B0%20-%20Knowledge%20Representation/</loc>
+    <loc>http://www.shuang0420.com/2016/07/07/Meteor-App-Recommender-System/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -198,14 +191,21 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/02/24/NLP%20%E7%AC%94%E8%AE%B0%20-%20Language%20models%20and%20smoothing/</loc>
+    <loc>http://www.shuang0420.com/2017/09/20/NLP%20%E7%AC%94%E8%AE%B0%20-%20Discourse%20Analysis/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/09/20/NLP%20%E7%AC%94%E8%AE%B0%20-%20Discourse%20Analysis/</loc>
+    <loc>http://www.shuang0420.com/2017/04/07/NLP%20%E7%AC%94%E8%AE%B0%20-%20Knowledge%20Representation/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2017/02/24/NLP%20%E7%AC%94%E8%AE%B0%20-%20Language%20models%20and%20smoothing/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -233,14 +233,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/03/02/NLP%20%E7%AC%94%E8%AE%B0%20-%20Question%20Answering%20System/</loc>
+    <loc>http://www.shuang0420.com/2017/02/24/NLP%20%E7%AC%94%E8%AE%B0%20-%20Part%20of%20speech%20tags/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/02/24/NLP%20%E7%AC%94%E8%AE%B0%20-%20Part%20of%20speech%20tags/</loc>
+    <loc>http://www.shuang0420.com/2017/03/02/NLP%20%E7%AC%94%E8%AE%B0%20-%20Question%20Answering%20System/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -268,13 +268,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/02/01/NLP%20%E7%AC%94%E8%AE%B0%20-%20Words,%20morphology,%20and%20lexicons/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2017/02/28/NLP%20%E7%AC%94%E8%AE%B0%20-%20Syntax%20and%20Parsing/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -283,6 +276,13 @@
   
   <url>
     <loc>http://www.shuang0420.com/2017/05/10/NLP%20%E7%AC%94%E8%AE%B0%20-%20Text%20Summarization/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2017/02/01/NLP%20%E7%AC%94%E8%AE%B0%20-%20Words,%20morphology,%20and%20lexicons/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -303,6 +303,13 @@
   </url>
   
   <url>
+    <loc>http://www.shuang0420.com/2017/04/13/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.shuang0420.com/2017/03/18/NLP%20%E7%AC%94%E8%AE%B0%20-Information%20Extraction/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -311,13 +318,6 @@
   
   <url>
     <loc>http://www.shuang0420.com/2017/04/27/NLP%E7%AC%94%E8%AE%B0%20-%20NLU%E4%B9%8B%E6%84%8F%E5%9B%BE%E5%88%86%E7%B1%BB/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.shuang0420.com/2017/04/13/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -366,13 +366,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/01/SHA-1%E5%92%8CMD5%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2017/04/06/QA%20system%20-%20Question%20Generation/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -380,7 +373,7 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/15/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Cache/</loc>
+    <loc>http://www.shuang0420.com/2016/10/01/SHA-1%E5%92%8CMD5%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -388,6 +381,13 @@
   
   <url>
     <loc>http://www.shuang0420.com/2016/09/30/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Best-Match/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2016/10/15/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Cache/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -436,14 +436,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/14/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Index/</loc>
+    <loc>http://www.shuang0420.com/2016/10/02/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Information%20Needs/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/02/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Information%20Needs/</loc>
+    <loc>http://www.shuang0420.com/2016/10/14/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Index/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -464,14 +464,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/09/11/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Query%20Processing/</loc>
+    <loc>http://www.shuang0420.com/2016/10/10/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Pseudo%20Relevance%20Feedback/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/10/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Pseudo%20Relevance%20Feedback/</loc>
+    <loc>http://www.shuang0420.com/2016/09/11/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Query%20Processing/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -506,13 +506,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/11/02/Web-service-middlewares/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2016/07/10/Tfidf%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -520,7 +513,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/06/19/AWS%20API%20Gateway%20+%20Lambda%20+%20Slack%20App%20-%20%E6%96%B0%E5%BB%BA%20slash%20command/</loc>
+    <loc>http://www.shuang0420.com/2016/11/02/Web-Service-Design-Patterns/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2016/05/19/AP%E8%81%9A%E7%B1%BB/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -534,14 +534,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/05/30/gensim-word2vec%E5%AE%9E%E6%88%98/</loc>
+    <loc>http://www.shuang0420.com/2016/06/01/gensim-doc2vec%E5%AE%9E%E6%88%98/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/06/01/gensim-doc2vec%E5%AE%9E%E6%88%98/</loc>
+    <loc>http://www.shuang0420.com/2016/05/30/gensim-word2vec%E5%AE%9E%E6%88%98/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -555,14 +555,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/03/22/linux-python%E8%BD%AC%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
+    <loc>http://www.shuang0420.com/2016/12/26/kNN%E5%B0%8F%E7%BB%93/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/12/26/kNN%E5%B0%8F%E7%BB%93/</loc>
+    <loc>http://www.shuang0420.com/2016/03/22/linux-python%E8%BD%AC%E7%A0%81%E9%97%AE%E9%A2%98/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -653,14 +653,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/06/16/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/</loc>
+    <loc>http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/10/02/AES%20%E5%92%8C%20RSA%E7%AC%94%E8%AE%B0/</loc>
+    <loc>http://www.shuang0420.com/2017/06/16/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -730,14 +730,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/09/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20TWO-SUM%20%E9%97%AE%E9%A2%98%E5%92%8C%20python%20dict/</loc>
+    <loc>http://www.shuang0420.com/2016/12/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20%E5%A0%86/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/12/27/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20%E5%A0%86/</loc>
+    <loc>http://www.shuang0420.com/2016/09/18/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20TWO-SUM%20%E9%97%AE%E9%A2%98%E5%92%8C%20python%20dict/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -800,6 +800,13 @@
   </url>
   
   <url>
+    <loc>http://www.shuang0420.com/2016/09/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20%E9%93%BE%E8%A1%A8/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.shuang0420.com/2016/09/19/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20%E6%95%B0%E7%BB%84/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -808,13 +815,6 @@
   
   <url>
     <loc>http://www.shuang0420.com/2016/06/17/%E7%88%AC%E8%99%AB%E6%80%BB%E7%BB%93-%E5%9B%9B-%E5%88%86%E5%B8%83%E5%BC%8F%E7%88%AC%E8%99%AB/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.shuang0420.com/2016/09/04/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95%20--%20%E9%93%BE%E8%A1%A8/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -842,20 +842,6 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/05/19/AP%E8%81%9A%E7%B1%BB/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.shuang0420.com/2016/11/23/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E9%93%BE%E5%BC%8F%E5%8F%8D%E5%90%91%E6%A2%AF%E5%BA%A6%E4%BC%A0%E5%AF%BC/</loc>
-    
-    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.shuang0420.com/2016/05/25/%E7%9F%AD%E9%97%AE%E9%A2%98%E5%BD%92%E4%B8%80%E5%8C%96-LSI%E6%A8%A1%E5%9E%8B/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
@@ -870,7 +856,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/04/22/%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</loc>
+    <loc>http://www.shuang0420.com/2017/06/18/AWS%20API%20Gateway%20+%20Lambda%20%E6%95%99%E7%A8%8B%20-%20%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2016/11/23/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E9%93%BE%E5%BC%8F%E5%8F%8D%E5%90%91%E6%A2%AF%E5%BA%A6%E4%BC%A0%E5%AF%BC/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -885,6 +878,13 @@
   
   <url>
     <loc>http://www.shuang0420.com/2016/08/20/%E8%81%8A%E5%A4%A9%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%92%8C%E6%99%BA%E8%83%BD%E5%AE%A2%E6%9C%8D(%E7%AC%94%E8%AE%B0)/</loc>
+    
+    <lastmod>2017-10-11T13:10:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.shuang0420.com/2016/04/22/%E8%AE%A9%E8%BF%9B%E7%A8%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E5%8F%AF%E9%9D%A0%E8%BF%90%E8%A1%8C%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E6%B3%95/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
@@ -926,14 +926,14 @@
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2017/07/21/%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20RNN%20%E7%AC%94%E8%AE%B0/</loc>
+    <loc>http://www.shuang0420.com/2016/06/21/%E8%AF%8D%E5%90%91%E9%87%8F%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0%EF%BC%88%E7%AE%80%E6%B4%81%E7%89%88%EF%BC%89/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://www.shuang0420.com/2016/06/21/%E8%AF%8D%E5%90%91%E9%87%8F%E6%80%BB%E7%BB%93%E7%AC%94%E8%AE%B0%EF%BC%88%E7%AE%80%E6%B4%81%E7%89%88%EF%BC%89/</loc>
+    <loc>http://www.shuang0420.com/2017/07/21/%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20RNN%20%E7%AC%94%E8%AE%B0/</loc>
     
     <lastmod>2017-10-11T13:10:56.000Z</lastmod>
     
