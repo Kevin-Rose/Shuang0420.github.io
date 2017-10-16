@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_formula.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/email.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/graph.png">
-<meta property="og:updated_time" content="2017-10-16T09:07:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T09:09:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="经典的端到端聊天模型">
 <meta name="twitter:description" content="讲一个经典的 End-to-end 聊天模型及应用。">
@@ -380,7 +380,12 @@
 
       
         <p>讲一个经典的 End-to-end 聊天模型及应用。<br><a id="more"></a></p>
-<p>主要涉及到下面两篇论文<br><a href="https://arxiv.org/pdf/1506.08909.pdf" target="_blank" rel="external">The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems</a><br><a href="http://www.kdd.org/kdd2016/papers/files/Paper_1069.pdf" target="_blank" rel="external">Smart reply, automated response suggestion in email</a></p>
+<p>主要涉及到下面几篇论文</p>
+<ul>
+<li><a href="https://arxiv.org/pdf/1506.08909.pdf" target="_blank" rel="external">The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems</a></li>
+<li><a href="http://www.kdd.org/kdd2016/papers/files/Paper_1069.pdf" target="_blank" rel="external">Smart reply, automated response suggestion in email</a></li>
+<li><a href="https://arxiv.org/abs/1603.08023" target="_blank" rel="external">How NOT To Evaluate Your Dialogue System</a></li>
+</ul>
 <h1 id="Modular-system-vs-end-to-end-system"><a href="#Modular-system-vs-end-to-end-system" class="headerlink" title="Modular system vs end-to-end system"></a>Modular system vs end-to-end system</h1><p>第一部分先简单比较一下对话系统里，modular system 和 end-to-end 的不同。</p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png">
 <p>如上图，传统的一个对话系统由 Speech Recognizer, Language Interpreter, State Tracker, Response Generator, Natural Language Generator, Speech Synthesizer 这么多个子模块拼接而成，这种系统称为 Modular system，在系统中每个组件单独训练，来优化一个单独的中间目标(如 slot-filling)。而 end-to-end system 相当于用一个系统替代了上图中框起来的四个组件，来比较一下这两种系统。</p>
