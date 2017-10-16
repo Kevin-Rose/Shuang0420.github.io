@@ -6,7 +6,7 @@
     <entry>
       <title><![CDATA[经典的端到端聊天模型]]></title>
       <url>http://www.shuang0420.com/2017/10/05/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/</url>
-      <content type="html"><![CDATA[<p>讲一个经典的 End-to-end 聊天模型及应用。<br><a id="more"></a></p>
+      <content type="html"><![CDATA[<p>介绍一下经典的 End-to-end 聊天模型及应用，包括检索式模型、生成式模型，以及 Google 邮件自动回复的应用。<br><a id="more"></a></p>
 <p>主要涉及到下面几篇论文</p>
 <ul>
 <li><a href="https://arxiv.org/pdf/1506.08909.pdf" target="_blank" rel="external">The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems</a></li>
