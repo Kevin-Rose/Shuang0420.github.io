@@ -18,10 +18,10 @@
 <p>如上图，传统的一个对话系统由 Speech Recognizer, Language Interpreter, State Tracker, Response Generator, Natural Language Generator, Speech Synthesizer 这么多个子模块拼接而成，这种系统称为 Modular system，在系统中每个组件单独训练，来优化一个单独的中间目标(如 slot-filling)。而 end-to-end system 相当于用一个系统替代了上图中框起来的四个组件，来比较一下这两种系统。</p>
 <p><strong>Modular system vs end-to-end system</strong></p>
 <ul>
-<li>目标函数<br>modular system 有两个及以上的目标函数<br>end-to-end 通常只有一个目标函数</li>
-<li>所需数据<br>modular system 更容易训练，需要的数据少<br>end-to-end 需要大量数据</li>
-<li>标注<br>modular system 需要大量的人工的特征工程，需要预先定义 state, action spaces 等等<br>end-to-end 不需要预先定义的 state/action spaces</li>
-<li>效果<br>modular system 在 highly structured tasks/narrow domain 上的效果更出色，但泛化能力有限<br>end-to-end 在 general purpose 的效果上比较好</li>
+<li><strong>目标函数</strong><br>modular system 有两个及以上的目标函数<br>end-to-end 通常只有一个目标函数</li>
+<li><strong>所需数据</strong><br>modular system 更容易训练，需要的数据少<br>end-to-end 需要大量数据</li>
+<li><strong>人工标注</strong><br>modular system 需要大量的人工的特征工程，需要预先定义 state, action spaces 等等<br>end-to-end 不需要预先定义的 state/action spaces</li>
+<li><strong>效果</strong><br>modular system 在 highly structured tasks/narrow domain 上的效果更出色，但泛化能力有限<br>end-to-end 在 general purpose 的效果上比较好</li>
 </ul>
 <h1 id="Retrieval-based-models-vs-Generative-models"><a href="#Retrieval-based-models-vs-Generative-models" class="headerlink" title="Retrieval-based models vs Generative models"></a>Retrieval-based models vs Generative models</h1><p>对话模型分 <strong>检索式(Retrieval-based models )</strong> 和 <strong>生成式(Generative models)</strong> 两种，检索式的聊天模型有一个预先定义好的模板库，给定一个 query，来从模板库里选择最好的 response。回复的产生依赖于模板库，不可能产生模板库没有的句子。而生成式模型不依赖于模板库，而是直接产生的，生成式模型的方法大多依赖于机器翻译的技术，但不是从一个语言翻译到另一个语言，而是从一个输入映射到回复。</p>
 <p>两种方法都有利有弊，检索式模型得到的回复不会产生语法错误，但是有可能没法处理在模板库里不存在回复的用户输入，另外，检索式模型也很难结合上下文信息。而生成式模型更加的“聪明”，可以结合语境，然而更难训练，也更容易犯语法错误(尤其是长句)，需要的训练数据也很大。</p>
