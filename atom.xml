@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.shuang0420.com/"/>
-  <updated>2017-10-16T08:41:20.000Z</updated>
+  <updated>2017-10-16T08:53:05.000Z</updated>
   <id>http://www.shuang0420.com/</id>
   
   <author>
@@ -20,12 +20,12 @@
     <link href="http://www.shuang0420.com/2017/10/05/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/"/>
     <id>http://www.shuang0420.com/2017/10/05/经典的端到端聊天模型/</id>
     <published>2017-10-05T01:02:27.000Z</published>
-    <updated>2017-10-16T08:41:20.000Z</updated>
+    <updated>2017-10-16T08:53:05.000Z</updated>
     
     <content type="html"><![CDATA[<p>讲一个经典的 End-to-end 聊天模型及应用。<br><a id="more"></a></p>
 <p>主要涉及到下面两篇论文<br><a href="https://arxiv.org/pdf/1506.08909.pdf" target="_blank" rel="external">The Ubuntu Dialogue Corpus: A Large Dataset for Research in Unstructured Multi-Turn Dialogue Systems</a><br><a href="http://www.kdd.org/kdd2016/papers/files/Paper_1069.pdf" target="_blank" rel="external">Smart reply, automated response suggestion in email</a></p>
 <h1 id="Modular-system-vs-end-to-end-system"><a href="#Modular-system-vs-end-to-end-system" class="headerlink" title="Modular system vs end-to-end system"></a>Modular system vs end-to-end system</h1><p>第一部分先简单比较一下对话系统里，modular system 和 end-to-end 的不同。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png">
 <p>如上图，传统的一个对话系统由 Speech Recognizer, Language Interpreter, State Tracker, Response Generator, Natural Language Generator, Speech Synthesizer 这么多个子模块拼接而成，这种系统称为 Modular system，在系统中每个组件单独训练，来优化一个单独的中间目标(如 slot-filling)。而 end-to-end system 相当于用一个系统替代了上图中框起来的四个组件，来比较一下这两种系统。</p>
 <p><strong>Modular system vs end-to-end system</strong></p>
 <ul>
@@ -37,22 +37,22 @@
 <h1 id="Retrieval-Based-Model"><a href="#Retrieval-Based-Model" class="headerlink" title="Retrieval-Based Model"></a>Retrieval-Based Model</h1><p>对话模型分 <strong>检索式</strong> 和 <strong>生成式</strong> 两种，检索式的聊天模型实际是把对话看做是一个 <strong>排序问题</strong>，有一个预先定义好的模板库，给定一个 query，来从模板库里选择最好的 response。需要及计算一个 score(query, response) 来衡量 query 和 response 的匹配程度，score 越高，response 越可能是一个合适的回复。</p>
 <p>这里主要介绍 Dual-RNN/Dual LSTM 模型。</p>
 <h2 id="句子表达"><a href="#句子表达" class="headerlink" title="句子表达"></a>句子表达</h2><p>先来看一下怎么表达 query 和 response。语义特征方面很容易想到 TFIDF，然而它忽略了词序，表达效果没那么强，所以考虑用 sentence embedding。sentence embedding 可以用 RNN/LSTM 来获取。还是 Encoder-decoder 的思想，不过这里把 decoder 给替换了成了另一个 encoder，也就成了 Dual-RNN 的结构。两个独立的 RNN 分别对 context/ query和 response 进行编码，每个 RNN 最后一个 hidden state 相当于是对整个 input(context/response) 的一个总结。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/dual_lstm.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/dual_lstm.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/dual_lstm.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/dual_lstm.png">
 <h2 id="分数计算"><a href="#分数计算" class="headerlink" title="分数计算"></a>分数计算</h2><p>模型的学习目标其实是一个 binary 分类器<br>$\sigma (score(Query, Response_true)) -&gt; 1$<br>$\sigma (score(Query, Response_false)) -&gt; 0$</p>
 <p>先来看下<strong>如何计算分数</strong>。<br>$$p(flag=1|c,r,M)=\sigma(c^TMr+b)$$</p>
 <p>这个过程可以看做是一个产生模型，给定 input response，用 $c’=Mr$ 产生一个 context (M 是 dxd 的参数矩阵)，然后利用点乘来及计算这个产生的 context 和真实 context 的相似度分数，再用 sigmoid 将这个分数转化为概率，最小化交叉熵损失函数来将进行训练。</p>
 <p>简单一个例子来理解这个过程，假设下图 5x5 的表格，i 行 j 列代表 $(query_i, response_j)$，我们希望对角线的 probability 最大，因为对角线对应着正确的 (query, response)，真实的 label 是一个 identity matrix，我们的 prediction 是 5x5 的 score，现在对每一行进行  softmax cross-entropy 损失函数的计算，相当于直接优化 retrieval metrics (Recall@k)，即 (query, response) 在所有 pair 里的排名。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png">
 <p>从代码角度理解一下，下面是训练阶段的一个 minibatch 过程，假设 minibatch 大小为 5</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">if self.is_training:</div><div class="line">    # 训练阶段, 使用 minibatch 内其他样本的 response 作为 negative response</div><div class="line">    # 用 LSTM 做 encoding，query/response 都是 5x128 的表达</div><div class="line">    # W: 128x128</div><div class="line">    response_final_state = tf.matmul(response_final_state[-1].h, W)</div><div class="line">    # 得到 5x5 的 score matrix</div><div class="line">    logits = tf.matmul(</div><div class="line">        a = query_final_state[-1].h, b = response_final_state,</div><div class="line">        transpose_b = True)</div><div class="line">    self.losses = tf.losses.softmax_cross_entropy(</div><div class="line">        onehot_labels = self.labels,</div><div class="line">        logits = logits)</div><div class="line">    self.mean_loss = tf.reduce_mean(self.losses, name=&quot;mean_loss&quot;)</div><div class="line">    train_loss_summary = tf.summary.scalar(&apos;loss&apos;, self.mean_loss)</div><div class="line">    self.training_summaries = tf.summary.merge(</div><div class="line">                             inputs = [train_loss_summary], name=&apos;train_monitor&apos;)</div><div class="line"></div><div class="line">    opt = tf.train.AdamOptimizer(</div><div class="line">        learning_rate=self.args.learningRate,</div><div class="line">        beta1=0.9,</div><div class="line">        beta2=0.999,</div><div class="line">        epsilon=1e-08</div><div class="line">    )</div><div class="line">    self.optOp = opt.minimize(self.mean_loss)</div></pre></td></tr></table></figure>
 <p><strong>测试阶段</strong>，计算的是 Recall@k (给定一个 query，选择 k 个最有可能的 response，看正确的 response 在不在这 k 个里)。举个例子，从整个 test data/validation data 随机抽取 19 个错误答案，对每一个样本，计算 20 个 response 的 score，看真实回复的 score 是否排名前 k。response 矩阵连续的 20 行对应一个 query，第 1 行、21行、41行…对应真实的 response，其他是错误 response。将 query 复制 20 次，就得到 100x128 的 query 和 100x128 的 response (假设 rnn_dim=128)，点乘得到每个 (query, response) 的 score，也就是 100x100 的矩阵，然后再 reshape 成 5x20 的矩阵，再计算 Recall@k</p>
 <p>代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">else:</div><div class="line">   # 测试阶段，每一个样本的response是固定的</div><div class="line">   # query: [batch_size, rnn_dim]</div><div class="line"># respones: [batch_size x 20, rnn_dim]</div><div class="line">   # [batch_size x 20, rnn_dim]</div><div class="line">   response_final_state = tf.matmul(response_final_state[-1].h, W)</div><div class="line">   query_final_state = tf.reshape(</div><div class="line">           tf.tile(query_final_state[-1].h, [1, 20]),</div><div class="line">           [-1, self.args.hiddenSize])</div><div class="line">   # [batch_size, batch_size x 20]</div><div class="line">   logits = tf.reduce_sum(</div><div class="line">           tf.multiply(</div><div class="line">               x = query_final_state,</div><div class="line">               y = response_final_state),</div><div class="line">           axis = 1,</div><div class="line">           keep_dims = True)</div><div class="line">   logits = tf.reshape(logits, [-1, 20])</div><div class="line">   # top_k percentage</div><div class="line">   self.response_top_1 = tf.reduce_mean(</div><div class="line">           tf.cast(tf.nn.in_top_k(</div><div class="line">               predictions = logits,</div><div class="line">               targets = self.targets,</div><div class="line">               k = 1,</div><div class="line">               name = &apos;prediction_in_top_1&apos;),</div><div class="line">           dtype = tf.float32))</div><div class="line">   self.response_top_3 = tf.reduce_mean(</div><div class="line">           tf.cast(tf.nn.in_top_k(</div><div class="line">               predictions = logits,</div><div class="line">               targets = self.targets,</div><div class="line">               k = 3,</div><div class="line">               name = &apos;prediction_in_top_3&apos;),</div><div class="line">           dtype = tf.float32))</div><div class="line">   self.response_top_5 = tf.reduce_mean(</div><div class="line">           tf.cast(tf.nn.in_top_k(</div><div class="line">               predictions = logits,</div><div class="line">               targets = self.targets,</div><div class="line">               k = 5,</div><div class="line">               name = &apos;prediction_in_top_5&apos;),</div><div class="line">           dtype = tf.float32))</div></pre></td></tr></table></figure></p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/recall_k.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/recall_k.png">
-<h1 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h1><p>另一类方法是产生模型，并不是从模板库里选一个分数最高的 response 出来，而是去自动生成这样一个 response。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq.png"></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/recall_k.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/recall_k.png">
+<h1 id="Generative-Model"><a href="#Generative-Model" class="headerlink" title="Generative Model"></a>Generative Model</h1><p>另一类方法是产生模型，并不是从模板库里选一个分数最高的 response 出来，而是去自动生成这样一个 response。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq.png"></p>
 <p>主要是将 MT 问题中引入的 seq2seq 模型应用到对话任务上。给出 (query, response) 以后，seq2seq 对 query 进行编码，最后一个 hidden state 包含 query 的所有信息，结合开始标记 EOS 进行解码，得到 response。不过这种方法对上下文依赖考虑有限，<strong>HRED(Hierarchical Recurrent Encoder-Decoder)</strong> 为解决这个问题做了改进。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/HRED.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/HRED.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/HRED.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/HRED.png">
 <p>HRED 在传统 encoder-decoder 模型上，额外增加了一个 encoder，相比于普通的 RNN-LM 来说，考虑了 turn-taking nature，能够对上下文进行建模，从而实现多轮对话。第一个 encoder 是 <strong>word-level encoder</strong>，然后 word-level encoder 产生的固定长度的向量会作为第二个 encoder 也就是 <strong>utterance-level encoder</strong> 的输入，而 utterance-level encoder 的输出则作为最后 decoder 的输入。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq_eval.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq_eval.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq_eval.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/seq2seq_eval.png">
 <p>看上面的例子，可以发现，seq2seq 模型可以在一定程度上记住知识，理解语境，进行简单的推理(图左)，然而并不能保留记忆和性格，对相同语义的不同表达会返回不同的答复(图右)。</p>
 <p>要注意的是，这个场景下 seq2seq 的训练目标和真实目标实际是不一样的，尤其在闲聊场景中。训练阶段关注的是真实 response 出现的概率和怎么最大化这个概率，而测试阶段或者说真实场景下，对话侧重于交流信息，以及长时间的连贯性，考虑到回复的灵活性(如一个 query 可以有多种合适的回复)，以及经产生模型的自由度(并不需要在模板库里面选择回复，可以是全新的句子)，因此使用合适的 Metric 来衡量产生的句子实际是非常困难的问题。</p>
 <blockquote>
@@ -64,7 +64,7 @@
 <li>相对于机器翻译，对话中回复的选择空间大很多； 看起来完全无关的两句话都可以是合适的回复</li>
 <li>两个回复如果不看context的话，无论是从词频 还是语义来看都是不相关不想似的句子</li>
 </ol>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_eg1.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_eg1.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_eg1.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_eg1.png">
 <h3 id="Word-Overlap-based-Metrics"><a href="#Word-Overlap-based-Metrics" class="headerlink" title="Word Overlap-based Metrics"></a>Word Overlap-based Metrics</h3><p>主要有 <strong>BLEU</strong>，<strong>ROUGE</strong> 和 <strong>METEOR</strong>，最初用于衡量机器翻译的效果。<strong>BLEU</strong> 主要看人为/测试的句子里的单词的 overlap (机器产生的待评测句子中的 ngram 正确匹配人工产生的参考句子中 ngram 与机器产生的句子中所有 ngram 出现次数的比值)，加入 BP(Brevity Penalty) 惩罚因子可以评价句子的完整性。然而 BLEU 不关心语法，只关心内容分布，适用于衡量数据集量级的表现，在句子级别的表现不佳。</p>
 <blockquote>
 <p>“BLEU is designed to approximate human judgement at a corpus level, and performs badly if used to evaluate the quality of individual sentences.”——wikipedia</p>
@@ -87,9 +87,9 @@
 <li>当局限于一个特别具体的领域时，BLEU会有不错的表现</li>
 </ul>
 <h2 id="Learning-to-Evaluate-Dialogue-Responses"><a href="#Learning-to-Evaluate-Dialogue-Responses" class="headerlink" title="Learning to Evaluate Dialogue Responses"></a>Learning to Evaluate Dialogue Responses</h2><p>可以尝试使用机器学习的方法来学习一个好的 metric，用语境 c，真实回复 r，机器回复 $\hat r$，训练一个 regression 模型，使得 score 和人工打分的 score 接近。</p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_formula.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_formula.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_formula.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/eva_formula.png">
 <h1 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h1><p>讲一个生成式模型的具体应用，然而用预先定义好的模板库对生成的 response 做了一个限制。具体任务是如何对邮件进行自动回复。来自 <a href="http://www.kdd.org/kdd2016/papers/files/Paper_1069.pdf" target="_blank" rel="external">Smart reply, automated response suggestion in email</a></p>
-<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/email.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/email.png">
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/email.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/email.png">
 <p>达到的目标是收到一封邮件，系统发现这个邮件适合 Smart Reply，就会自动推荐 3 个回复语句给用户选择。</p>
 <p>框架面临的几个挑战是</p>
 <ul>
@@ -119,7 +119,7 @@
 <li>去掉问候和致敬部分</li>
 </ul>
 <p>处理好的数据中只选择<strong>短的、最常出现的、匿名的</strong>回复。</p>
-<p>首先利用 dependency parser 将类似的句子如 “Thanks for your kind update”,“Thank you for updating!”, , “Thanks for the status update” 等转换为 canonical 形式，即 “Thanks for the update.”<br>然后进行做语义聚类，每个 cluster 对应一个意图（intent）.<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/graph.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/graph.png"></p>
+<p>首先利用 dependency parser 将类似的句子如 “Thanks for your kind update”,“Thank you for updating!”, , “Thanks for the status update” 等转换为 canonical 形式，即 “Thanks for the update.”<br>然后进行做语义聚类，每个 cluster 对应一个意图（intent）.<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/graph.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/graph.png"></p>
 <p><strong>过程：</strong></p>
 <ol>
 <li><strong>初始化:</strong> 标记～100个类别(cluster)，每个类别～3个人工选择的样本</li>
@@ -153,7 +153,7 @@
     <link href="http://www.shuang0420.com/2017/09/20/NLP%20%E7%AC%94%E8%AE%B0%20-%20Discourse%20Analysis/"/>
     <id>http://www.shuang0420.com/2017/09/20/NLP 笔记 - Discourse Analysis/</id>
     <published>2017-09-20T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>CMU 11611 笔记。讲语篇分析的一些概念，包括 coreference, cohesion, speech acts 等。<br><a id="more"></a></p>
 <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><blockquote>
@@ -340,7 +340,7 @@
     <link href="http://www.shuang0420.com/2017/09/11/Neo4j%20Cypher%20Cheetsheet/"/>
     <id>http://www.shuang0420.com/2017/09/11/Neo4j Cypher Cheetsheet/</id>
     <published>2017-09-11T12:40:10.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>内容主要来自 Coursera 课程 <strong>Big Data Graph Analytics</strong>，在这对 Cypher 语句做个整理，方便查阅。包括基本语句、以及路径分析、链接分析样例。<br><a id="more"></a></p>
 <p>Neo4j 使用 Cypher 查询图形数据，Cypher 是描述性的图形查询语言，语法简单功能强大，由于 Neo4j 在图形数据库家族中处于绝对领先的地位，拥有众多的用户基数，Cypher 成为图形查询语言的事实上的标准。<br>和 SQL 很相似，Cypher 语言的关键字不区分大小写，但是属性值，标签，关系类型和变量是区分大小写的。</p>
@@ -560,7 +560,7 @@
     <link href="http://www.shuang0420.com/2017/08/29/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E8%BF%87%E6%8B%9F%E5%90%88(Andrew%20Ng.%20DL%20%E7%AC%94%E8%AE%B0)/"/>
     <id>http://www.shuang0420.com/2017/08/29/神经网络-过拟合(Andrew Ng. DL 笔记)/</id>
     <published>2017-08-29T04:20:02.000Z</published>
-    <updated>2017-10-11T13:35:07.000Z</updated>
+    <updated>2017-10-16T08:41:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>Andrew Ng. Deep Learning Course 2 Improving Deep Neural Networks 过拟合部分的笔记。<br><a id="more"></a></p>
 <p><strong>高方差(high variance)</strong> 对应的问题就是 <strong>过拟合(overfitting)</strong>，模型在训练集上表现的非常完美，然而开发集和测试集却有很高的错误率。这时需要引入正则或者多加些数据来调优。这一篇就来讲过拟合的处理方法。方差/偏差的解释戳<a href="http://www.shuang0420.com/2017/03/17/会议笔记%20-%20Nuts%20and%20Bolts%20of%20Applying%20Deep%20Learning/">会议笔记 - Nuts and Bolts of Applying Deep Learning</a></p>
@@ -623,7 +623,7 @@
     <link href="http://www.shuang0420.com/2017/08/21/EMNLP%202017%20%E5%8C%97%E4%BA%AC%E8%AE%BA%E6%96%87%E6%8A%A5%E5%91%8A%E4%BC%9A%E7%AC%94%E8%AE%B0/"/>
     <id>http://www.shuang0420.com/2017/08/21/EMNLP 2017 北京论文报告会笔记/</id>
     <published>2017-08-21T13:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>16 号在北京举办的，邀请了国内部分被录用论文的作者来报告研究成果，整场报告会分为<strong>文本摘要及情感分析、机器翻译、信息抽取及自动问答、文本分析及表示学习</strong>四个部分。感觉上次的 <a href="http://www.shuang0420.com/2017/07/15/CCF-GAIR%20%E5%8F%82%E4%BC%9A%E7%AC%94%E8%AE%B0/">CCF-GAIR 参会笔记</a> 写的像流水账，这次换一种方式做笔记。<br><a id="more"></a></p>
 <p>分为四个部分，并没有包含分享的所有论文。第一部分写我最喜欢的论文，第二部分总结一些以模型融合为主要方法的论文，第三部分总结一些对模型组件进行微调的论文，第四部分是类似旧瓶装新酒的 idea。</p>
@@ -770,7 +770,7 @@
     <link href="http://www.shuang0420.com/2017/08/08/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%20-%20A%20Neural%20Attention%20Model%20for%20Abstractive%20Sentence%20Summarization/"/>
     <id>http://www.shuang0420.com/2017/08/08/论文笔记 - A Neural Attention Model for Abstractive Sentence Summarization/</id>
     <published>2017-08-08T05:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>接之前的<a href="http://www.shuang0420.com/2017/05/10/NLP%20%E7%AC%94%E8%AE%B0%20-%20Text%20Summarization/">NLP 笔记 - Text Summarization</a>，介绍一种 abstractive summarization 方法 textsum。<br><a id="more"></a></p>
 <h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><h2 id="Summarization-Phenomena"><a href="#Summarization-Phenomena" class="headerlink" title="Summarization Phenomena"></a>Summarization Phenomena</h2><p>先来观察下文本摘要的一些现象，一般是通过对源文本进行<strong>泛化(generalization)、删除(deletion)、改写(paraphrase)</strong>等操作来产生目标文本，也就是文本摘要。看一下例子</p>
@@ -839,7 +839,7 @@
     <link href="http://www.shuang0420.com/2017/07/21/%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20RNN%20%E7%AC%94%E8%AE%B0/"/>
     <id>http://www.shuang0420.com/2017/07/21/递归神经网络 RNN 笔记/</id>
     <published>2017-07-21T10:45:12.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>介绍 RNN 及其变种。Stanford cs231n Lecture 10: Recurrent Neural Networks 的部分笔记。<br><a id="more"></a></p>
 <h1 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h1><p>传统的神经网络中间层每一个神经元和输入的每一个数据进行运算得到一个激励然后产生一个中间层的输出，并没有记忆能力，在输入为序列的情况下的效果有限。而很多东西是受到时域信息影响的，某一时刻产生的激励对下一时刻是有用的，递归神经网络就具备这样的记忆能力，它可以把这一刻的特征与上一刻保存的激励信息相结合(并不只是上一刻 s2 是由 s1、s2 产生的，$s_n$ 不仅有 $s_{n-1}$ 的信息，还包括 $s_{n-2}$、$s_{n-3}$…$s_1$ 的信息。</p>
@@ -1313,7 +1313,7 @@
     <link href="http://www.shuang0420.com/2017/07/10/NLP%20%E7%AC%94%E8%AE%B0%20-%20Machine%20Translation-Neuron%20models/"/>
     <id>http://www.shuang0420.com/2017/07/10/NLP 笔记 - Machine Translation-Neuron models/</id>
     <published>2017-07-10T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>持续填坑中– <a href="http://www.shuang0420.com/2017/05/01/NLP%20笔记%20-%20Machine%20Translation/">NLP 笔记 - Machine Translation</a>主要讲了机器翻译的传统方法，这一篇介绍基于深度学习的机器翻译方法。<br><a id="more"></a></p>
 <p>本文涉及的论文原文：</p>
@@ -1490,7 +1490,7 @@
     <link href="http://www.shuang0420.com/2017/07/04/AWS%20Lambda%20+%20API%20Gateway%20+%20DynamoDB%20%E6%B7%BB%E5%8A%A0%20slash%20command%20%E5%BE%85%E5%8A%9E%E6%B8%85%E5%8D%95/"/>
     <id>http://www.shuang0420.com/2017/07/04/AWS Lambda + API Gateway + DynamoDB 添加 slash command 待办清单/</id>
     <published>2017-07-04T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>接上一篇<a href="http://www.shuang0420.com/2017/06/19/AWS%20API%20Gateway%20+%20Lambda%20+%20Slack%20App%20-%20新建%20slash%20command/">AWS API Gateway + Lambda + Slack App - 新建 slash command</a>，这一篇介绍怎么用 aws lambda + api gateway + dynamodb 添加 slash command /todo，完成 to-do list 的增、删、查等任务。两个重点，一是连接 dynamodb，二是创建 slack interactive message，具体到这篇的例子，是实现 message button。<br><a id="more"></a></p>
 <h1 id="DynamoDB-configuration"><a href="#DynamoDB-configuration" class="headerlink" title="DynamoDB configuration"></a>DynamoDB configuration</h1><p>Amazon DynamoDB 属于 NoSQL 数据库，支持文档和 key-value 存储模型。每一行是一个 <strong>item</strong>，item 时<strong>属性(attributes)</strong> 的集合，每个 attribute 都有各自的<strong>名称(name)</strong>和<strong>值(value)</strong>。DynamoDB 提供了 item 的 4 项基本操作，<strong>创建(PutItem)/读取(GetItem)/更新(UpdateItem)/删除(DeleteItem)</strong>。</p>
@@ -1564,7 +1564,7 @@
     <link href="http://www.shuang0420.com/2017/06/20/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/"/>
     <id>http://www.shuang0420.com/2017/06/20/卷积神经网络-目标探测/</id>
     <published>2017-06-20T02:45:12.000Z</published>
-    <updated>2017-10-12T10:04:30.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>介绍目标探测的基本方法，传统方法 DPM，神经网络分类 R-CNN 系列方法和神经网络回归 YoLo 系列方法。<br><a id="more"></a></p>
 <h1 id="目标探测"><a href="#目标探测" class="headerlink" title="目标探测"></a>目标探测</h1><p>先来看下什么是目标探测，下图<strong>矩形框(running box)</strong>表示的物体都可以作为目标探测的对象。不止矩形框，椭圆形框在某些场合更适合做目标探测，因为它能更好的捕捉对象，并对物体朝向做相应调整，机变性更好。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png" class="ful-image" alt="%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C-%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B/%E7%9B%AE%E6%A0%87%E6%8E%A2%E6%B5%8B.png"></p>
@@ -1742,7 +1742,7 @@
     <link href="http://www.shuang0420.com/2017/06/19/AWS%20API%20Gateway%20+%20Lambda%20+%20Slack%20App%20-%20%E6%96%B0%E5%BB%BA%20slash%20command/"/>
     <id>http://www.shuang0420.com/2017/06/19/AWS API Gateway + Lambda + Slack App - 新建 slash command/</id>
     <published>2017-06-19T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>接之前<a href="http://www.shuang0420.com/2017/06/09/AWS%20Lex%20创建%20Slack%20Bot%20-%20Integrating%20Lex%20Bot%20with%20Slack/">AWS Lex 创建 Slack Bot - Integrating Lex Bot with Slack</a>，介绍怎么在 slack app 的基础上添加 slash command。<br><a id="more"></a></p>
 <p>slash command 的配置页面需要一个 <strong>Request URL</strong>，这个 URL 就由 <strong>AWS API Gateway</strong> 来提供，API Gateway 调用 <strong>AWS Lambda</strong> 来完成具体的动作，而 Lambda 需要一个 slack token 来验证 slack app 的身份，才能够调用 slack api 来接收/回复信息，这个 token 由 <strong>AWS IAM</strong> 进行加密保障安全性。下面的教程分别介绍了怎么加密 token，编写 Lambda，配置 API Gateway，来完成一个 slash command 的创建。</p>
@@ -1804,7 +1804,7 @@
     <link href="http://www.shuang0420.com/2017/06/18/AWS%20API%20Gateway%20+%20Lambda%20%E6%95%99%E7%A8%8B%20-%20%E7%94%9F%E6%88%90%E9%9A%8F%E6%9C%BA%E6%95%B0/"/>
     <id>http://www.shuang0420.com/2017/06/18/AWS API Gateway + Lambda 教程 - 生成随机数/</id>
     <published>2017-06-18T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>非常简单的教程，以产生一定范围内的随机数为例，介绍如何用 AWS Lambda + API Gateway 建立一个 serveless API，包括 API 如何传参。<br><a id="more"></a></p>
 <h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><p>如果要用一句话理解 <strong><a href="https://aws.amazon.com/api-gateway/?nc1=h_ls" target="_blank" rel="external">API Gateway</a></strong>，那必须是 <strong>serverless APIs</strong>。<strong>AWS API Gateway</strong> 与 <strong>AWS Lambda</strong> 紧密集成，开发者可以通过 API Gateway 创建基于 REST 风格的 API，各种 app 应用调用这些 API，而这些 API 可以通过 AWS Lambda 中运行的代码来调用公开提供的 AWS 服务(or anything you like)。下面两幅图给出了更直观的逻辑。</p>
@@ -2070,7 +2070,7 @@
     <link href="http://www.shuang0420.com/2017/06/09/AWS%20Lex%20%E5%88%9B%E5%BB%BA%20Slack%20Bot%20-%20Integrating%20Lex%20Bot%20with%20Slack/"/>
     <id>http://www.shuang0420.com/2017/06/09/AWS Lex 创建 Slack Bot - Integrating Lex Bot with Slack/</id>
     <published>2017-06-09T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>非常简单的教程，新建一个 Slack Bot 支持购买房/车的功能。主要流程: <strong>编写 Lambda Function =&gt; 调用 Lambda function 创建 Lex bot =&gt; 创建 Slack Application 并与 Lex bot 关联 =&gt; 测试并发布</strong>。<br><a id="more"></a></p>
 <h1 id="Create-Lambda-Function"><a href="#Create-Lambda-Function" class="headerlink" title="Create Lambda Function"></a>Create Lambda Function</h1><p>Lambda Function 部分的代码</p>
@@ -2177,7 +2177,7 @@
     <link href="http://www.shuang0420.com/2017/06/05/Alexa%20%E5%BC%80%E5%8F%91%E6%96%B0%E6%8A%80%E8%83%BD%20-%20Lambda/"/>
     <id>http://www.shuang0420.com/2017/06/05/Alexa 开发新技能 - Lambda/</id>
     <published>2017-06-05T12:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>非常简单的教程，讲怎么给 Alexa 添加新的 skill，让你的 Echo 更个性化。本篇添加的 skill 是让 Alexa 从 reddit 上读前 10 条热点。<br><a id="more"></a></p>
 <p>代码戳<a href="https://github.com/Shuang0420/Alexa-Starter-RedditReader/tree/master/reddit_reader_lambda" target="_blank" rel="external">Alexa-Starter-RedditReader</a>，其他版本如用 python flask 实现，见<a href="http://www.shuang0420.com/2017/05/02/Alexa%20开发新技能/">Alexa 开发新技能 - python flask</a>。这一篇截图比较细，一方面是因为 AWS 版本迭代太快，网上之前的教程可能会过时，另一方面实在是因为一步步做下来踩了很多坑，争取这篇教程可以让大家少走一些弯路。</p>
@@ -2258,7 +2258,7 @@
     <link href="http://www.shuang0420.com/2017/06/01/NLP%20%E7%AC%94%E8%AE%B0%20-%20Sentiment%20Analysis/"/>
     <id>http://www.shuang0420.com/2017/06/01/NLP 笔记 - Sentiment Analysis/</id>
     <published>2017-06-01T01:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>Stanford Dan Jurafsky &amp; Chris Manning: Natural Language Processing 课程笔记。<br><a id="more"></a></p>
 <p><strong>Sentiment Analysis</strong> 有许多别称，如 Opinion extraction/Opinion mining/Sentiment mining/Subjectivity analysis，都是同一个意思，不过隐含着不同的应用场景。大致来说，情感分析有以下的应用:</p>
@@ -2445,7 +2445,7 @@
     <link href="http://www.shuang0420.com/2017/05/24/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Extract%20Conditional%20Knowledge%20for%20Question%20Answering%20using%20Dialogue/"/>
     <id>http://www.shuang0420.com/2017/05/24/论文笔记 - Learning to Extract Conditional Knowledge for Question Answering using Dialogue/</id>
     <published>2017-05-24T05:02:27.000Z</published>
-    <updated>2017-10-11T13:10:56.000Z</updated>
+    <updated>2017-10-16T08:41:20.000Z</updated>
     
     <content type="html"><![CDATA[<p>论文<a href="http://dl.acm.org/citation.cfm?id=2983777" target="_blank" rel="external">Learning to Extract Conditional Knowledge for Question Answering using Dialogue</a>提出了 conditional knowledge base(CKB)，存储的信息格式为 (subject, predicate, object|condition)。当用户问句缺少必要条件(condition)时，自动用 dialogue model 来向用户提问获取必要信息，再进行回答。<br><a id="more"></a><br>简化版过程，从训练数据的用户问句里抽取实体，频率最高的 50% 作为 subject，剩余的作为 candidate condition。对于每一个 subject，学习用户问句的 pattern 和 condition (类似于关系抽取)，然后学习 pattern 和 condition 的 embedding，并对其进行聚类得到 pattern cluster 和 condition cluster，再从聚类信息和 QA 对中抽取信息组成 (subject, predicate, object|condition) 作为 CKB。</p>
 <p>当用户提问并没有清楚的指定条件时，就可以用  dialogue model 向用户提问获取 condition，具体过程如下</p>
