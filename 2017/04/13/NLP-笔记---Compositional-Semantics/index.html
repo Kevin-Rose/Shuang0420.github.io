@@ -108,10 +108,10 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/semantic%20modeling.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/CFG%20vs%20CCG.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/thematic%20roles.jpg">
-<meta property="og:image" content="http://www.shuang0420.com/7.jpg">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/7.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/Verb%20Subcategorization.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/selection%20restriction.jpg">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP 笔记 - Compositional Semantics">
 <meta name="twitter:description" content="CMU 11611 的课程笔记。主要讲了两种语义分析的方法: Lexicalized CFG 及 CCG，补充介绍了词汇语义学的一些概念。比较基础，网上参考资料较少，具体需要研究相关论文。">
@@ -476,7 +476,7 @@
 <p>可以发现，动词 break 和 open 的主语的角色分别为 Breaker 和 Opener，然而每种可能发生事的深层角色(deep role)都是特定的，比如 Breaking 事件中的 Breaker，Opening 事件中的 Opener，Eating 事件中的 Eater 等，但 Breaking 和 Opener 有一些共同点，它们都是有意志的行为人，常常是有生命的，并且对它们的事件负有直接因果责任，题元角色(Thematic Roles)就是表示这种共性的一种方式，比如说我们把这两个动词的主语称为 agent。</p>
 <p>常用的 Thematic roles 及其定义<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/thematic%20roles.jpg" class="ful-image" alt="thematic%20roles.jpg"></p>
 <p>The Thematic Grid or Case Frame shows<br>• How many arguments the verb has<br>• What roles the arguments have<br>• Where to find each argument<br>  For example, you can find the agent in the subject position</p>
-<p>E.g., <img src="7.jpg" alt=""></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/7.jpg" class="ful-image" alt="7.jpg">
 <p>Thematic roles 的另一个用途是，通过<strong>题元层级(thematic hierarchy)</strong>来决定主语和宾语，如上，如果一个动词的题元描述包括一个 AGENT，一个 INSTRUMENT，和一个 THEME，那么 AGENT 被实现为主语，如果题元描述值包括一个 INSTRUMENT 和一个 THEME，那么 INSTRUMENT 成为主语。</p>
 <h2 id="Verb-Subcategorization"><a href="#Verb-Subcategorization" class="headerlink" title="Verb Subcategorization"></a>Verb Subcategorization</h2><p>动词可以有不同数量的 argument，以及不同的 VP 规则，应用 SUBCAT 特征，可以创建 allowed arguments 的集合。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/NLP-%E7%AC%94%E8%AE%B0---Compositional-Semantics/Verb%20Subcategorization.jpg" class="ful-image" alt="Verb%20Subcategorization.jpg"></p>
 <h2 id="Selectional-Restriction"><a href="#Selectional-Restriction" class="headerlink" title="Selectional Restriction"></a>Selectional Restriction</h2><p><strong>选择限制(selectional restriction)</strong>是一种语义约束，通过容许词位对那些能够与它们在一个句子中出现的词位和短语设置某些语义限制，来增加语义角色。举个例子，看下面四个句子，前两个句子很正常，我们可以说 dog, child 是开心的，因为他们是动物，有情绪，所以可以把他们和 happy 联系起来，然而后两个句子就非常的诡异，事实上它们违反了选择限制(selectional restriction)。</p>
@@ -623,7 +623,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -631,7 +631,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -640,7 +640,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

@@ -94,7 +94,6 @@
 <meta property="og:site_name" content="徐阿衡">
 <meta property="og:description" content="CMU 11642 的课程笔记。这篇讲了搜索引擎中创建索引的主要原则、方法以及优化方案。">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/index_cons.png">
-<meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/block%20merge.png">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/SPIMI.png">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/tree.png">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/inverted_list.png">
@@ -102,7 +101,7 @@
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/Indri_term_diction.png">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/Indri_inverted.png">
 <meta property="og:image" content="http://7xu83c.com1.z0.glb.clouddn.com/indri_compress.png">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Search Engines笔记 - Index Construction">
 <meta name="twitter:description" content="CMU 11642 的课程笔记。这篇讲了搜索引擎中创建索引的主要原则、方法以及优化方案。">
@@ -401,7 +400,7 @@
 <li>一旦 in-memory buffer 满了，就把临时排序结果 flush 到磁盘中，然后重新初始化，重复2、3过程</li>
 <li>将所有的中间文件合并成最终索引。(merge index blocks on disk)</li>
 </ol>
-<p>下图是合并中间结果(block merge step)的图示 <img src="http://7xu83c.com1.z0.glb.clouddn.com/block%20merge.png" alt=""></p>
+<img class="ful-image" alt="block%20merge%20step">
 <p>BSBI 的时间复杂度是 O(TlogT)</p>
 <h2 id="Single-pass-in-memory-indexing-SPIMI"><a href="#Single-pass-in-memory-indexing-SPIMI" class="headerlink" title="Single-pass in-memory indexing(SPIMI)"></a>Single-pass in-memory indexing(SPIMI)</h2><p>BSBI 需要将 term 映射成 id，对大规模的 corpus 来说，这种数据结构会很大以致在内存中难以存放，SPIMI 使用 term 本身，将每个块的词典写入磁盘，对于下一个块则重新采用新的词典，这样带来的好处是，只要硬盘空间足够大，SPIMI 就能索引任何大小的 corpus。 算法如下，反复调用 SPIMI-INVERT 函数直到将全部 corpus 处理完。token_stream 就是 term-docid stream。 <img src="http://7xu83c.com1.z0.glb.clouddn.com/SPIMI.png" alt=""></p>
 <p>BSBI 和 SPIMI 的一个区别是， SPIMI 直接在 inverted list 中增加一项，这个 inverted lsit 是动态增长对，大小会不断调整，而 BSBI 一开始就整理出所有的 termID-docID 并对它们进行排序。这样做的好处是：</p>
@@ -685,7 +684,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -693,7 +692,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -702,7 +701,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

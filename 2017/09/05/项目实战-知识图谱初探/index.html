@@ -98,10 +98,10 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/%E7%9F%A5%E8%AF%86%E8%8E%B7%E5%8F%96.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/cfi.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/cninfo.png">
-<meta property="og:image" content="http://www.shuang0420.com/spo.png">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/spo.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/eg.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/show2.png">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="项目实战--知识图谱初探">
 <meta name="twitter:description" content="实践了下怎么建一个简单的知识图谱，两个版本，一个从 0 开始(start from scratch)，一个在 CN-DBpedia 基础上补充，把 MySQL，PostgreSQL，Neo4j 数据库都尝试了下。自己跌跌撞撞摸索可能踩坑了都不知道，欢迎讨论。">
@@ -413,7 +413,7 @@
 <p><strong>为什么爬下来两张表，存储却要用 4 张表？</strong><br>一个考虑是知识图谱里典型的<strong>一词多义</strong>问题，相同实体名但有可能指向不同的意义，比如说 Paris 既可以表示巴黎，也可以表示人名，怎么办？让作为地名的 “Paris” 和作为人的 “Paris” 有各自独一无二的ID。“Paris1”（巴黎）通过一种内在关系与埃菲尔铁塔相联，而 “Paris2”（人）通过取消关系与各种真人秀相联。这里也是一样的场景，同名同姓不同人，需要用 id 做唯一性标识，也就是说我们需要对原来的数据格式做一个转换，不同的张三要标识成张三1，张三2… 那么，用什么来区别人呢？拍脑袋想用姓名、生日、性别来定义一个人，也就是说我们需要一张人物表，需要 (name, birth, sex) 来作<strong>composite unique key</strong> 表示每个人。公司也是相同的道理，不过这里只有上市公司，股票代码就可以作为唯一性标识。</p>
 <p>Person 表和 company 表是多对多的关系，这里需要做 normalization，用 management 这张表来把多对多转化为两个一对多的关系，(person_id, company_id) 就表示了这种映射。management 和 spo 表都表示了这种映射，为什么用两张表呢？是出于实体对齐的考虑。management 保存了原始的关系，”董事”、监事”等，而 spo 把这些关系都映射成”高管”，也就是说 management 可能需要通过映射才能得到 SPO 表，SPO 才是最终成型的表。</p>
 <p>可能有更简单的方法来处理上述问题，思考中，待更新—-</p>
-<p>我们知道知识库里的关系其实有两种，一种是<strong>属性(property)</strong>，一种是<strong>关系(relation)</strong>。那么还有一个问题是 <strong>SPO 需不需要存储属性？</strong><br>最初的想法是实体归实体，属性归属性，SPO 只存实体间的关系，属性由实体表检索得到，然而这样的话需要多表 JOIN，属性增加时扩展性也很差。因此把属性也存到 SPO 表中。在 SPO 表中多加一列 type，来区分这关系是实体间关系还是实体与属性的关系，便于之后的可视化。<img src="spo.png" alt=""></p>
+<p>我们知道知识库里的关系其实有两种，一种是<strong>属性(property)</strong>，一种是<strong>关系(relation)</strong>。那么还有一个问题是 <strong>SPO 需不需要存储属性？</strong><br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/spo.png" class="ful-image" alt="spo.png"></p>
 <p>最后要注意的一点是，每条记录要保存创建时间以及最后更新时间，做一个简单的版本控制。</p>
 <h2 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h2><p>Flask 做 server，d3 做可视化，可以检索公司名/人名获取相应的图谱，如下图。之后会试着更新有向图版本。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98-%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%88%9D%E6%8E%A2/eg.png" class="ful-image" alt="eg.png"></p>
 <h1 id="Start-from-CN-DBpedia"><a href="#Start-from-CN-DBpedia" class="headerlink" title="Start from CN-DBpedia"></a>Start from CN-DBpedia</h1><p>把 CN-DBpedia 的三元组数据，大概 6500 万条，导入数据库，这里尝试了 PostgreSQL。然后检索了 112 家上市公司的注册公司名称，只有 69 家公司返回了结果，属性、关系都不是很完善，说明了通用知识图谱有其不完整性(也有可能需要先做一次 mention2entity，可能它的标准实体并不是注册信息的公司名称，不过 API 小范围试了下很多是 Unknown Mention)。</p>
@@ -560,7 +560,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -568,7 +568,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -577,7 +577,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

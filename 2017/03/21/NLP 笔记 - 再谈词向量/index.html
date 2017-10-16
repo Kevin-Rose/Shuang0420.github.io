@@ -95,7 +95,7 @@
 <meta property="og:description" content="CMU 11611 的课程笔记。再次探讨词向量。">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/1.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/2.jpg">
-<meta property="og:image" content="http://www.shuang0420.com/3.jpg">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/3.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/4.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/5.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/6.jpg">
@@ -110,7 +110,7 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/15.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/16.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/17.jpg">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NLP 笔记 - 再谈词向量">
 <meta name="twitter:description" content="CMU 11611 的课程笔记。再次探讨词向量。">
@@ -417,7 +417,7 @@
 <p>先看下 PMI，看两个事件 x,y 同时出现的概率是不是比单独出现的概率高呢？<br>$$PMI(X,Y)=log_2{P(x,y) \over P(x)P(y))}$$</p>
 <p>PMI 的范围是负无穷到正无穷，但是负值会带来各种各样的问题，所以我们通常会把负的 PMI 替换成 0，也就是有了 Positive PMI(PPMI)</p>
 <p>$$PPMI(word_1,word_2)=max(log_2{P(word1,word2) \over P(word1)P(word2)},0)$$</p>
-<p>具体的例子来算一下，<img src="3.jpg" alt=""></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/3.jpg" class="ful-image" alt="3.jpg">
 <p>P(w=information, c=data)=6/19=.32<br>P(w=information)=11/19=.58<br>P(c=data)=7/19=.37</p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/NLP%20%E7%AC%94%E8%AE%B0%20-%20%E5%86%8D%E8%B0%88%E8%AF%8D%E5%90%91%E9%87%8F/4.jpg" class="ful-image" alt="4.jpg">
 <p>所以<br>$PMI(information,data)=log_2(.32 / (.37 * .58))=.57$</p>
@@ -621,7 +621,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -629,7 +629,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -638,7 +638,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

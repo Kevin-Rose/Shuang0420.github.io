@@ -97,8 +97,7 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BB.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E6%97%8B%E8%BD%AC%E5%B9%B3%E7%A7%BBmatlab.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A01.png">
-<meta property="og:image" content="http://www.shuang0420.com/不同数据处理.png">
-<meta property="og:image" content="http://www.shuang0420.com/多目标识别.png">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/deepface.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/attention%20layer.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/attention%20layer%20for%20face.png">
@@ -110,7 +109,7 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E6%95%88%E6%9E%9C.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/vgg16.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/6.jpg">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="卷积神经网络 CNN 笔记- 目标分类">
 <meta name="twitter:description" content="目标分类的基本框架 + 迁移学习 + 如何设计神经网络 + 实例:基于 VGG 进行人脸表情识别。深度学习的学习笔记。">
@@ -421,9 +420,9 @@
 </ul>
 <p>更多见 <a href="http://www.shuang0420.com/2017/01/20/卷积神经网络%20CNN%20笔记/">卷积神经网络 CNN 笔记</a> 功能层部分。</p>
 <h1 id="迁移学习"><a href="#迁移学习" class="headerlink" title="迁移学习"></a>迁移学习</h1><p><strong>问题：</strong>ImageNet 上亿参数，数据量百万，是不是参数多的模型都需要大量数据？<br>当然不是啦，我们可以用别人训练好的模型(<strong>基础模型</strong>)，在训练好的部分参数基础上进行训练。<br><img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A01.png" class="ful-image" alt="%E8%BF%81%E7%A7%BB%E5%AD%A6%E4%B9%A01.png"></p>
-<p>那么什么情况下可以用迁移学习呢？主要看<strong>数据的性质以及数据量</strong>。如果只有少量数据，且和基础模型使用的数据比较类似，可以选择在全连接层更新参数，而如果数据非常不同，那么迁移学习可能就没什么用了；如果数据量大且类似，可以选择在中高层进行更新，而如果量大且不类似，那么可能只有模型的最开始几层的参数是有用的，也就是要更新更多层。<img src="不同数据处理.png" alt="不同数据处理"></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.png" class="ful-image" alt="%E4%B8%8D%E5%90%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86.png">
 <p>基础模型的选择往往看是否已有特定任务的模型，另外关于 <strong>学习率(learning rate)</strong> 的处理，最低卷积层的学习率基本不变，中间卷积层看情况(数据是否类似等)，最后全连接，结构和参数都需要变化。</p>
-<h1 id="如何设计神经网络"><a href="#如何设计神经网络" class="headerlink" title="如何设计神经网络"></a>如何设计神经网络</h1><p><strong>研究问题：</strong>如何进行面部行为识别(AU detection)<br>以如何进行面部行为识别为例，来学习如何设计神经网络。首先要明确的是，面部行为识别是一个<strong>多目标识别</strong>的问题，为什么呢？因为面部表情是由不同的<strong>面部行为单元</strong>相互配合而形成的，每个面部行为单元相当于一个目标，每个目标是一个 0/1 分类问题，0 表示 inactive，1 表示 active。(简单理解，比如微笑，至少需要嘴角上扬+眼角下垂两个条件组成)<img src="多目标识别.png" alt="多目标识别"></p>
+<h1 id="如何设计神经网络"><a href="#如何设计神经网络" class="headerlink" title="如何设计神经网络"></a>如何设计神经网络</h1><p><strong>研究问题：</strong>如何进行面部行为识别(AU detection)<br><img class="ful-image" alt="%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%EF%BC%8C%E6%AF%94%E5%A6%82%E5%BE%AE%E7%AC%91%EF%BC%8C%E8%87%B3%E5%B0%91%E9%9C%80%E8%A6%81%E5%98%B4%E8%A7%92%E4%B8%8A%E6%89%AC%2B%E7%9C%BC%E8%A7%92%E4%B8%8B%E5%9E%82%E4%B8%A4%E4%B8%AA%E6%9D%A1%E4%BB%B6%E7%BB%84%E6%88%90"></p>
 <p>面部行为识别有很多的应用，比如测试疲劳驾驶等，一个很有意思的应用场景是推荐系统，想象看电视的时候有一个前置摄像头观察观众的反应，通过表情识别可以知道观众喜欢哪个节目，然后可以针对性的给更多高质量的推送，再比如应用到教育上面，如果能自动通过疑惑的表情判别出哪一部分学生不理解，可以针对性的给学生多解释几遍做巩固加强，当然这些都涉及到隐私问题，在这里不讨论。</p>
 <h2 id="现有模型"><a href="#现有模型" class="headerlink" title="现有模型"></a>现有模型</h2><p>看一下已有方法/模型。<br><strong>Deepface</strong>，<a href="http://www.shuang0420.com/2017/04/25/卷积神经网络%20CNN%20笔记%28高级篇%29/">卷积神经网络 CNN 笔记(高级篇)</a></p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%20CNN%20-%20%E7%9B%AE%E6%A0%87%E5%88%86%E7%B1%BB/deepface.jpg" class="ful-image" alt="deepface.jpg">
@@ -605,7 +604,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -613,7 +612,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -622,7 +621,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

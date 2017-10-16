@@ -96,13 +96,13 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/l2rs.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/l2rf.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/features.jpg">
-<meta property="og:image" content="http://www.shuang0420.com/pointwise.jpg">
+<meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/pointwise.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/pairwise.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/svm.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/likewise.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/listMLE1.jpg">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/listMLE2.jpg">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Search Engines笔记 - Learning to Rank">
 <meta name="twitter:description" content="CMU 11642 的课程笔记。我们已经学习了很多检索方法，如果把这些方法结合起来，效果会不会更好呢？">
@@ -427,7 +427,7 @@
 </ul>
 <h3 id="PointWise-L2R"><a href="#PointWise-L2R" class="headerlink" title="PointWise L2R"></a>PointWise L2R</h3><p>只考虑给定查询下，单个文档的绝对相关度，而不考虑其他文档和给定查询的相关度。亦即给定查询 q 的一个真实文档序列，我们只需要考虑单个文档 di 和该查询的相关程度 ci。</p>
 <p><strong>Approach:</strong> 用 individual documents 训练模型<br><strong>Training data:</strong> x -&gt; score<br><strong>Learned model:</strong> h(x) -&gt; score<br>  <strong>Regression</strong> (e.g., linear regression)<br>    – Scores are { -1, +1 } or { 4, 3, 2, 1, 0 }<br>  <strong>Classification</strong> (e.g., SVM)<br>    – Categories are { -1, +1 } or { 4, 3, 2, 1, 0 }</p>
-<p>E.g., <img src="pointwise.jpg" alt=""></p>
+<img src="http://ox5l2b8f4.bkt.clouddn.com/images/Search%20Engines%E7%AC%94%E8%AE%B0%20-%20Learning%20to%20Rank/pointwise.jpg" class="ful-image" alt="pointwise.jpg">
 <p><strong>局限：</strong></p>
 <ol>
 <li>要求 score 必须在一定范围内 E.g., { -1, +1 } or { 4, 3, 2, 1, 0 } 然而经过排序算法出来的分数往往不是这样的，它可能是 { 189, 57, 42, 16, 1}.</li>
@@ -629,7 +629,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -637,7 +637,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -646,7 +646,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

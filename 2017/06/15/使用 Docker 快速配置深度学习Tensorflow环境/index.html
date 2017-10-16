@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BD%BF%E7%94%A8%20Docker%20%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Tensorflow%E7%8E%AF%E5%A2%83/tensorboard.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BD%BF%E7%94%A8%20Docker%20%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Tensorflow%E7%8E%AF%E5%A2%83/kitematic.png">
 <meta property="og:image" content="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BD%BF%E7%94%A8%20Docker%20%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Tensorflow%E7%8E%AF%E5%A2%83/docker%20preference.png">
-<meta property="og:updated_time" content="2017-10-11T13:10:56.000Z">
+<meta property="og:updated_time" content="2017-10-16T08:41:19.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用 Docker 快速配置深度学习(Tensorflow)环境">
 <meta name="twitter:description" content="用 docker 配置 tensorflow 环境(Tensorflow + Python3 + Jupyter Notebook + tflearn)，在 dash00/tensorflow-python3-jupyter 基础上，添加 tflearn package，创建新的 docker image shuang0420/tensorflow-tflearn-python3-jupyter">
@@ -399,7 +399,7 @@
 <p>然后使用新镜像 <code>shuang0420/tensorflow-tflearn-python3-jupyter</code> 来启动一个容器</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ docker run  --name notebooks -d -v /$(pwd)/notebooks:/notebooks -v /$(pwd)/logs:/logs -p 8888:8888 shuang0420/tensorflow-tflearn-python3-jupyter /run_jupyter.sh --allow-root --NotebookApp.token=&apos;&apos;</div></pre></td></tr></table></figure>
 <p>如果出现下面的错误，说明之前已经启动了一个名为 notebooks 的 container，我们可以直接启动该容器，或者退出并删除原容器，新建一个。通过 <code>docker ps -a</code> 命令查看 container id 并删除该 container，再重新运行命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">docker: Error response from daemon: Conflict. The container name &quot;/notebooks&quot; is already in use by container 4602dc6d7f0b8b7756fa31d63a0ecb19bd37147c2af80710294a480587f9eb08. You have to remove (or rename) that container to be able to reuse that name..</div><div class="line">See &apos;docker run --help&apos;.</div><div class="line"></div><div class="line">$ docker ps -a</div><div class="line">CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS                           PORTS               NAMES</div><div class="line">4602dc6d7f0b        shuang0420/tenso![kitematic](kitematic.png)rflow-tflearn-python3-jupyter          &quot;/run_jupyter.sh -...&quot;   20 hours ago        Created                                              notebooks</div><div class="line">$</div><div class="line">$ docker rm 4602dc6d7f0b</div><div class="line">4602dc6d7f0b</div><div class="line">$ docker run  --name notebooks -d -v /$(pwd)/notebooks:/notebooks -v /$(pwd)/logs:/logs -p 8888:8888 shuang0420/tensorflow-tflearn-python3-jupyter /run_jupyter.sh --allow-root --NotebookApp.token=&apos;&apos;</div><div class="line">$ docker run  --name board -d -v /$(pwd)/logs:/logs -p 6006:6006 shuang0420/tensorflow-tflearn-python3-jupyter tensorboard --logdir /logs</div><div class="line">$</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">docker: Error response from daemon: Conflict. The container name &quot;/notebooks&quot; is already in use by container 4602dc6d7f0b8b7756fa31d63a0ecb19bd37147c2af80710294a480587f9eb08. You have to remove (or rename) that container to be able to reuse that name..</div><div class="line">See &apos;docker run --help&apos;.</div><div class="line"></div><div class="line">$ docker ps -a</div><div class="line">CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS                           PORTS               NAMES</div><div class="line">&#123;% imgurl %E4%BD%BF%E7%94%A8%20Docker%20%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Tensorflow%E7%8E%AF%E5%A2%83/kitematic.png ful-image alt:kitematic.png %&#125;</div><div class="line">$</div><div class="line">$ docker rm 4602dc6d7f0b</div><div class="line">4602dc6d7f0b</div><div class="line">$ docker run  --name notebooks -d -v /$(pwd)/notebooks:/notebooks -v /$(pwd)/logs:/logs -p 8888:8888 shuang0420/tensorflow-tflearn-python3-jupyter /run_jupyter.sh --allow-root --NotebookApp.token=&apos;&apos;</div><div class="line">$ docker run  --name board -d -v /$(pwd)/logs:/logs -p 6006:6006 shuang0420/tensorflow-tflearn-python3-jupyter tensorboard --logdir /logs</div><div class="line">$</div></pre></td></tr></table></figure>
 <p><strong>浏览器输入 <code>localhost:8888</code> 打开 jupyter notebook</strong></p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E4%BD%BF%E7%94%A8%20Docker%20%E5%BF%AB%E9%80%9F%E9%85%8D%E7%BD%AE%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0Tensorflow%E7%8E%AF%E5%A2%83/tflearn.png" class="ful-image" alt="tflearn.png">
 <p><strong>浏览器输入 <code>localhost:6006</code> 打开 jupyter notebook</strong></p>
@@ -548,7 +548,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">139</span>
+              <span class="site-state-item-count">140</span>
               <span class="site-state-item-name">posts</span>
             </a>
           </div>
@@ -556,7 +556,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -565,7 +565,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">99</span>
+                <span class="site-state-item-count">101</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
