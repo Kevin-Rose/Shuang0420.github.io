@@ -13,9 +13,9 @@
 <li><a href="http://www.kdd.org/kdd2016/papers/files/Paper_1069.pdf" target="_blank" rel="external">Smart reply, automated response suggestion in email</a></li>
 <li><a href="https://arxiv.org/abs/1603.08023" target="_blank" rel="external">How NOT To Evaluate Your Dialogue System</a></li>
 </ul>
-<h1 id="Modular-system-vs-end-to-end-system"><a href="#Modular-system-vs-end-to-end-system" class="headerlink" title="Modular system vs end-to-end system"></a>Modular system vs end-to-end system</h1><p>第一部分先简单比较一下对话系统里，modular system 和 end-to-end 的不同。</p>
+<h1 id="Modular-system-vs-end-to-end-system"><a href="#Modular-system-vs-end-to-end-system" class="headerlink" title="Modular system vs end-to-end system"></a>Modular system vs end-to-end system</h1><p>第一部分先简单比较一下对话系统中 modular system 和 end-to-end 的不同。</p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/end-to-end.png">
-<p>如上图，传统的一个对话系统由 Speech Recognizer, Language Interpreter, State Tracker, Response Generator, Natural Language Generator, Speech Synthesizer 这么多个子模块拼接而成，这种系统称为 Modular system，在系统中每个组件单独训练，来优化一个单独的中间目标(如 slot-filling)。而 end-to-end system 相当于用一个系统替代了上图中框起来的四个组件，来比较一下这两种系统。</p>
+<p>如上图，传统的一个对话系统由 <strong>Speech Recognizer, Language Interpreter, State Tracker, Response Generator, Natural Language Generator, Speech Synthesizer</strong> 这么多个子模块拼接而成，这种系统称为 Modular system，在系统中每个组件单独训练，来优化一个单独的中间目标(如 slot-filling)。而 end-to-end system 相当于用一个系统替代了上图中框起来的四个组件，来比较一下</p>
 <p><strong>Modular system vs end-to-end system</strong></p>
 <ul>
 <li><strong>目标函数</strong><br>modular system 有两个及以上的目标函数<br>end-to-end 通常只有一个目标函数</li>
@@ -24,7 +24,7 @@
 <li><strong>效果</strong><br>modular system 在 highly structured tasks/narrow domain 上的效果更出色，但泛化能力有限<br>end-to-end 在 general purpose 的效果上比较好</li>
 </ul>
 <h1 id="Retrieval-based-models-vs-Generative-models"><a href="#Retrieval-based-models-vs-Generative-models" class="headerlink" title="Retrieval-based models vs Generative models"></a>Retrieval-based models vs Generative models</h1><p>对话模型分 <strong>检索式(Retrieval-based models )</strong> 和 <strong>生成式(Generative models)</strong> 两种，检索式的聊天模型有一个预先定义好的模板库，给定一个 query，来从模板库里选择最好的 response。回复的产生依赖于模板库，不可能产生模板库没有的句子。而生成式模型不依赖于模板库，而是直接产生的，生成式模型的方法大多依赖于机器翻译的技术，但不是从一个语言翻译到另一个语言，而是从一个输入映射到回复。</p>
-<p>两种方法都有利有弊，检索式模型得到的回复不会产生语法错误，但是有可能没法处理在模板库里不存在回复的用户输入，另外，检索式模型也很难结合上下文信息。而生成式模型更加的“聪明”，可以结合语境，然而更难训练，也更容易犯语法错误(尤其是长句)，需要的训练数据也很大。</p>
+<p>两种方法都有利有弊，检索式模型得到的回复不会产生语法错误，但没法处理在模板库里不存在回复的用户输入，另外，检索式模型也很难结合上下文信息。而生成式模型更加的“聪明”，可以结合语境，然而更难训练，也更容易犯语法错误(尤其是长句)，需要的训练数据也很大。</p>
 <h1 id="Retrieval-Based-Models"><a href="#Retrieval-Based-Models" class="headerlink" title="Retrieval-Based Models"></a>Retrieval-Based Models</h1><p>检索式的聊天模型实际是把对话看做是一个 <strong>排序问题</strong>，有一个预先定义好的模板库，给定一个 query，来从模板库里选择最好的 response。需要及计算一个 score(query, response) 来衡量 query 和 response 的匹配程度，score 越高，response 越可能是一个合适的回复。</p>
 <p>这里主要介绍 Dual-RNN/Dual LSTM 模型。</p>
 <h2 id="句子表达"><a href="#句子表达" class="headerlink" title="句子表达"></a>句子表达</h2><p>先来看一下怎么表达 query 和 response。语义特征方面很容易想到 TFIDF，然而它忽略了词序，表达效果没那么强，所以考虑用 sentence embedding。sentence embedding 可以用 RNN/LSTM 来获取。还是 Encoder-decoder 的思想，不过这里把 decoder 给替换了成了另一个 encoder，也就成了 Dual-RNN 的结构。两个独立的 RNN 分别对 context/ query和 response 进行编码，每个 RNN 最后一个 hidden state 相当于是对整个 input(context/response) 的一个总结。</p>
@@ -32,7 +32,7 @@
 <h2 id="分数计算"><a href="#分数计算" class="headerlink" title="分数计算"></a>分数计算</h2><p>模型的学习目标其实是一个 binary 分类器<br>$\sigma (score(Query, Response_true)) -&gt; 1$<br>$\sigma (score(Query, Response_false)) -&gt; 0$</p>
 <p>先来看下<strong>如何计算分数</strong>。<br>$$p(flag=1|c,r,M)=\sigma(c^TMr+b)$$</p>
 <p>这个过程可以看做是一个产生模型，给定 input response，用 $c’=Mr$ 产生一个 context (M 是 dxd 的参数矩阵)，然后利用点乘来及计算这个产生的 context 和真实 context 的相似度分数，再用 sigmoid 将这个分数转化为概率，最小化交叉熵损失函数来将进行训练。</p>
-<p>简单一个例子来理解这个过程，假设下图 5x5 的表格，i 行 j 列代表 $(query_i, response_j)$，我们希望对角线的 probability 最大，因为对角线对应着正确的 (query, response)，真实的 label 是一个 identity matrix，我们的 prediction 是 5x5 的 score，现在对每一行进行  softmax cross-entropy 损失函数的计算，相当于直接优化 retrieval metrics (Recall@k)，即 (query, response) 在所有 pair 里的排名。</p>
+<p>简单一个例子来理解这个过程，假设下图 5x5 的表格，i 行 j 列代表 $(query_i, response_j)$，我们希望对角线的 probability 最大，因为对角线对应着正确的 (query, response)，真实的 label 是一个 identity matrix，我们的 prediction 是 5x5 的 score，现在对每一行进行  softmax cross-entropy 损失函数的计算，其实就相当于直接优化 retrieval metrics (Recall@k)，即 (query, response) 在所有 pair 里的排名。</p>
 <img src="http://ox5l2b8f4.bkt.clouddn.com/images/%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png" class="ful-image" alt="%E7%BB%8F%E5%85%B8%E7%9A%84%E7%AB%AF%E5%88%B0%E7%AB%AF%E8%81%8A%E5%A4%A9%E6%A8%A1%E5%9E%8B/matrix.png">
 <p>从代码角度理解一下，下面是训练阶段的一个 minibatch 过程，假设 minibatch 大小为 5</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">if self.is_training:</div><div class="line">    # 训练阶段, 使用 minibatch 内其他样本的 response 作为 negative response</div><div class="line">    # 用 LSTM 做 encoding，query/response 都是 5x128 的表达</div><div class="line">    # W: 128x128</div><div class="line">    response_final_state = tf.matmul(response_final_state[-1].h, W)</div><div class="line">    # 得到 5x5 的 score matrix</div><div class="line">    logits = tf.matmul(</div><div class="line">        a = query_final_state[-1].h, b = response_final_state,</div><div class="line">        transpose_b = True)</div><div class="line">    self.losses = tf.losses.softmax_cross_entropy(</div><div class="line">        onehot_labels = self.labels,</div><div class="line">        logits = logits)</div><div class="line">    self.mean_loss = tf.reduce_mean(self.losses, name=&quot;mean_loss&quot;)</div><div class="line">    train_loss_summary = tf.summary.scalar(&apos;loss&apos;, self.mean_loss)</div><div class="line">    self.training_summaries = tf.summary.merge(</div><div class="line">                             inputs = [train_loss_summary], name=&apos;train_monitor&apos;)</div><div class="line"></div><div class="line">    opt = tf.train.AdamOptimizer(</div><div class="line">        learning_rate=self.args.learningRate,</div><div class="line">        beta1=0.9,</div><div class="line">        beta2=0.999,</div><div class="line">        epsilon=1e-08</div><div class="line">    )</div><div class="line">    self.optOp = opt.minimize(self.mean_loss)</div></pre></td></tr></table></figure>
@@ -84,10 +84,10 @@
 <p>达到的目标是收到一封邮件，系统发现这个邮件适合 Smart Reply，就会自动推荐 3 个回复语句给用户选择。</p>
 <p>框架面临的几个挑战是</p>
 <ul>
-<li>Response quality<br>怎么保证生成的回复的质量，如果质量不高，根本没有推荐的必要</li>
-<li>Utility<br>怎样选择推荐的回复，能最大化用户选中的概率</li>
-<li>Scalability<br>怎样提高效率，大规模处理</li>
-<li>Privacy<br>在开发系统的过程中怎么保护隐私，加密</li>
+<li><strong>Response quality</strong><br>怎么保证生成的回复的质量，如果质量不高，根本没有推荐的必要</li>
+<li><strong>Utility</strong><br>怎样选择推荐的回复，能最大化用户选中的概率</li>
+<li><strong>Scalability</strong><br>怎样提高效率，大规模处理</li>
+<li><strong>Privacy</strong><br>在开发系统的过程中怎么保护隐私，加密</li>
 </ul>
 <p>如何应对上面的挑战，也是文章的亮点</p>
 <ul>
@@ -116,7 +116,8 @@
 <li><strong>初始化:</strong> 标记～100个类别(cluster)，每个类别～3个人工选择的样本</li>
 <li>使用 (original, response), (response1, response2, feature) 对模板库里的样本建立关系</li>
 <li>使用 Expander 算法给未标记的句子打标记</li>
-<li>对于新的类别的发现，<strong>Iteration：</strong><br><strong>Inference:</strong> 用 label propagation 算法迭代 5 次推测未标记样本的 cluster 类别<br><strong>Update:</strong> 从图中剩下的未标记的样本中随机 sample 100 个作为潜在的新类别，用 canonicalized representation 来标记<br>​ 重新运行 label propagation 直到收敛(不再发现新的类别，或者每个类的成员不再变化)<br>​ <strong>Validation:</strong> 提取每个 cluster 的 top-k 个回复样本，人工验证</li>
+<li>对于新的类别的发现，<strong>Iteration：</strong><br><strong>Inference:</strong> 用 label propagation 算法迭代 5 次推测未标记样本的 cluster 类别<br><strong>Update:</strong> 从图中剩下的未标记的样本中随机 sample 100 个作为潜在的新类别，用 canonicalized representation 来标记<br>​ 重新运行 label propagation 直到收敛(不再发现新的类别，或者每个类的成员不再变化)</li>
+<li>最后进行 <strong>Validation:</strong> 提取每个 cluster 的 top-k 个回复样本，人工验证</li>
 </ol>
 ]]></content>
       
